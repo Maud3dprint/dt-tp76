@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="DT-TP76">
+<title>DT-TP76 — Suivi chantier</title>
+<link rel="manifest" href="manifest.json">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;background:#fff;color:#0e0e0e;min-height:100vh}
+
+/* PIN */
+#pin-screen{position:fixed;inset:0;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1000}
+#pin-screen h1{font-size:20px;font-weight:600;margin-bottom:8px;color:#0e0e0e}
+#pin-screen p{font-size:13px;color:#666;margin-bottom:32px}
+.pin-dots{display:flex;gap:12px;margin-bottom:32px}
+.pin-dot{width:16px;height:16px;border-radius:50%;border:2px solid #ccc;background:#fff;transition:background .15s}
+.pin-dot.filled{background:#3B6D11;border-color:#3B6D11}
+.pin-pad{display:grid;grid-template-columns:repeat(3,72px);gap:10px}
+.pin-btn{height:72px;border-radius:16px;border:1px solid #e0e0e0;background:#fff;font-size:22px;font-weight:500;cursor:pointer;color:#0e0e0e;transition:background .1s}
+.pin-btn:active{background:#f0f0f0}
+.pin-btn.del{font-size:16px;color:#666}
+#pin-error{color:#c0392b;font-size:13px;margin-top:16px;min-height:20px}
+
+/* NAV */
+#app{display:none}
+.nav{display:flex;border-bottom:1px solid #e8e8e8;background:#fff;position:sticky;top:0;z-index:100;overflow-x:auto}
+.nav-btn{flex:1;min-width:80px;padding:14px 8px 12px;border:none;background:none;font-size:11px;color:#888;cursor:pointer;border-bottom:2px solid transparent;transition:color .15s;white-space:nowrap}
+.nav-btn.active{color:#3B6D11;border-bottom-color:#3B6D11;font-weight:600}
+
+/* PAGES */
+.page{display:none;padding:16px;max-width:900px;margin:0 auto}
+.page.active{display:block}
+
+/* CARDS */
+.card{background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:16px;margin-bottom:12px}
+.card-title{font-size:13px;font-weight:600;color:#666;margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
+
+/* STATS ROW */
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}
+.stat{background:#f8f9f8;border-radius:10px;padding:12px}
+.stat .lbl{font-size:11px;color:#888;margin-bottom:4px}
+.stat .val{font-size:20px;font-weight:600;color:#0e0e0e}
+.stat .sub{font-size:11px;color:#888;margin-top:2px}
+.stat.green .val{color:#3B6D11}
+.stat.red .val{color:#c0392b}
+
+/* FORM */
+.field{margin-bottom:12px}
+.field label{display:block;font-size:12px;color:#666;margin-bottom:4px;font-weight:500}
+.field input,.field select,.field textarea{width:100%;height:40px;border:1px solid #ddd;border-radius:8px;padding:0 12px;font-size:14px;background:#fff;color:#0e0e0e}
+.field textarea{height:70px;padding:10px 12px;resize:none}
+.field input:focus,.field select:focus{outline:none;border-color:#3B6D11}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 20px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:opacity .15s}
+.btn:active{opacity:.8}
+.btn-green{background:#3B6D11;color:#fff;width:100%}
+.btn-outline{background:#fff;color:#3B6D11;border:1.5px solid #3B6D11;width:100%;margin-top:8px}
+.btn-red{background:#fff;color:#c0392b;border:1.5px solid #c0392b;padding:0 12px;height:32px;font-size:12px;border-radius:6px}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:8px 10px;border-bottom:2px solid #e8e8e8;color:#888;font-size:11px;font-weight:600;white-space:nowrap}
+td{padding:8px 10px;border-bottom:1px solid #f0f0f0;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+
+/* BADGES */
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+.badge-green{background:#e8f5e0;color:#2d5a0e}
+.badge-orange{background:#fff3e0;color:#e65100}
+.badge-red{background:#fce8e8;color:#c0392b}
+
+/* POSTE DETAIL */
+.poste-card{background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:14px;margin-bottom:10px;cursor:pointer}
+.poste-card:active{background:#f8f8f8}
+.poste-header{display:flex;justify-content:space-between;align-items:center}
+.poste-name{font-size:14px;font-weight:600}
+.poste-amounts{display:flex;gap:16px;margin-top:8px}
+.poste-amount{font-size:12px;color:#666}
+.poste-amount span{font-weight:600;color:#0e0e0e;display:block;font-size:14px}
+.ecart-pos{color:#3B6D11}
+.ecart-neg{color:#c0392b}
+
+/* DEPENSE ITEM */
+.dep-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #f0f0f0}
+.dep-item:last-child{border-bottom:none}
+.dep-info .dep-label{font-size:14px;font-weight:500}
+.dep-info .dep-date{font-size:12px;color:#888}
+.dep-montant{font-size:15px;font-weight:600}
+.dep-montant.neg{color:#c0392b}
+
+/* PAGE TITLE */
+.page-title{font-size:18px;font-weight:700;margin-bottom:4px}
+.page-sub{font-size:13px;color:#888;margin-bottom:16px}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:500;align-items:flex-end;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:20px 20px 0 0;padding:20px 16px 32px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto}
+.modal-title{font-size:16px;font-weight:700;margin-bottom:16px}
+.modal-close{float:right;background:none;border:none;font-size:20px;cursor:pointer;color:#888;margin-top:-4px}
+
+/* LOADER */
+.loader{text-align:center;padding:40px;color:#888;font-size:14px}
+
+/* DATE PAIEMENT */
+.date-pay{font-size:13px;font-weight:600;color:#3B6D11}
+.date-pay-sub{font-size:11px;color:#888}
+
+@media(min-width:600px){
+  .stats{grid-template-columns:repeat(4,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- PIN SCREEN -->
+<div id="pin-screen">
+  <h1>DT-TP76</h1>
+  <p>Suivi des coûts chantier</p>
+  <div class="pin-dots">
+    <div class="pin-dot" id="d0"></div>
+    <div class="pin-dot" id="d1"></div>
+    <div class="pin-dot" id="d2"></div>
+    <div class="pin-dot" id="d3"></div>
+    <div class="pin-dot" id="d4"></div>
+    <div class="pin-dot" id="d5"></div>
+    <div class="pin-dot" id="d6"></div>
+    <div class="pin-dot" id="d7"></div>
+  </div>
+  <div class="pin-pad">
+    <button class="pin-btn" onclick="pinPress('1')">1</button>
+    <button class="pin-btn" onclick="pinPress('2')">2</button>
+    <button class="pin-btn" onclick="pinPress('3')">3</button>
+    <button class="pin-btn" onclick="pinPress('4')">4</button>
+    <button class="pin-btn" onclick="pinPress('5')">5</button>
+    <button class="pin-btn" onclick="pinPress('6')">6</button>
+    <button class="pin-btn" onclick="pinPress('7')">7</button>
+    <button class="pin-btn" onclick="pinPress('8')">8</button>
+    <button class="pin-btn" onclick="pinPress('9')">9</button>
+    <button class="pin-btn" style="visibility:hidden"></button>
+    <button class="pin-btn" onclick="pinPress('0')">0</button>
+    <button class="pin-btn del" onclick="pinDel()">⌫</button>
+  </div>
+  <div id="pin-error"></div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <nav class="nav">
+    <button class="nav-btn active" onclick="goPage('dashboard')">Tableau de bord</button>
+    <button class="nav-btn" onclick="goPage('saisie')">+ Chantier</button>
+    <button class="nav-btn" onclick="goPage('historique')">Historique</button>
+    <button class="nav-btn" onclick="goPage('postes')">Postes</button>
+    <button class="nav-btn" onclick="goPage('depenses')">Dépenses</button>
+  </nav>
+
+  <!-- DASHBOARD -->
+  <div class="page active" id="page-dashboard">
+    <div style="padding-top:4px">
+      <div class="page-title">Tableau de bord</div>
+      <div class="page-sub" id="dash-date">—</div>
+      <div class="stats" id="dash-stats">
+        <div class="loader">Chargement…</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Derniers chantiers</div>
+        <div id="dash-recent"><div class="loader">Chargement…</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Paiements à venir</div>
+        <div id="dash-paiements"><div class="loader">Chargement…</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SAISIE -->
+  <div class="page" id="page-saisie">
+    <div class="page-title">Nouveau chantier</div>
+    <div class="page-sub">Saisie de la journée</div>
+    <div class="card">
+      <div class="grid2">
+        <div class="field">
+          <label>Client</label>
+          <input type="text" id="s-client" placeholder="Nom du client">
+        </div>
+        <div class="field">
+          <label>Date</label>
+          <input type="date" id="s-date">
+        </div>
+      </div>
+      <div class="field">
+        <label>Délai de facturation</label>
+        <select id="s-delai">
+          <option value="comptant">Comptant</option>
+          <option value="30fm" selected>30 jours fin de mois</option>
+          <option value="45fm">45 jours fin de mois</option>
+          <option value="60">60 jours nets</option>
+        </select>
+      </div>
+      <div id="s-date-pay-preview" style="font-size:12px;color:#3B6D11;margin:-4px 0 12px;min-height:16px"></div>
+      <div class="grid3">
+        <div class="field">
+          <label>H. productives</label>
+          <input type="text" id="s-hprod" placeholder="6:30" value="0:00">
+        </div>
+        <div class="field">
+          <label>H. transfert</label>
+          <input type="text" id="s-htransf" placeholder="1:00" value="0:00">
+        </div>
+        <div class="field">
+          <label>Prix horaire HT (€)</label>
+          <input type="number" id="s-prix" value="85" step="0.5">
+        </div>
+      </div>
+      <div class="grid3">
+        <div class="field">
+          <label>Carburant (€/L)</label>
+          <input type="number" id="s-carbu" value="2.25" step="0.01">
+        </div>
+        <div class="field">
+          <label>TVA client</label>
+          <select id="s-tva">
+            <option value="20">Standard 20%</option>
+            <option value="10">Bâtiment 10%</option>
+            <option value="5.5">Agri 5,5%</option>
+            <option value="0">Exonéré 0%</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Réduction (%)</label>
+          <input type="number" id="s-reduc" value="0" min="0" max="100">
+        </div>
+      </div>
+      <div class="field">
+        <label>Note (optionnel)</label>
+        <textarea id="s-note" placeholder="Remarque, type de travaux…"></textarea>
+      </div>
+    </div>
+
+    <!-- PREVIEW CALCUL -->
+    <div class="card" id="s-preview" style="display:none">
+      <div class="card-title">Aperçu du calcul</div>
+      <div class="stats" id="s-preview-stats"></div>
+      <div id="s-detail-table"></div>
+    </div>
+
+    <button class="btn btn-outline" onclick="previewCalc()">Prévisualiser le calcul</button>
+    <div style="height:10px"></div>
+    <button class="btn btn-green" onclick="sauvegarder()">Enregistrer le chantier</button>
+    <div id="s-msg" style="text-align:center;margin-top:12px;font-size:13px;color:#3B6D11;min-height:20px"></div>
+  </div>
+
+  <!-- HISTORIQUE -->
+  <div class="page" id="page-historique">
+    <div class="page-title">Historique</div>
+    <div class="page-sub">Tous les chantiers enregistrés</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th><th>Client</th><th>H.</th>
+            <th>CA HT</th><th>CA TTC</th>
+            <th>Coût rev.</th><th>Marge</th><th>%</th><th>Paiement</th>
+          </tr>
+        </thead>
+        <tbody id="hist-body">
+          <tr><td colspan="9" class="loader">Chargement…</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div id="hist-total" style="margin-top:12px"></div>
+  </div>
+
+  <!-- POSTES -->
+  <div class="page" id="page-postes">
+    <div class="page-title">Postes de coût</div>
+    <div class="page-sub">Provision vs dépenses réelles</div>
+    <div id="postes-list"><div class="loader">Chargement…</div></div>
+  </div>
+
+  <!-- DEPENSES HORS EXPLOITATION -->
+  <div class="page" id="page-depenses">
+    <div class="page-title">Dépenses diverses</div>
+    <div class="page-sub">Vêtements, repas, pub, divers…</div>
+    <div class="card">
+      <div class="card-title">Ajouter une dépense</div>
+      <div class="grid2">
+        <div class="field">
+          <label>Libellé</label>
+          <input type="text" id="dep-label" placeholder="Ex: croissants chantier">
+        </div>
+        <div class="field">
+          <label>Montant (€)</label>
+          <input type="number" id="dep-montant" placeholder="0.00" step="0.01">
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label>Catégorie</label>
+          <select id="dep-cat">
+            <option value="repas">Repas / croissants</option>
+            <option value="vetements">Vêtements de travail</option>
+            <option value="pub">Publicité / communication</option>
+            <option value="divers">Divers</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Date</label>
+          <input type="date" id="dep-date">
+        </div>
+      </div>
+      <button class="btn btn-green" onclick="ajouterDepense()">Ajouter</button>
+      <div id="dep-msg" style="text-align:center;margin-top:8px;font-size:13px;color:#3B6D11;min-height:16px"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Historique des dépenses</div>
+      <div id="dep-list"><div class="loader">Chargement…</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL POSTE DETAIL -->
+<div class="modal-overlay" id="modal-poste" onclick="closeModal(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closePosteModal()">✕</button>
+    <div class="modal-title" id="modal-poste-title">—</div>
+    <div id="modal-poste-content"></div>
+    <div style="height:16px"></div>
+    <div class="card-title">Ajouter une dépense réelle</div>
+    <div class="grid2">
+      <div class="field">
+        <label>Libellé</label>
+        <input type="text" id="modal-dep-label" placeholder="Ex: remplacement pneu">
+      </div>
+      <div class="field">
+        <label>Montant (€)</label>
+        <input type="number" id="modal-dep-montant" step="0.01" placeholder="0.00">
+      </div>
+    </div>
+    <div class="field">
+      <label>Date</label>
+      <input type="date" id="modal-dep-date">
+    </div>
+    <button class="btn btn-green" onclick="ajouterDepPoste()">Ajouter au poste</button>
+    <div id="modal-dep-msg" style="text-align:center;margin-top:8px;font-size:13px;color:#3B6D11;min-height:16px"></div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, onSnapshot, orderBy, query, doc, updateDoc, arrayUnion, Timestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAL9eNyspMmf3JQRa0Phr_WzOMYNFruBWI",
+  authDomain: "cout-dt-tp76.firebaseapp.com",
+  projectId: "cout-dt-tp76",
+  storageBucket: "cout-dt-tp76.firebasestorage.app",
+  messagingSenderId: "742914854605",
+  appId: "1:742914854605:web:840d46d0d2d92b0db7a384"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// ─── CONFIG ───
+const PIN = "19891986";
+const CONSO = 17;
+const COUTS = {
+  tracteur:    {label:"Tracteur",            val:11},
+  remorque:    {label:"Remorque",            val:7.15},
+  voiture:     {label:"Voiture + matériel",  val:2.06},
+  bfr:         {label:"BFR",                 val:1.38},
+  assurance:   {label:"Assurance",           val:1.14},
+  salaire:     {label:"Salaire",             val:0},
+  comptable:   {label:"Comptable",           val:2.31},
+  revision:    {label:"Révision",            val:2.5},
+  pneus:       {label:"Pneus",               val:8},
+  reparations: {label:"Petites réparations", val:3.12},
+};
+
+// ─── PIN ───
+let pinVal = "";
+window.pinPress = function(n) {
+  if(pinVal.length >= 8) return;
+  pinVal += n;
+  for(let i=0;i<8;i++) document.getElementById("d"+i).classList.toggle("filled", i<pinVal.length);
+  if(pinVal.length === 8) {
+    if(pinVal === PIN) {
+      document.getElementById("pin-screen").style.display = "none";
+      document.getElementById("app").style.display = "block";
+      initApp();
+    } else {
+      document.getElementById("pin-error").textContent = "Code incorrect";
+      setTimeout(()=>{ pinVal=""; for(let i=0;i<8;i++) document.getElementById("d"+i).classList.remove("filled"); document.getElementById("pin-error").textContent=""; }, 800);
+    }
+  }
+};
+window.pinDel = function() {
+  pinVal = pinVal.slice(0,-1);
+  for(let i=0;i<8;i++) document.getElementById("d"+i).classList.toggle("filled", i<pinVal.length);
+};
+
+// ─── UTILS ───
+function parseH(str) {
+  str=(str||"").trim();
+  if(str.includes(":")) { const[h,m]=str.split(":").map(Number); return h+(m||0)/60; }
+  if(str.includes("h")) { const p=str.split("h"); return parseFloat(p[0])+(parseFloat(p[1])||0)/60; }
+  return parseFloat(str)||0;
+}
+function eur(n) { return Number(n).toFixed(2)+" €"; }
+function fmtDate(d) {
+  if(!d) return "—";
+  if(typeof d === "string") d = new Date(d);
+  if(d.toDate) d = d.toDate();
+  return d.toLocaleDateString("fr-FR",{day:"2-digit",month:"2-digit",year:"numeric"});
+}
+function calcDP(dateStr, delai) {
+  if(!dateStr) return null;
+  const d = new Date(dateStr);
+  if(delai==="comptant") return d;
+  if(delai==="30fm") { d.setDate(d.getDate()+30); return new Date(d.getFullYear(),d.getMonth()+1,0); }
+  if(delai==="45fm") { d.setDate(d.getDate()+45); return new Date(d.getFullYear(),d.getMonth()+1,0); }
+  if(delai==="60")   { d.setDate(d.getDate()+60); return d; }
+  return d;
+}
+function diffJours(d) {
+  if(!d) return null;
+  const today = new Date(); today.setHours(0,0,0,0);
+  return Math.round((d-today)/86400000);
+}
+function calcChantier(data) {
+  const h_prod = parseH(data.hprod);
+  const h_transf = parseH(data.htransf);
+  const h_total = h_prod + h_transf;
+  const prix_eff = (data.prix||85) * (1-(data.reduc||0)/100);
+  const cout_carbu_h = CONSO * (data.carbu||2.25);
+  let cout_fixe_h = Object.values(COUTS).reduce((s,c)=>s+c.val,0);
+  const cout_rev_h = cout_fixe_h + cout_carbu_h;
+  const cout_total = cout_rev_h * h_total;
+  const ca_ht = prix_eff * h_total;
+  const tva_mnt = ca_ht * (data.tva||20) / 100;
+  const ca_ttc = ca_ht + tva_mnt;
+  const marge_ht = ca_ht - cout_total;
+  const marge_pct = ca_ht>0 ? marge_ht/ca_ht*100 : 0;
+  return {h_prod,h_transf,h_total,prix_eff,cout_carbu_h,cout_rev_h,cout_total,ca_ht,tva_mnt,ca_ttc,marge_ht,marge_pct};
+}
+
+// ─── NAV ───
+window.goPage = function(p) {
+  document.querySelectorAll(".page").forEach(el=>el.classList.remove("active"));
+  document.querySelectorAll(".nav-btn").forEach(el=>el.classList.remove("active"));
+  document.getElementById("page-"+p).classList.add("active");
+  const idx = ["dashboard","saisie","historique","postes","depenses"].indexOf(p);
+  document.querySelectorAll(".nav-btn")[idx].classList.add("active");
+  if(p==="dashboard") renderDashboard();
+  if(p==="historique") renderHistorique();
+  if(p==="postes") renderPostes();
+  if(p==="depenses") renderDepenses();
+};
+
+// ─── DATA CACHE ───
+let chantiers = [];
+let depenses = [];
+let postesData = {};
+
+function initApp() {
+  const today = new Date();
+  document.getElementById("dash-date").textContent = today.toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+  document.getElementById("s-date").value = today.toISOString().split("T")[0];
+  document.getElementById("dep-date").value = today.toISOString().split("T")[0];
+  document.getElementById("modal-dep-date").value = today.toISOString().split("T")[0];
+
+  // Écoute temps réel chantiers
+  onSnapshot(query(collection(db,"chantiers"),orderBy("date","desc")), snap => {
+    chantiers = snap.docs.map(d=>({id:d.id,...d.data()}));
+    renderDashboard();
+    const activePage = document.querySelector(".page.active").id.replace("page-","");
+    if(activePage==="historique") renderHistorique();
+    if(activePage==="postes") renderPostes();
+  });
+
+  // Écoute temps réel dépenses
+  onSnapshot(query(collection(db,"depenses"),orderBy("date","desc")), snap => {
+    depenses = snap.docs.map(d=>({id:d.id,...d.data()}));
+    const activePage = document.querySelector(".page.active").id.replace("page-","");
+    if(activePage==="depenses") renderDepenses();
+    if(activePage==="dashboard") renderDashboard();
+  });
+
+  // Écoute postes
+  onSnapshot(collection(db,"postes"), snap => {
+    postesData = {};
+    snap.docs.forEach(d=>{ postesData[d.id] = {id:d.id,...d.data()}; });
+    const activePage = document.querySelector(".page.active").id.replace("page-","");
+    if(activePage==="postes") renderPostes();
+  });
+
+  document.getElementById("s-date").addEventListener("change", updateDatePreview);
+  document.getElementById("s-delai").addEventListener("change", updateDatePreview);
+  updateDatePreview();
+}
+
+function updateDatePreview() {
+  const dp = calcDP(document.getElementById("s-date").value, document.getElementById("s-delai").value);
+  const el = document.getElementById("s-date-pay-preview");
+  if(!dp) { el.textContent=""; return; }
+  const diff = diffJours(dp);
+  const mention = diff>0?`dans ${diff} j`:diff===0?"aujourd'hui":`dépassé de ${-diff}j`;
+  el.textContent = `Paiement prévu le ${fmtDate(dp)} (${mention})`;
+}
+
+// ─── DASHBOARD ───
+function renderDashboard() {
+  const totalCA = chantiers.reduce((s,c)=>s+calcChantier(c).ca_ht,0);
+  const totalTTC = chantiers.reduce((s,c)=>s+calcChantier(c).ca_ttc,0);
+  const totalMarge = chantiers.reduce((s,c)=>s+calcChantier(c).marge_ht,0);
+  const totalDep = depenses.reduce((s,d)=>s+(d.montant||0),0);
+  const benefice = totalMarge - totalDep;
+
+  document.getElementById("dash-stats").innerHTML = `
+    <div class="stat"><div class="lbl">CA HT total</div><div class="val">${eur(totalCA)}</div><div class="sub">${chantiers.length} chantier(s)</div></div>
+    <div class="stat"><div class="lbl">CA TTC total</div><div class="val">${eur(totalTTC)}</div></div>
+    <div class="stat ${totalMarge>=0?'green':'red'}"><div class="lbl">Marge brute HT</div><div class="val">${eur(totalMarge)}</div></div>
+    <div class="stat ${benefice>=0?'green':'red'}"><div class="lbl">Bénéfice net</div><div class="val">${eur(benefice)}</div><div class="sub">Marge − dépenses diverses</div></div>
+  `;
+
+  const recent = chantiers.slice(0,3);
+  if(!recent.length) { document.getElementById("dash-recent").innerHTML="<div style='color:#888;font-size:13px'>Aucun chantier enregistré</div>"; }
+  else {
+    document.getElementById("dash-recent").innerHTML = recent.map(c=>{
+      const r = calcChantier(c);
+      return `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0">
+        <div><div style="font-weight:600">${c.client||"—"}</div><div style="font-size:12px;color:#888">${fmtDate(c.date)} · ${Number(r.h_total).toFixed(1)}h</div></div>
+        <div style="text-align:right"><div style="font-weight:600">${eur(r.ca_ht)}</div><div style="font-size:12px;color:${r.marge_ht>=0?'#3B6D11':'#c0392b'}">${eur(r.marge_ht)}</div></div>
+      </div>`;
+    }).join("");
+  }
+
+  const today = new Date(); today.setHours(0,0,0,0);
+  const upcoming = chantiers
+    .map(c=>({...c, dp: calcDP(c.date, c.delai)}))
+    .filter(c=>c.dp)
+    .map(c=>({...c, diff: diffJours(c.dp)}))
+    .filter(c=>c.diff >= -7)
+    .sort((a,b)=>a.diff-b.diff)
+    .slice(0,5);
+
+  if(!upcoming.length) { document.getElementById("dash-paiements").innerHTML="<div style='color:#888;font-size:13px'>Aucun paiement à venir</div>"; }
+  else {
+    document.getElementById("dash-paiements").innerHTML = upcoming.map(c=>{
+      const r = calcChantier(c);
+      const diffStr = c.diff>0?`J-${c.diff}`:c.diff===0?"Aujourd'hui":`<span style='color:#c0392b'>+${-c.diff}j</span>`;
+      return `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0">
+        <div><div style="font-weight:600">${c.client||"—"}</div><div class="date-pay-sub">${fmtDate(c.dp)} · ${diffStr}</div></div>
+        <div style="text-align:right;font-weight:600">${eur(r.ca_ttc)}</div>
+      </div>`;
+    }).join("");
+  }
+}
+
+// ─── SAISIE ───
+window.previewCalc = function() {
+  const data = getSaisieData();
+  const r = calcChantier(data);
+  document.getElementById("s-preview").style.display="block";
+  document.getElementById("s-preview-stats").innerHTML = `
+    <div class="stat"><div class="lbl">CA HT</div><div class="val">${eur(r.ca_ht)}</div></div>
+    <div class="stat"><div class="lbl">CA TTC</div><div class="val">${eur(r.ca_ttc)}</div></div>
+    <div class="stat"><div class="lbl">Coût revient</div><div class="val">${eur(r.cout_total)}</div></div>
+    <div class="stat ${r.marge_ht>=0?'green':'red'}"><div class="lbl">Marge HT</div><div class="val">${eur(r.marge_ht)}</div><div class="sub">${r.marge_pct.toFixed(1)}%</div></div>
+  `;
+  let rows = Object.values(COUTS).map(c=>`<tr><td>${c.label}</td><td style="text-align:right">${c.val.toFixed(2)} €/h</td><td style="text-align:right">${eur(c.val*r.h_total)}</td></tr>`).join("");
+  rows += `<tr><td>Carburant (${CONSO}L × ${data.carbu} €/L)</td><td style="text-align:right">${r.cout_carbu_h.toFixed(2)} €/h</td><td style="text-align:right">${eur(r.cout_carbu_h*r.h_total)}</td></tr>`;
+  rows += `<tr style="font-weight:700;background:#f8f9f8"><td>Total</td><td style="text-align:right">${r.cout_rev_h.toFixed(2)} €/h</td><td style="text-align:right">${eur(r.cout_total)}</td></tr>`;
+  document.getElementById("s-detail-table").innerHTML=`<div class="tbl-wrap"><table><thead><tr><th>Poste</th><th style="text-align:right">€/h</th><th style="text-align:right">Total (${r.h_total.toFixed(2)}h)</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+};
+
+function getSaisieData() {
+  return {
+    client: document.getElementById("s-client").value||"—",
+    date: document.getElementById("s-date").value,
+    delai: document.getElementById("s-delai").value,
+    hprod: document.getElementById("s-hprod").value,
+    htransf: document.getElementById("s-htransf").value,
+    prix: parseFloat(document.getElementById("s-prix").value)||85,
+    carbu: parseFloat(document.getElementById("s-carbu").value)||2.25,
+    tva: parseFloat(document.getElementById("s-tva").value)||20,
+    reduc: parseFloat(document.getElementById("s-reduc").value)||0,
+    note: document.getElementById("s-note").value,
+  };
+}
+
+window.sauvegarder = async function() {
+  const data = getSaisieData();
+  if(!data.client || data.client==="—") { document.getElementById("s-msg").textContent="⚠ Renseigne le nom du client"; return; }
+  if(!data.date) { document.getElementById("s-msg").textContent="⚠ Renseigne la date"; return; }
+  document.getElementById("s-msg").textContent="Enregistrement…";
+  try {
+    await addDoc(collection(db,"chantiers"), {...data, createdAt: new Date().toISOString()});
+    document.getElementById("s-msg").textContent="✓ Chantier enregistré !";
+    document.getElementById("s-client").value="";
+    document.getElementById("s-hprod").value="0:00";
+    document.getElementById("s-htransf").value="0:00";
+    document.getElementById("s-reduc").value="0";
+    document.getElementById("s-note").value="";
+    document.getElementById("s-preview").style.display="none";
+    setTimeout(()=>document.getElementById("s-msg").textContent="",3000);
+  } catch(e) {
+    document.getElementById("s-msg").textContent="Erreur : "+e.message;
+  }
+};
+
+// ─── HISTORIQUE ───
+function renderHistorique() {
+  if(!chantiers.length) {
+    document.getElementById("hist-body").innerHTML="<tr><td colspan='9' class='loader'>Aucun chantier</td></tr>";
+    return;
+  }
+  let totalCA=0, totalTTC=0, totalMarge=0;
+  document.getElementById("hist-body").innerHTML = chantiers.map(c=>{
+    const r = calcChantier(c);
+    const dp = calcDP(c.date, c.delai);
+    const diff = diffJours(dp);
+    totalCA+=r.ca_ht; totalTTC+=r.ca_ttc; totalMarge+=r.marge_ht;
+    const mc = r.marge_pct>=30?"badge-green":r.marge_pct>=15?"badge-orange":"badge-red";
+    const dpStr = diff!==null ? (diff>0?`J-${diff}`:diff===0?"Auj.":`<span style='color:#c0392b'>+${-diff}j</span>`) : "";
+    return `<tr>
+      <td>${fmtDate(c.date)}</td>
+      <td style="font-weight:600">${c.client||"—"}</td>
+      <td>${parseH(c.hprod).toFixed(1)}+${parseH(c.htransf).toFixed(1)}h</td>
+      <td>${eur(r.ca_ht)}</td>
+      <td style="font-weight:600">${eur(r.ca_ttc)}</td>
+      <td>${eur(r.cout_total)}</td>
+      <td style="color:${r.marge_ht>=0?'#3B6D11':'#c0392b'};font-weight:600">${eur(r.marge_ht)}</td>
+      <td><span class="badge ${mc}">${r.marge_pct.toFixed(0)}%</span></td>
+      <td><span class="date-pay">${fmtDate(dp)}</span><br><span style="font-size:11px;color:#888">${dpStr}</span></td>
+    </tr>`;
+  }).join("");
+  document.getElementById("hist-total").innerHTML=`<div class="card"><div style="display:flex;justify-content:space-between"><span style="font-weight:600">Totaux</span></div><div class="stats" style="margin-top:10px"><div class="stat"><div class="lbl">CA HT</div><div class="val" style="font-size:16px">${eur(totalCA)}</div></div><div class="stat"><div class="lbl">CA TTC</div><div class="val" style="font-size:16px">${eur(totalTTC)}</div></div><div class="stat ${totalMarge>=0?'green':'red'}"><div class="lbl">Marge totale</div><div class="val" style="font-size:16px">${eur(totalMarge)}</div></div></div></div>`;
+}
+
+// ─── POSTES ───
+function renderPostes() {
+  const totalH = chantiers.reduce((s,c)=>s+calcChantier(c).h_total,0);
+  const html = Object.entries(COUTS).map(([key,poste])=>{
+    const provision = poste.val * totalH;
+    const pd = postesData[key] || {depenses:[]};
+    const depTotal = (pd.depenses||[]).reduce((s,d)=>s+(d.montant||0),0);
+    const ecart = provision - depTotal;
+    const ecartClass = ecart>=0?"ecart-pos":"ecart-neg";
+    return `<div class="poste-card" onclick="openPoste('${key}')">
+      <div class="poste-header">
+        <div class="poste-name">${poste.label}</div>
+        <div style="font-size:12px;color:#888">${poste.val.toFixed(2)} €/h</div>
+      </div>
+      <div class="poste-amounts">
+        <div class="poste-amount">Provision<span>${eur(provision)}</span></div>
+        <div class="poste-amount">Dépensé<span>${eur(depTotal)}</span></div>
+        <div class="poste-amount">Écart<span class="${ecartClass}">${ecart>=0?"+":""}${eur(ecart)}</span></div>
+      </div>
+    </div>`;
+  }).join("");
+  document.getElementById("postes-list").innerHTML = html || "<div class='loader'>Aucune donnée</div>";
+}
+
+let currentPoste = null;
+window.openPoste = function(key) {
+  currentPoste = key;
+  const poste = COUTS[key];
+  const totalH = chantiers.reduce((s,c)=>s+calcChantier(c).h_total,0);
+  const provision = poste.val * totalH;
+  const pd = postesData[key] || {depenses:[]};
+  const deps = pd.depenses||[];
+  const depTotal = deps.reduce((s,d)=>s+(d.montant||0),0);
+  const ecart = provision - depTotal;
+
+  document.getElementById("modal-poste-title").textContent = poste.label;
+  document.getElementById("modal-dep-label").value="";
+  document.getElementById("modal-dep-montant").value="";
+  document.getElementById("modal-dep-msg").textContent="";
+
+  let depsHtml = deps.length ? deps.map(d=>`
+    <div class="dep-item">
+      <div class="dep-info"><div class="dep-label">${d.label||"—"}</div><div class="dep-date">${fmtDate(d.date)}</div></div>
+      <div class="dep-montant neg">−${eur(d.montant)}</div>
+    </div>`).join("") : "<div style='color:#888;font-size:13px;padding:8px 0'>Aucune dépense saisie</div>";
+
+  document.getElementById("modal-poste-content").innerHTML=`
+    <div class="stats" style="margin-bottom:12px">
+      <div class="stat"><div class="lbl">Provision (${totalH.toFixed(1)}h)</div><div class="val" style="font-size:16px">${eur(provision)}</div></div>
+      <div class="stat"><div class="lbl">Dépensé</div><div class="val" style="font-size:16px;color:#c0392b">${eur(depTotal)}</div></div>
+      <div class="stat ${ecart>=0?'green':'red'}"><div class="lbl">Écart</div><div class="val" style="font-size:16px">${ecart>=0?"+":""}${eur(ecart)}</div></div>
+    </div>
+    <div class="card-title">Dépenses sur ce poste</div>
+    ${depsHtml}
+  `;
+  document.getElementById("modal-poste").classList.add("open");
+};
+
+window.closePosteModal = function() { document.getElementById("modal-poste").classList.remove("open"); };
+window.closeModal = function(e) { if(e.target.id==="modal-poste") closePosteModal(); };
+
+window.ajouterDepPoste = async function() {
+  const label = document.getElementById("modal-dep-label").value;
+  const montant = parseFloat(document.getElementById("modal-dep-montant").value);
+  const date = document.getElementById("modal-dep-date").value;
+  if(!label || !montant || !date) { document.getElementById("modal-dep-msg").textContent="⚠ Remplis tous les champs"; return; }
+  document.getElementById("modal-dep-msg").textContent="Enregistrement…";
+  try {
+    const ref = doc(db,"postes",currentPoste);
+    const pd = postesData[currentPoste];
+    if(pd) {
+      await updateDoc(ref, { depenses: arrayUnion({label,montant,date}) });
+    } else {
+      const {setDoc} = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
+      await setDoc(ref, { depenses: [{label,montant,date}] });
+    }
+    document.getElementById("modal-dep-msg").textContent="✓ Ajouté !";
+    document.getElementById("modal-dep-label").value="";
+    document.getElementById("modal-dep-montant").value="";
+    setTimeout(()=>{ closePosteModal(); renderPostes(); },800);
+  } catch(e) { document.getElementById("modal-dep-msg").textContent="Erreur : "+e.message; }
+};
+
+// ─── DEPENSES DIVERSES ───
+window.ajouterDepense = async function() {
+  const label = document.getElementById("dep-label").value;
+  const montant = parseFloat(document.getElementById("dep-montant").value);
+  const cat = document.getElementById("dep-cat").value;
+  const date = document.getElementById("dep-date").value;
+  if(!label||!montant||!date) { document.getElementById("dep-msg").textContent="⚠ Remplis tous les champs"; return; }
+  document.getElementById("dep-msg").textContent="Enregistrement…";
+  try {
+    await addDoc(collection(db,"depenses"),{label,montant,cat,date,createdAt:new Date().toISOString()});
+    document.getElementById("dep-msg").textContent="✓ Dépense ajoutée !";
+    document.getElementById("dep-label").value="";
+    document.getElementById("dep-montant").value="";
+    setTimeout(()=>document.getElementById("dep-msg").textContent="",3000);
+  } catch(e) { document.getElementById("dep-msg").textContent="Erreur : "+e.message; }
+};
+
+function renderDepenses() {
+  if(!depenses.length) { document.getElementById("dep-list").innerHTML="<div style='color:#888;font-size:13px'>Aucune dépense enregistrée</div>"; return; }
+  const cats = {repas:"Repas",vetements:"Vêtements",pub:"Pub",divers:"Divers"};
+  const total = depenses.reduce((s,d)=>s+(d.montant||0),0);
+  document.getElementById("dep-list").innerHTML = depenses.map(d=>`
+    <div class="dep-item">
+      <div class="dep-info">
+        <div class="dep-label">${d.label||"—"}</div>
+        <div class="dep-date">${fmtDate(d.date)} · ${cats[d.cat]||d.cat||"—"}</div>
+      </div>
+      <div class="dep-montant neg">−${eur(d.montant)}</div>
+    </div>`).join("") + `<div style="display:flex;justify-content:space-between;padding:10px 0;font-weight:700;border-top:2px solid #e8e8e8;margin-top:4px"><span>Total dépenses</span><span style="color:#c0392b">−${eur(total)}</span></div>`;
+}
+</script>
+</body>
+</html>
