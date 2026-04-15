@@ -368,7 +368,8 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
           <div class="fld"><label>Jour prélèvement</label><input class="inp" type="number" id="chj" placeholder="Ex: 5" min="1" max="31"></div>
           <div class="fld"><label>Fréquence</label><select class="inp" id="chf"><option value="mensuel">Mensuel</option><option value="trimestriel">Trimestriel</option><option value="annuel">Annuel</option></select></div>
         </div>
-        <button class="i2-btn" onclick="saveCh()">Ajouter</button>
+        <input type="hidden" id="ch-edit-id" value="">
+        <button class="i2-btn" onclick="saveCh()">Enregistrer</button>
         <div class="mok" id="chmsg" style="color:var(--gd)"></div>
       </div>
       <div class="card">
@@ -959,13 +960,56 @@ function rFacs(){
 function rCh(){
   if(!charges.length){document.getElementById('chlist').innerHTML='<div style="font-size:13px;color:#999">Aucune charge</div>';document.getElementById('chtot').style.display='none';return;}
   let tot=0;
-  document.getElementById('chlist').innerHTML=charges.map(c=>{tot+=c.montant||0;return`<div class="cr"><div><div style="font-weight:600">${c.label||'—'}</div><div style="font-size:11px;color:#999">Le ${c.jour||'?'} · ${c.freq||'mensuel'}</div></div><div style="font-weight:700;color:#c0392b">−${eu(c.montant)}</div></div>`;}).join('');
+  document.getElementById('chlist').innerHTML=charges.map(c=>{tot+=c.montant||0;return`
+    <div class="cr" id="ch-${c.id}">
+      <div><div style="font-weight:600">${c.label||'—'}</div><div style="font-size:11px;color:#999">Le ${c.jour||'?'} · ${c.freq||'mensuel'}</div></div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-weight:700;color:#c0392b">−${eu(c.montant)}</span>
+        <button onclick="editCh('${c.id}')" style="background:none;border:1px solid #3B6D11;border-radius:6px;color:#3B6D11;font-size:11px;padding:3px 8px;cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:600">✏️</button>
+        <button onclick="delCh('${c.id}')" style="background:none;border:1px solid #c0392b;border-radius:6px;color:#c0392b;font-size:11px;padding:3px 8px;cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:600">🗑</button>
+      </div>
+    </div>`;}).join('');
   const el=document.getElementById('chtot');el.style.display='flex';document.getElementById('chtotv').textContent='−'+eu(tot);
 }
+window.delCh=async(id)=>{
+  const pin=prompt('Code PIN pour supprimer :');
+  if(pin!=='19891986'){tst('⚠ Code incorrect');return;}
+  if(!confirm('Supprimer cette charge ?'))return;
+  try{
+    const{deleteDoc,doc:fd}=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+    await deleteDoc(fd(db,'charges',id));
+    tst('✓ Charge supprimée');
+  }catch(e){tst('Erreur suppression');}
+};
+window.editCh=(id)=>{
+  const c=charges.find(x=>x.id===id);if(!c)return;
+  document.getElementById('chl').value=c.label||'';
+  document.getElementById('chm').value=c.montant||'';
+  document.getElementById('chj').value=c.jour||'';
+  document.getElementById('chf').value=c.freq||'mensuel';
+  document.getElementById('ch-edit-id').value=id;
+  document.getElementById('chmsg').textContent='Mode modification — appuie sur Enregistrer pour valider';
+  document.getElementById('chmsg').style.color='#e65100';
+  // Scroll vers le formulaire
+  document.getElementById('chl').scrollIntoView({behavior:'smooth',block:'center'});
+};
 window.saveCh=async()=>{
   const l=document.getElementById('chl').value,m=parseFloat(document.getElementById('chm').value),j=parseInt(document.getElementById('chj').value)||1,f=document.getElementById('chf').value;
+  const editId=document.getElementById('ch-edit-id').value;
   if(!l||!m){tst('⚠ Remplis tous les champs');return;}
-  try{await addDoc(collection(db,'charges'),{label:l,montant:m,jour:j,freq:f,createdAt:new Date().toISOString()});document.getElementById('chmsg').textContent='✓ Ajoutée !';document.getElementById('chl').value='';document.getElementById('chm').value='';setTimeout(()=>document.getElementById('chmsg').textContent='',2000);}catch(e){tst('Erreur');}
+  try{
+    if(editId){
+      await updateDoc(doc(db,'charges',editId),{label:l,montant:m,jour:j,freq:f});
+      document.getElementById('chmsg').textContent='✓ Charge modifiée !';
+      document.getElementById('chmsg').style.color='var(--gd)';
+      document.getElementById('ch-edit-id').value='';
+    } else {
+      await addDoc(collection(db,'charges'),{label:l,montant:m,jour:j,freq:f,createdAt:new Date().toISOString()});
+      document.getElementById('chmsg').textContent='✓ Charge ajoutée !';
+    }
+    document.getElementById('chl').value='';document.getElementById('chm').value='';
+    setTimeout(()=>document.getElementById('chmsg').textContent='',2000);
+  }catch(e){tst('Erreur');}
 };
 window.saveFac=async()=>{
   const l=document.getElementById('fl').value,m=parseFloat(document.getElementById('fm').value),d=document.getElementById('fd2').value,c=document.getElementById('fc').value||'divers';
