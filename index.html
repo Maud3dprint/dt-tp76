@@ -392,6 +392,7 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
             <option value="entree">Entrée (+ ajoute au solde)</option>
           </select>
         </div>
+        <input type="hidden" id="fac-edit-id" value="">
         <button class="i2-btn" onclick="saveFac()">Enregistrer</button>
         <div class="mok" id="fmsg" style="color:var(--gd)"></div>
       </div>
@@ -825,7 +826,7 @@ function rDash(){
 
   // Calcul solde réel = solde de base - dépenses - charges prélevées ce mois + encaissements reçus
   const moisCourant=new Date().getMonth()+1;
-  const totalDeps=deps.filter(d=>d.type!=='entree').reduce((s,d)=>s+(d.montant||0),0);
+  const totalDeps=deps.filter(d=>!d.type||d.type==='depense').reduce((s,d)=>s+(d.montant||0),0);
   const totalEntrees=deps.filter(d=>d.type==='entree').reduce((s,d)=>s+(d.montant||0),0);
   const totalCharges=charges.reduce((s,c)=>s+(c.montant||0),0);
   const totalEncsRecus=encs.filter(e=>e.paid).reduce((s,e)=>s+(e.montant||0),0);
@@ -952,10 +953,24 @@ window.payE=async id=>{try{await updateDoc(doc(db,'encaissements',id),{paid:true
 
 function rFacs(){
   const el=document.getElementById('fac-list');if(!el)return;
-  if(!deps.length){el.innerHTML='<div style="font-size:13px;color:#999">Aucune dépense saisie</div>';return;}
-  const total=deps.reduce((s,d)=>s+(d.montant||0),0);
-  el.innerHTML=deps.map(d=>`<div class="cr"><div><div style="font-weight:600">${d.label||'—'}</div><div style="font-size:11px;color:#999">${fd(d.date)} · ${d.cat||'divers'}</div></div><div style="font-weight:700;color:${d.type==='entree'?'var(--gd)':'#c0392b'}">${d.type==='entree'?'+':'−'}${eu(d.montant)}</div></div>`).join('')
-  +`<div style="border-top:2px solid #e0e0e0;padding-top:10px;margin-top:4px;display:flex;justify-content:space-between;font-weight:700;font-size:13px"><span>Total dépenses</span><span style="color:#c0392b">−${eu(total)}</span></div>`;
+  if(!deps.length){el.innerHTML='<div style="font-size:13px;color:#999">Aucune opération saisie</div>';return;}
+  const totalD=deps.filter(d=>!d.type||d.type==='depense').reduce((s,d)=>s+(d.montant||0),0);
+  const totalE=deps.filter(d=>d.type==='entree').reduce((s,d)=>s+(d.montant||0),0);
+  el.innerHTML=deps.map(d=>{
+    const isEntree=d.type==='entree';
+    return`<div class="cr">
+      <div><div style="font-weight:600">${d.label||'—'}</div><div style="font-size:11px;color:#999">${fd(d.date)} · ${d.cat||'divers'} · <span style="font-weight:600;color:${isEntree?'var(--gd)':'#e65100'}">${isEntree?'Entrée':'Dépense'}</span></div></div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-weight:700;color:${isEntree?'var(--gd)':'#c0392b'}">${isEntree?'+':'−'}${eu(d.montant)}</span>
+        <button onclick="editFac('${d.id}')" style="background:none;border:1px solid #3B6D11;border-radius:6px;color:#3B6D11;font-size:11px;padding:3px 8px;cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:600">✏️</button>
+        <button onclick="delFac('${d.id}')" style="background:none;border:1px solid #c0392b;border-radius:6px;color:#c0392b;font-size:11px;padding:3px 8px;cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:600">🗑</button>
+      </div>
+    </div>`;
+  }).join('')
+  +`<div style="border-top:2px solid #e0e0e0;padding-top:10px;margin-top:4px">
+    <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>Total dépenses</span><span style="color:#c0392b;font-weight:600">−${eu(totalD)}</span></div>
+    <div style="display:flex;justify-content:space-between;font-size:13px"><span>Total entrées</span><span style="color:var(--gd);font-weight:600">+${eu(totalE)}</span></div>
+  </div>`;
 }
 function rCh(){
   if(!charges.length){document.getElementById('chlist').innerHTML='<div style="font-size:13px;color:#999">Aucune charge</div>';document.getElementById('chtot').style.display='none';return;}
@@ -1010,6 +1025,28 @@ window.saveCh=async()=>{
     document.getElementById('chl').value='';document.getElementById('chm').value='';
     setTimeout(()=>document.getElementById('chmsg').textContent='',2000);
   }catch(e){tst('Erreur');}
+};
+window.delFac=async(id)=>{
+  const pin=prompt('Code PIN pour supprimer :');
+  if(pin!=='19891986'){tst('⚠ Code incorrect');return;}
+  if(!confirm('Supprimer cette opération ?'))return;
+  try{
+    const{deleteDoc,doc:fd2}=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+    await deleteDoc(fd2(db,'depenses',id));
+    tst('✓ Supprimé');
+  }catch(e){tst('Erreur');}
+};
+window.editFac=(id)=>{
+  const d=deps.find(x=>x.id===id);if(!d)return;
+  document.getElementById('fl').value=d.label||'';
+  document.getElementById('fm').value=d.montant||'';
+  document.getElementById('fd2').value=d.date||'';
+  document.getElementById('fc').value=d.cat||'';
+  document.getElementById('ftype').value=d.type||'depense';
+  document.getElementById('fac-edit-id').value=id;
+  document.getElementById('fmsg').textContent='Mode modification — appuie sur Enregistrer pour valider';
+  document.getElementById('fmsg').style.color='#e65100';
+  document.getElementById('fl').scrollIntoView({behavior:'smooth',block:'center'});
 };
 window.saveFac=async()=>{
   const l=document.getElementById('fl').value,m=parseFloat(document.getElementById('fm').value),d=document.getElementById('fd2').value,c=document.getElementById('fc').value||'divers';
