@@ -1,16 +1,16 @@
 {
-  "name": "DT-TP76 Suivi Chantier",
+  "name": "DT-TP76 Gestion",
   "short_name": "DT-TP76",
-  "description": "Suivi des coûts de chantier",
-  "start_url": "/dt-tp76/",
-  "scope": "/dt-tp76/",
+  "description": "Gestion chantier et suivi des coûts DT-TP76",
+  "start_url": "/dt-tp76-gestion/",
+  "scope": "/dt-tp76-gestion/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#3B6D11",
+  "background_color": "#1a1a1a",
+  "theme_color": "#82ac32",
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='24' fill='%233B6D11'/><text x='96' y='130' text-anchor='middle' font-size='80' fill='white' font-family='sans-serif' font-weight='bold'>TP</text></svg>",
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='24' fill='%2382ac32'/><text x='96' y='115' text-anchor='middle' font-size='36' fill='%231a1a1a' font-family='sans-serif' font-weight='800'>DT-TP76</text></svg>",
       "sizes": "192x192",
       "type": "image/svg+xml"
     }
