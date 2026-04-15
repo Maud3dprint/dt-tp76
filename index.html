@@ -2,765 +2,767 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#ffffff">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0e0e0e">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="DT-TP76">
-<title>DT-TP76 — Suivi chantier</title>
+<title>DT-TP76 — Gestion</title>
 <link rel="manifest" href="manifest.json">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;background:#fff;color:#0e0e0e;min-height:100vh}
-
-/* PIN */
-#pin-screen{position:fixed;inset:0;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1000}
-#pin-screen h1{font-size:20px;font-weight:600;margin-bottom:8px;color:#0e0e0e}
-#pin-screen p{font-size:13px;color:#666;margin-bottom:32px}
-.pin-dots{display:flex;gap:12px;margin-bottom:32px}
-.pin-dot{width:16px;height:16px;border-radius:50%;border:2px solid #ccc;background:#fff;transition:background .15s}
-.pin-dot.filled{background:#3B6D11;border-color:#3B6D11}
-.pin-pad{display:grid;grid-template-columns:repeat(3,72px);gap:10px}
-.pin-btn{height:72px;border-radius:16px;border:1px solid #e0e0e0;background:#fff;font-size:22px;font-weight:500;cursor:pointer;color:#0e0e0e;transition:background .1s}
-.pin-btn:active{background:#f0f0f0}
-.pin-btn.del{font-size:16px;color:#666}
-#pin-error{color:#c0392b;font-size:13px;margin-top:16px;min-height:20px}
-
-/* NAV */
-#app{display:none}
-.nav{display:flex;border-bottom:1px solid #e8e8e8;background:#fff;position:sticky;top:0;z-index:100;overflow-x:auto}
-.nav-btn{flex:1;min-width:80px;padding:14px 8px 12px;border:none;background:none;font-size:11px;color:#888;cursor:pointer;border-bottom:2px solid transparent;transition:color .15s;white-space:nowrap}
-.nav-btn.active{color:#3B6D11;border-bottom-color:#3B6D11;font-weight:600}
-
-/* PAGES */
-.page{display:none;padding:16px;max-width:900px;margin:0 auto}
-.page.active{display:block}
-
-/* CARDS */
-.card{background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:16px;margin-bottom:12px}
-.card-title{font-size:13px;font-weight:600;color:#666;margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
-
-/* STATS ROW */
-.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}
-.stat{background:#f8f9f8;border-radius:10px;padding:12px}
-.stat .lbl{font-size:11px;color:#888;margin-bottom:4px}
-.stat .val{font-size:20px;font-weight:600;color:#0e0e0e}
-.stat .sub{font-size:11px;color:#888;margin-top:2px}
-.stat.green .val{color:#3B6D11}
-.stat.red .val{color:#c0392b}
-
-/* FORM */
-.field{margin-bottom:12px}
-.field label{display:block;font-size:12px;color:#666;margin-bottom:4px;font-weight:500}
-.field input,.field select,.field textarea{width:100%;height:40px;border:1px solid #ddd;border-radius:8px;padding:0 12px;font-size:14px;background:#fff;color:#0e0e0e}
-.field textarea{height:70px;padding:10px 12px;resize:none}
-.field input:focus,.field select:focus{outline:none;border-color:#3B6D11}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-
-/* BUTTONS */
-.btn{display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 20px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:opacity .15s}
-.btn:active{opacity:.8}
-.btn-green{background:#3B6D11;color:#fff;width:100%}
-.btn-outline{background:#fff;color:#3B6D11;border:1.5px solid #3B6D11;width:100%;margin-top:8px}
-.btn-red{background:#fff;color:#c0392b;border:1.5px solid #c0392b;padding:0 12px;height:32px;font-size:12px;border-radius:6px}
-
-/* TABLE */
-.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th{text-align:left;padding:8px 10px;border-bottom:2px solid #e8e8e8;color:#888;font-size:11px;font-weight:600;white-space:nowrap}
-td{padding:8px 10px;border-bottom:1px solid #f0f0f0;white-space:nowrap}
-tr:last-child td{border-bottom:none}
-
-/* BADGES */
-.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
-.badge-green{background:#e8f5e0;color:#2d5a0e}
-.badge-orange{background:#fff3e0;color:#e65100}
-.badge-red{background:#fce8e8;color:#c0392b}
-
-/* POSTE DETAIL */
-.poste-card{background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:14px;margin-bottom:10px;cursor:pointer}
-.poste-card:active{background:#f8f8f8}
-.poste-header{display:flex;justify-content:space-between;align-items:center}
-.poste-name{font-size:14px;font-weight:600}
-.poste-amounts{display:flex;gap:16px;margin-top:8px}
-.poste-amount{font-size:12px;color:#666}
-.poste-amount span{font-weight:600;color:#0e0e0e;display:block;font-size:14px}
-.ecart-pos{color:#3B6D11}
-.ecart-neg{color:#c0392b}
-
-/* DEPENSE ITEM */
-.dep-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #f0f0f0}
-.dep-item:last-child{border-bottom:none}
-.dep-info .dep-label{font-size:14px;font-weight:500}
-.dep-info .dep-date{font-size:12px;color:#888}
-.dep-montant{font-size:15px;font-weight:600}
-.dep-montant.neg{color:#c0392b}
-
-/* PAGE TITLE */
-.page-title{font-size:18px;font-weight:700;margin-bottom:4px}
-.page-sub{font-size:13px;color:#888;margin-bottom:16px}
-
-/* MODAL */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:500;align-items:flex-end;justify-content:center}
-.modal-overlay.open{display:flex}
-.modal{background:#fff;border-radius:20px 20px 0 0;padding:20px 16px 32px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto}
-.modal-title{font-size:16px;font-weight:700;margin-bottom:16px}
-.modal-close{float:right;background:none;border:none;font-size:20px;cursor:pointer;color:#888;margin-top:-4px}
-
-/* LOADER */
-.loader{text-align:center;padding:40px;color:#888;font-size:14px}
-
-/* DATE PAIEMENT */
-.date-pay{font-size:13px;font-weight:600;color:#3B6D11}
-.date-pay-sub{font-size:11px;color:#888}
-
-@media(min-width:600px){
-  .stats{grid-template-columns:repeat(4,1fr)}
-}
+:root{--green:#82ac32;--gd:#3B6D11;--bg:#1a1a1a;--bg2:#222;--bg3:#242424;--bg4:#2e2e2e;--bor:#333;--bor2:#444;--tx:#f0f0f0;--tx2:#bbb;--tx3:#888;--tx4:#555}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-height:100vh;overflow-x:hidden}
+.pin-screen{position:fixed;inset:0;z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:20px}
+#pin1{background:var(--bg)}#pin2{background:#fff;display:none}
+.pl-dark{height:40px;padding:0 14px;background:var(--green);border-radius:8px;display:inline-flex;align-items:center;font-size:14px;font-weight:800;color:var(--bg);letter-spacing:.5px}
+.pl-light{height:40px;padding:0 14px;background:var(--gd);border-radius:8px;display:inline-flex;align-items:center;font-size:14px;font-weight:800;color:#fff;letter-spacing:.5px}
+.pt-dark{font-size:20px;font-weight:800;color:#fff;text-align:center}
+.pt-light{font-size:20px;font-weight:800;color:#0e0e0e;text-align:center}
+.ps{font-size:12px;color:#666;text-align:center;margin-top:-12px}
+.pdots{display:flex;gap:12px}
+.pd-d{width:13px;height:13px;border-radius:50%;border:2px solid #333;background:transparent;transition:background .15s}
+.pd-d.on{background:var(--green);border-color:var(--green)}
+.pd-l{width:13px;height:13px;border-radius:50%;border:2px solid #ddd;background:transparent;transition:background .15s}
+.pd-l.on{background:var(--gd);border-color:var(--gd)}
+.ppad{display:grid;grid-template-columns:repeat(3,70px);gap:10px}
+.pk-d{width:70px;height:70px;border-radius:50%;background:#1f1f1f;border:1px solid #2e2e2e;font-size:22px;font-weight:400;color:#f0f0f0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif}
+.pk-d:active{background:#2a2a2a}
+.pk-l{width:70px;height:70px;border-radius:50%;background:#f5f5f5;border:1px solid #e0e0e0;font-size:22px;font-weight:400;color:#0e0e0e;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif}
+.pk-l:active{background:#eee}
+.perr{font-size:12px;min-height:18px;color:#e84040;text-align:center}
+.psw{font-size:12px;color:#555;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+#app1,#app2{display:none;min-height:100vh}
+.i1-top{background:var(--bg2);padding:11px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bor);position:sticky;top:0;z-index:50}
+.i1-logo{height:32px;padding:0 12px;background:var(--green);border-radius:7px;display:inline-flex;align-items:center;font-size:12px;font-weight:800;color:var(--bg);letter-spacing:.5px}
+.i1-date{font-size:11px;color:#fff;font-weight:500}
+.i1-nav{background:var(--green);display:flex;position:sticky;top:54px;z-index:49}
+.i1-nb{flex:1;padding:12px 8px 10px;border:none;background:transparent;font-size:12px;color:rgba(0,0,0,.4);cursor:pointer;border-bottom:3px solid transparent;font-family:'Montserrat',sans-serif;font-weight:700}
+.i1-nb.on{color:var(--bg);border-bottom-color:var(--bg);background:rgba(0,0,0,.1)}
+.i1-body{background:var(--bg);min-height:calc(100vh - 102px)}
+.i1-p{display:none;padding:14px}.i1-p.on{display:block}
+.i1-card{background:var(--bg3);border:1px solid var(--bor);border-radius:12px;padding:14px;margin-bottom:12px}
+.i1-tag{font-size:10px;color:var(--green);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.i1-field{margin-bottom:10px}
+.i1-field label{display:block;font-size:12px;color:var(--tx2);margin-bottom:4px;font-weight:500}
+.i1-inp{width:100%;height:40px;background:var(--bg4);border:1px solid var(--bor2);border-radius:8px;padding:0 12px;font-size:14px;color:var(--tx);font-family:'Montserrat',sans-serif}
+.i1-inp::placeholder{color:var(--tx4)}
+.i1-inp:focus{outline:none;border-color:var(--green)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.sig-wrap{border:1px solid var(--bor2);border-radius:8px;overflow:hidden;background:var(--bg4);margin-bottom:6px}
+#sig-c{width:100%;height:110px;display:block;touch-action:none}
+.sig-clr{font-size:11px;color:var(--tx3);background:none;border:none;cursor:pointer;font-family:'Montserrat',sans-serif;padding:4px 0;margin-bottom:10px}
+.btn-reg{width:100%;height:50px;background:#fff;border:2.5px solid var(--green);border-radius:12px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px;color:var(--green);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-reg:active{background:#f5fae8}
+.bon-item{padding:12px 0;border-bottom:1px solid var(--bg4)}
+.bon-item:last-child{border-bottom:none}
+.bon-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px}
+.bon-name{font-weight:700;color:var(--tx);font-size:14px}
+.bon-sub{font-size:11px;color:var(--tx3);margin-bottom:8px}
+.bon-act{display:flex;gap:8px}
+.btn-voir{flex:1;height:36px;background:var(--bg4);border:1px solid var(--bor2);border-radius:8px;color:#ccc;font-size:12px;font-weight:600;cursor:pointer;font-family:'Montserrat',sans-serif}
+.btn-pdf{flex:1;height:36px;background:var(--green);border:none;border-radius:8px;color:var(--bg);font-size:12px;font-weight:800;cursor:pointer;font-family:'Montserrat',sans-serif}
+.mok{text-align:center;font-size:13px;color:var(--green);min-height:18px;margin-top:8px;font-weight:600}
+.i2-top{background:#fff;padding:11px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f0f0f0;position:sticky;top:0;z-index:50}
+.i2-logo{height:32px;padding:0 12px;background:var(--gd);border-radius:7px;display:inline-flex;align-items:center;font-size:12px;font-weight:800;color:#fff;letter-spacing:.5px}
+.bk{background:none;border:none;font-size:13px;color:var(--gd);cursor:pointer;font-weight:700;display:none;align-items:center;gap:4px}
+.bk.show{display:flex}
+.i2-pt{font-size:11px;color:#999;font-weight:500}
+.i2-body{background:#f5f5f5;min-height:calc(100vh - 54px)}
+.i2-p{display:none;padding:0}.i2-p.on{display:block}
+.mhdr{padding:12px 16px 4px;font-size:12px;color:#999}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px 16px}
+.mcard{background:#fff;border-radius:14px;padding:16px;cursor:pointer;border:1px solid #e8e8e8;transition:transform .1s}
+.mcard:active{transform:scale(.96)}
+.micon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:10px}
+.mtitle{font-size:14px;font-weight:700;color:#0e0e0e;margin-bottom:2px}
+.msub{font-size:11px;color:#999}
+.mbadge{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;margin-top:6px;background:#fce8e8;color:#c0392b}
+.inn{padding:14px}
+.card{background:#fff;border:1px solid #ececec;border-radius:12px;padding:14px;margin-bottom:12px}
+.ctag{font-size:11px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.kg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.kp{background:#f8f9f8;border-radius:10px;padding:12px}
+.kl{font-size:10px;color:#999;margin-bottom:3px;font-weight:500}
+.kv{font-size:18px;font-weight:700}
+.ks{font-size:10px;color:#999;margin-top:2px}
+.kp.g .kv{color:var(--gd)}.kp.r .kv{color:#c0392b}.kp.o .kv{color:#e65100}
+.lr{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f5f5f5;font-size:13px}
+.lr:last-child{border-bottom:none}
+.bdg{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+.bg{background:#e8f5e0;color:#2d5a0e}.bo{background:#fff3e0;color:#e65100}.br{background:#fce8e8;color:#c0392b}
+.tr{display:flex;justify-content:space-between;padding:6px 0;font-size:13px;border-bottom:1px solid #f5f5f5}
+.tr:last-child{border-bottom:none;font-weight:700;font-size:15px;padding-top:10px}
+.soldc{background:linear-gradient(135deg,var(--gd),#5a9e20);border-radius:14px;padding:18px;color:#fff;margin-bottom:14px;text-align:center}
+.cr{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #f5f5f5;font-size:13px}
+.cr:last-child{border-bottom:none}
+.er{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #f5f5f5;font-size:13px}
+.er:last-child{border-bottom:none}
+.ck{width:28px;height:28px;border-radius:50%;border:1.5px solid #ddd;background:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:13px;margin-left:8px;flex-shrink:0;font-family:'Montserrat',sans-serif}
+.ck.paid{background:var(--gd);border-color:var(--gd);color:#fff}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.f3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.fld{margin-bottom:10px}
+.fld label{display:block;font-size:12px;color:#666;margin-bottom:4px;font-weight:500}
+.inp{width:100%;height:40px;border:1px solid #e0e0e0;border-radius:8px;padding:0 12px;font-size:14px;background:#fff;color:#0e0e0e;font-family:'Montserrat',sans-serif}
+.inp:focus{outline:none;border-color:var(--gd)}
+.i2-btn{width:100%;height:44px;background:var(--gd);border:none;border-radius:10px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:14px;color:#fff;cursor:pointer;margin-top:4px}
+.i2-btn:active{opacity:.85}
+.crd{width:130px;height:130px;border-radius:50%;background:var(--gd);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:4px auto 12px;box-shadow:0 0 0 10px #e8f5e0}
+.cv{font-size:30px;font-weight:800;color:#fff;line-height:1}
+.cu{font-size:11px;color:#c5e0a0;margin-top:3px}
+.pc{background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:14px;margin-bottom:10px;cursor:pointer}
+.pc:active{background:#fafafa}
+.pb{display:flex;gap:8px;margin-top:8px}
+.pbi{flex:1;background:#f8f9f8;border-radius:8px;padding:8px}
+.pbi-l{font-size:10px;color:#999;margin-bottom:2px}
+.pbi-v{font-size:13px;font-weight:700}
+.pr{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f5f5f5;font-size:13px}
+.pr:last-child{border-bottom:none}
+.totr{display:flex;justify-content:space-between;padding:10px 0;font-size:14px;font-weight:700;border-top:2px solid #e0e0e0;margin-top:4px}
+.psg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.pss{background:#f8f9f8;border-radius:8px;padding:10px}
+.pss .pl{font-size:10px;color:#999;margin-bottom:2px}
+.pss .pv{font-size:16px;font-weight:700}
+.pss.g .pv{color:var(--gd)}.pss.r .pv{color:#c0392b}
+.hw{overflow-x:auto}
+.ht{width:100%;border-collapse:collapse;font-size:12px}
+.ht th{text-align:left;padding:6px 8px;border-bottom:2px solid #e8e8e8;color:#999;font-size:10px;font-weight:600;white-space:nowrap}
+.ht td{padding:7px 8px;border-bottom:1px solid #f5f5f5;white-space:nowrap}
+.ppv{font-size:12px;color:var(--gd);margin:-4px 0 10px;font-weight:600;min-height:16px}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:300;align-items:flex-end;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{background:#fff;border-radius:20px 20px 0 0;padding:20px 16px 32px;width:100%;max-width:500px;max-height:85vh;overflow-y:auto}
+.mt{font-size:16px;font-weight:700;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.mc{background:none;border:none;font-size:22px;cursor:pointer;color:#999;line-height:1}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;z-index:999;transition:transform .3s;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.ldr{text-align:center;padding:32px;color:#999;font-size:13px}
 </style>
 </head>
 <body>
 
-<!-- PIN SCREEN -->
-<div id="pin-screen">
-  <h1>DT-TP76</h1>
-  <p>Suivi des coûts chantier</p>
-  <div class="pin-dots">
-    <div class="pin-dot" id="d0"></div>
-    <div class="pin-dot" id="d1"></div>
-    <div class="pin-dot" id="d2"></div>
-    <div class="pin-dot" id="d3"></div>
-    <div class="pin-dot" id="d4"></div>
-    <div class="pin-dot" id="d5"></div>
-    <div class="pin-dot" id="d6"></div>
-    <div class="pin-dot" id="d7"></div>
+<div class="pin-screen" id="pin1">
+  <div class="pl-dark">DT-TP76</div>
+  <div class="pt-dark">Bon de chantier</div>
+  <div class="ps">Code Manu — 4 chiffres</div>
+  <div class="pdots" id="pd1">
+    <div class="pd-d" id="pd1-0"></div><div class="pd-d" id="pd1-1"></div>
+    <div class="pd-d" id="pd1-2"></div><div class="pd-d" id="pd1-3"></div>
   </div>
-  <div class="pin-pad">
-    <button class="pin-btn" onclick="pinPress('1')">1</button>
-    <button class="pin-btn" onclick="pinPress('2')">2</button>
-    <button class="pin-btn" onclick="pinPress('3')">3</button>
-    <button class="pin-btn" onclick="pinPress('4')">4</button>
-    <button class="pin-btn" onclick="pinPress('5')">5</button>
-    <button class="pin-btn" onclick="pinPress('6')">6</button>
-    <button class="pin-btn" onclick="pinPress('7')">7</button>
-    <button class="pin-btn" onclick="pinPress('8')">8</button>
-    <button class="pin-btn" onclick="pinPress('9')">9</button>
-    <button class="pin-btn" style="visibility:hidden"></button>
-    <button class="pin-btn" onclick="pinPress('0')">0</button>
-    <button class="pin-btn del" onclick="pinDel()">⌫</button>
+  <div class="ppad">
+    <div class="pk-d" onclick="pp(1,'1')">1</div><div class="pk-d" onclick="pp(1,'2')">2</div><div class="pk-d" onclick="pp(1,'3')">3</div>
+    <div class="pk-d" onclick="pp(1,'4')">4</div><div class="pk-d" onclick="pp(1,'5')">5</div><div class="pk-d" onclick="pp(1,'6')">6</div>
+    <div class="pk-d" onclick="pp(1,'7')">7</div><div class="pk-d" onclick="pp(1,'8')">8</div><div class="pk-d" onclick="pp(1,'9')">9</div>
+    <div style="visibility:hidden" class="pk-d"></div>
+    <div class="pk-d" onclick="pp(1,'0')">0</div>
+    <div class="pk-d" style="font-size:16px;color:#888" onclick="pd(1)">⌫</div>
   </div>
-  <div id="pin-error"></div>
+  <div class="perr" id="pe1"></div>
+  <div class="psw" onclick="sp2()">Accès gestion →</div>
 </div>
 
-<!-- APP -->
-<div id="app">
-  <nav class="nav">
-    <button class="nav-btn active" onclick="goPage('dashboard')">Tableau de bord</button>
-    <button class="nav-btn" onclick="goPage('saisie')">+ Chantier</button>
-    <button class="nav-btn" onclick="goPage('historique')">Historique</button>
-    <button class="nav-btn" onclick="goPage('postes')">Postes</button>
-    <button class="nav-btn" onclick="goPage('depenses')">Dépenses</button>
+<div class="pin-screen" id="pin2">
+  <div class="pl-light">DT-TP76</div>
+  <div class="pt-light">Gestion</div>
+  <div class="ps">Code direction — 8 chiffres</div>
+  <div class="pdots" id="pd2">
+    <div class="pd-l" id="pd2-0"></div><div class="pd-l" id="pd2-1"></div>
+    <div class="pd-l" id="pd2-2"></div><div class="pd-l" id="pd2-3"></div>
+    <div class="pd-l" id="pd2-4"></div><div class="pd-l" id="pd2-5"></div>
+    <div class="pd-l" id="pd2-6"></div><div class="pd-l" id="pd2-7"></div>
+  </div>
+  <div class="ppad">
+    <div class="pk-l" onclick="pp(2,'1')">1</div><div class="pk-l" onclick="pp(2,'2')">2</div><div class="pk-l" onclick="pp(2,'3')">3</div>
+    <div class="pk-l" onclick="pp(2,'4')">4</div><div class="pk-l" onclick="pp(2,'5')">5</div><div class="pk-l" onclick="pp(2,'6')">6</div>
+    <div class="pk-l" onclick="pp(2,'7')">7</div><div class="pk-l" onclick="pp(2,'8')">8</div><div class="pk-l" onclick="pp(2,'9')">9</div>
+    <div style="visibility:hidden" class="pk-l"></div>
+    <div class="pk-l" onclick="pp(2,'0')">0</div>
+    <div class="pk-l" style="font-size:16px;color:#888" onclick="pd(2)">⌫</div>
+  </div>
+  <div class="perr" id="pe2"></div>
+  <div class="psw" onclick="sp1()">← Code Manu</div>
+</div>
+
+<div id="app1">
+  <div class="i1-top">
+    <div class="i1-logo">DT-TP76</div>
+    <div class="i1-date" id="i1d"></div>
+  </div>
+  <nav class="i1-nav">
+    <button class="i1-nb on" onclick="t1(this,'bon')">Nouveau bon</button>
+    <button class="i1-nb" onclick="t1(this,'bons')">Mes bons</button>
   </nav>
-
-  <!-- DASHBOARD -->
-  <div class="page active" id="page-dashboard">
-    <div style="padding-top:4px">
-      <div class="page-title">Tableau de bord</div>
-      <div class="page-sub" id="dash-date">—</div>
-      <div class="stats" id="dash-stats">
-        <div class="loader">Chargement…</div>
+  <div class="i1-body">
+    <div class="i1-p on" id="i1-bon">
+      <div class="i1-card">
+        <div class="i1-tag">Informations chantier</div>
+        <div class="i1-field"><label>Client / Entreprise</label><input class="i1-inp" id="bc" placeholder="Ex: Via France Terrassement"></div>
+        <div class="i1-field"><label>Adresse du chantier</label><input class="i1-inp" id="ba" placeholder="Adresse complète"></div>
+        <div class="i1-field"><label>N° Lettre de voiture</label><input class="i1-inp" id="bl" placeholder="LDV-2025-001"></div>
       </div>
-      <div class="card">
-        <div class="card-title">Derniers chantiers</div>
-        <div id="dash-recent"><div class="loader">Chargement…</div></div>
-      </div>
-      <div class="card">
-        <div class="card-title">Paiements à venir</div>
-        <div id="dash-paiements"><div class="loader">Chargement…</div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SAISIE -->
-  <div class="page" id="page-saisie">
-    <div class="page-title">Nouveau chantier</div>
-    <div class="page-sub">Saisie de la journée</div>
-    <div class="card">
-      <div class="grid2">
-        <div class="field">
-          <label>Client</label>
-          <input type="text" id="s-client" placeholder="Nom du client">
+      <div class="i1-card">
+        <div class="i1-tag">Heures effectuées</div>
+        <div class="g3">
+          <div class="i1-field"><label>Normales</label><input class="i1-inp" id="bhn" placeholder="6:30"></div>
+          <div class="i1-field"><label>Transfert</label><input class="i1-inp" id="bht" placeholder="1:00"></div>
+          <div class="i1-field"><label>Supp.</label><input class="i1-inp" id="bhs" placeholder="0:00"></div>
         </div>
-        <div class="field">
-          <label>Date</label>
-          <input type="date" id="s-date">
+        <div class="g2">
+          <div class="i1-field"><label>Nuit</label><input class="i1-inp" id="bhn2" placeholder="0:00"></div>
+          <div class="i1-field"><label>Week-end</label><input class="i1-inp" id="bhw" placeholder="0:00"></div>
         </div>
       </div>
-      <div class="field">
-        <label>Délai de facturation</label>
-        <select id="s-delai">
-          <option value="comptant">Comptant</option>
-          <option value="30fm" selected>30 jours fin de mois</option>
-          <option value="45fm">45 jours fin de mois</option>
-          <option value="60">60 jours nets</option>
-        </select>
-      </div>
-      <div id="s-date-pay-preview" style="font-size:12px;color:#3B6D11;margin:-4px 0 12px;min-height:16px"></div>
-      <div class="grid3">
-        <div class="field">
-          <label>H. productives</label>
-          <input type="text" id="s-hprod" placeholder="6:30" value="0:00">
-        </div>
-        <div class="field">
-          <label>H. transfert</label>
-          <input type="text" id="s-htransf" placeholder="1:00" value="0:00">
-        </div>
-        <div class="field">
-          <label>Prix horaire HT (€)</label>
-          <input type="number" id="s-prix" value="85" step="0.5">
-        </div>
-      </div>
-      <div class="grid3">
-        <div class="field">
-          <label>Carburant (€/L)</label>
-          <input type="number" id="s-carbu" value="2.25" step="0.01">
-        </div>
-        <div class="field">
-          <label>TVA client</label>
-          <select id="s-tva">
-            <option value="20">Standard 20%</option>
-            <option value="10">Bâtiment 10%</option>
-            <option value="5.5">Agri 5,5%</option>
-            <option value="0">Exonéré 0%</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Réduction (%)</label>
-          <input type="number" id="s-reduc" value="0" min="0" max="100">
-        </div>
-      </div>
-      <div class="field">
-        <label>Note (optionnel)</label>
-        <textarea id="s-note" placeholder="Remarque, type de travaux…"></textarea>
+      <div class="i1-card">
+        <div class="i1-tag">Bon pour accord client</div>
+        <div class="i1-field"><label>Nom du chef de chantier</label><input class="i1-inp" id="bch" placeholder="Prénom Nom"></div>
+        <div class="sig-wrap"><canvas id="sig-c"></canvas></div>
+        <button class="sig-clr" onclick="clrSig()">✕ Effacer la signature</button>
+        <button class="btn-reg" onclick="saveBon()">✓ Enregistrer le bon</button>
+        <div class="mok" id="bm"></div>
       </div>
     </div>
-
-    <!-- PREVIEW CALCUL -->
-    <div class="card" id="s-preview" style="display:none">
-      <div class="card-title">Aperçu du calcul</div>
-      <div class="stats" id="s-preview-stats"></div>
-      <div id="s-detail-table"></div>
-    </div>
-
-    <button class="btn btn-outline" onclick="previewCalc()">Prévisualiser le calcul</button>
-    <div style="height:10px"></div>
-    <button class="btn btn-green" onclick="sauvegarder()">Enregistrer le chantier</button>
-    <div id="s-msg" style="text-align:center;margin-top:12px;font-size:13px;color:#3B6D11;min-height:20px"></div>
-  </div>
-
-  <!-- HISTORIQUE -->
-  <div class="page" id="page-historique">
-    <div class="page-title">Historique</div>
-    <div class="page-sub">Tous les chantiers enregistrés</div>
-    <div class="tbl-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th><th>Client</th><th>H.</th>
-            <th>CA HT</th><th>CA TTC</th>
-            <th>Coût rev.</th><th>Marge</th><th>%</th><th>Paiement</th>
-          </tr>
-        </thead>
-        <tbody id="hist-body">
-          <tr><td colspan="9" class="loader">Chargement…</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div id="hist-total" style="margin-top:12px"></div>
-  </div>
-
-  <!-- POSTES -->
-  <div class="page" id="page-postes">
-    <div class="page-title">Postes de coût</div>
-    <div class="page-sub">Provision vs dépenses réelles</div>
-    <div id="postes-list"><div class="loader">Chargement…</div></div>
-  </div>
-
-  <!-- DEPENSES HORS EXPLOITATION -->
-  <div class="page" id="page-depenses">
-    <div class="page-title">Dépenses diverses</div>
-    <div class="page-sub">Vêtements, repas, pub, divers…</div>
-    <div class="card">
-      <div class="card-title">Ajouter une dépense</div>
-      <div class="grid2">
-        <div class="field">
-          <label>Libellé</label>
-          <input type="text" id="dep-label" placeholder="Ex: croissants chantier">
-        </div>
-        <div class="field">
-          <label>Montant (€)</label>
-          <input type="number" id="dep-montant" placeholder="0.00" step="0.01">
-        </div>
-      </div>
-      <div class="grid2">
-        <div class="field">
-          <label>Catégorie</label>
-          <select id="dep-cat">
-            <option value="repas">Repas / croissants</option>
-            <option value="vetements">Vêtements de travail</option>
-            <option value="pub">Publicité / communication</option>
-            <option value="divers">Divers</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Date</label>
-          <input type="date" id="dep-date">
-        </div>
-      </div>
-      <button class="btn btn-green" onclick="ajouterDepense()">Ajouter</button>
-      <div id="dep-msg" style="text-align:center;margin-top:8px;font-size:13px;color:#3B6D11;min-height:16px"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">Historique des dépenses</div>
-      <div id="dep-list"><div class="loader">Chargement…</div></div>
+    <div class="i1-p" id="i1-bons">
+      <div id="bons-list"><div class="ldr">Chargement…</div></div>
     </div>
   </div>
 </div>
 
-<!-- MODAL POSTE DETAIL -->
-<div class="modal-overlay" id="modal-poste" onclick="closeModal(event)">
+<div id="app2">
+  <div class="i2-top">
+    <div style="display:flex;align-items:center;gap:10px">
+      <button class="bk" id="bkbtn" onclick="goMenu()">← Retour</button>
+      <div id="lg2"><div class="i2-logo">DT-TP76</div></div>
+    </div>
+    <div class="i2-pt" id="i2pt">Menu principal</div>
+  </div>
+  <div class="i2-body">
+
+    <div class="i2-p on" id="i2-menu">
+      <div class="mhdr" id="mdate"></div>
+      <div class="mgrid">
+        <div class="mcard" onclick="gp('dash')"><div class="micon" style="background:#e8f5e0">📊</div><div class="mtitle">Tableau de bord</div><div class="msub">Solde, TVA, alertes</div></div>
+        <div class="mcard" onclick="gp('couts')"><div class="micon" style="background:#e3f2fd">🧮</div><div class="mtitle">Coûts chantier</div><div class="msub">Saisie et calcul</div></div>
+        <div class="mcard" onclick="gp('histo')"><div class="micon" style="background:#f3e5f5">📋</div><div class="mtitle">Historique</div><div class="msub">Tous les chantiers</div></div>
+        <div class="mcard" onclick="gp('postes')"><div class="micon" style="background:#fff3e0">⚙️</div><div class="mtitle">Postes de coût</div><div class="msub">Provision vs réel</div></div>
+        <div class="mcard" onclick="gp('enc')"><div class="micon" style="background:#fce4ec">💰</div><div class="mtitle">Encaissements</div><div class="msub">Suivi paiements</div></div>
+        <div class="mcard" onclick="gp('treso')"><div class="micon" style="background:#e8f5e0">🏦</div><div class="mtitle">Trésorerie</div><div class="msub">Solde et charges</div></div>
+        <div class="mcard" onclick="gp('clients')"><div class="micon" style="background:#e3f2fd">👥</div><div class="mtitle">Clients</div><div class="msub">Base de données</div></div>
+        <div class="mcard" onclick="gp('gazole')"><div class="micon" style="background:#fff8e1">⛽</div><div class="mtitle">Gazole</div><div class="msub">Conso & pleins</div></div>
+      </div>
+    </div>
+
+    <div class="i2-p" id="i2-dash"><div class="inn">
+      <div class="kg" id="dkpis"><div class="ldr" style="grid-column:span 2">Chargement…</div></div>
+      <div class="card"><div class="ctag" id="dtvatit">TVA ce mois</div><div id="dtvabox"><div class="ldr">…</div></div></div>
+      <div class="card"><div class="ctag">Paiements en retard</div><div id="dret"><div class="ldr">…</div></div></div>
+    </div></div>
+
+    <div class="i2-p" id="i2-couts"><div class="inn">
+      <div class="card">
+        <div class="f2">
+          <div class="fld"><label>Client</label><input class="inp" id="cc" placeholder="Nom client"></div>
+          <div class="fld"><label>Date</label><input class="inp" type="date" id="cd"></div>
+        </div>
+        <div class="fld"><label>Délai de facturation</label>
+          <select class="inp" id="cdel" onchange="updPP()">
+            <option value="30fm">30 jours fin de mois</option>
+            <option value="45fm">45 jours fin de mois</option>
+            <option value="60">60 jours nets</option>
+            <option value="comptant">Comptant</option>
+          </select>
+        </div>
+        <div class="ppv" id="ppv"></div>
+        <div class="f3">
+          <div class="fld"><label>H. productives</label><input class="inp" id="chp" placeholder="6:30"></div>
+          <div class="fld"><label>H. transfert</label><input class="inp" id="cht" placeholder="1:00"></div>
+          <div class="fld"><label>Prix HT €/h</label><input class="inp" type="number" id="cpx" value="85"></div>
+        </div>
+        <div class="f3">
+          <div class="fld"><label>Gazole TTC €/L</label><input class="inp" type="number" id="cgz" value="2.25" step="0.01"></div>
+          <div class="fld"><label>TVA client</label><select class="inp" id="ctv"><option value="20">Standard 20%</option><option value="10">Bâtiment 10%</option><option value="5.5">Agri 5,5%</option><option value="0">Exonéré 0%</option></select></div>
+          <div class="fld"><label>Réduction %</label><input class="inp" type="number" id="crd" value="0" min="0" max="100"></div>
+        </div>
+      </div>
+      <div class="card" id="cprev" style="display:none">
+        <div class="ctag">Aperçu</div>
+        <div class="psg" id="cstat"></div>
+        <div class="ctag" style="margin-top:4px">Détail postes</div>
+        <div id="cdet"></div>
+      </div>
+      <button class="i2-btn" style="background:#f0f0f0;color:var(--gd);border:2px solid var(--gd);margin-bottom:8px" onclick="prevC()">Prévisualiser</button>
+      <button class="i2-btn" onclick="saveC()">✓ Enregistrer le chantier</button>
+      <div class="mok" id="cmsg" style="color:var(--gd)"></div>
+    </div></div>
+
+    <div class="i2-p" id="i2-histo"><div class="inn">
+      <div class="hw"><table class="ht">
+        <thead><tr><th>Date</th><th>Client</th><th>H.</th><th>CA HT</th><th>Marge</th><th>%</th><th>Paiement</th></tr></thead>
+        <tbody id="hbody"><tr><td colspan="7" class="ldr">Chargement…</td></tr></tbody>
+      </table></div>
+      <div class="kg" style="margin-top:12px" id="htot"></div>
+    </div></div>
+
+    <div class="i2-p" id="i2-postes"><div class="inn">
+      <div style="font-size:12px;color:#999;margin-bottom:12px">Cliquez sur un poste pour saisir une dépense</div>
+      <div id="plist"><div class="ldr">Chargement…</div></div>
+      <div id="dhp" style="display:none;background:#f0f7e8;border:1px solid #c5e0a0;border-radius:10px;padding:12px;font-size:13px;color:var(--gd);justify-content:space-between;font-weight:600;margin-top:4px">
+        <span>Dépenses hors postes</span><span id="dhpv">0 €</span>
+      </div>
+    </div></div>
+
+    <div class="i2-p" id="i2-enc"><div class="inn">
+      <div class="card">
+        <div class="ctag">Ajouter un encaissement</div>
+        <div class="f2">
+          <div class="fld"><label>Client</label><input class="inp" id="ecl" placeholder="Nom client"></div>
+          <div class="fld"><label>Montant TTC €</label><input class="inp" type="number" id="emt" placeholder="0.00"></div>
+        </div>
+        <div class="f2">
+          <div class="fld"><label>Date échéance</label><input class="inp" type="date" id="edt"></div>
+          <div class="fld"><label>Réf. chantier</label><input class="inp" id="erf" placeholder="Optionnel"></div>
+        </div>
+        <button class="i2-btn" onclick="saveEnc()">Ajouter</button>
+        <div class="mok" id="emsg" style="color:var(--gd)"></div>
+      </div>
+      <div class="card"><div class="ctag">En attente</div><div id="eat"><div class="ldr">…</div></div></div>
+      <div class="card"><div class="ctag">Payés</div><div id="epd"><div class="ldr">…</div></div></div>
+    </div></div>
+
+    <div class="i2-p" id="i2-treso"><div class="inn">
+      <div class="soldc">
+        <div style="font-size:12px;opacity:.8;margin-bottom:4px">Solde actuel</div>
+        <div style="font-size:30px;font-weight:800" id="sval">—</div>
+        <button onclick="editSolde()" style="margin-top:10px;background:rgba(255,255,255,.2);border:none;border-radius:8px;padding:6px 14px;color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:'Montserrat',sans-serif">Modifier</button>
+      </div>
+      <div class="card">
+        <div class="ctag">Charges mensuelles</div>
+        <div id="chlist"><div class="ldr">…</div></div>
+        <div id="chtot" style="display:none;border-top:1px solid #f0f0f0;padding-top:10px;margin-top:4px;justify-content:space-between;font-weight:700;font-size:13px">
+          <span>Total mensuel</span><span id="chtotv" style="color:#c0392b"></span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="ctag">Ajouter une charge</div>
+        <div class="f2">
+          <div class="fld"><label>Libellé</label><input class="inp" id="chl" placeholder="Ex: assurance"></div>
+          <div class="fld"><label>Montant €</label><input class="inp" type="number" id="chm" placeholder="0.00"></div>
+        </div>
+        <div class="f2">
+          <div class="fld"><label>Jour prélèvement</label><input class="inp" type="number" id="chj" placeholder="Ex: 5" min="1" max="31"></div>
+          <div class="fld"><label>Fréquence</label><select class="inp" id="chf"><option value="mensuel">Mensuel</option><option value="trimestriel">Trimestriel</option><option value="annuel">Annuel</option></select></div>
+        </div>
+        <button class="i2-btn" onclick="saveCh()">Ajouter</button>
+        <div class="mok" id="chmsg" style="color:var(--gd)"></div>
+      </div>
+      <div class="card">
+        <div class="ctag">Saisir une facture / dépense</div>
+        <div class="f2">
+          <div class="fld"><label>Libellé</label><input class="inp" id="fl" placeholder="Ex: gazole station"></div>
+          <div class="fld"><label>Montant €</label><input class="inp" type="number" id="fm" placeholder="0.00"></div>
+        </div>
+        <div class="f2">
+          <div class="fld"><label>Date</label><input class="inp" type="date" id="fd2"></div>
+          <div class="fld"><label>Catégorie</label><input class="inp" id="fc" placeholder="Ex: gazole, repas…"></div>
+        </div>
+        <button class="i2-btn" onclick="saveFac()">Enregistrer</button>
+        <div class="mok" id="fmsg" style="color:var(--gd)"></div>
+      </div>
+    </div></div>
+
+    <div class="i2-p" id="i2-clients"><div class="inn">
+      <div class="card">
+        <div class="ctag">Ajouter client / prospect</div>
+        <div class="f2">
+          <div class="fld"><label>Prénom</label><input class="inp" id="clp" placeholder="Prénom"></div>
+          <div class="fld"><label>Nom</label><input class="inp" id="cln" placeholder="Nom"></div>
+        </div>
+        <div class="fld"><label>Entreprise</label><input class="inp" id="cle" placeholder="Nom entreprise"></div>
+        <div class="f2">
+          <div class="fld"><label>Téléphone</label><input class="inp" id="clt" placeholder="06..."></div>
+          <div class="fld"><label>Email</label><input class="inp" id="clm" placeholder="email@..."></div>
+        </div>
+        <div class="f2">
+          <div class="fld"><label>Statut</label><select class="inp" id="cls"><option value="client">Client actif</option><option value="prospect">Prospect</option><option value="inactif">Inactif</option></select></div>
+          <div class="fld"><label>Prix horaire HT (€)</label><input class="inp" type="number" id="clx" placeholder="85"></div>
+        </div>
+        <button class="i2-btn" onclick="saveCl()">Enregistrer</button>
+        <div class="mok" id="clmsg" style="color:var(--gd)"></div>
+      </div>
+      <div class="card"><div class="ctag">Base clients</div><div id="cllist"><div class="ldr">…</div></div></div>
+    </div></div>
+
+    <div class="i2-p" id="i2-gazole"><div class="inn">
+      <div class="crd"><div class="cv" id="cval">—</div><div class="cu">L / heure</div></div>
+      <div style="font-size:11px;color:#888;text-align:center;margin-bottom:16px" id="csub">Aucune donnée</div>
+      <div class="card">
+        <div class="ctag">Nouvelle saisie gazole</div>
+        <div class="f2">
+          <div class="fld"><label>Litres</label><input class="inp" type="number" id="gl" placeholder="101.81" step="0.01"></div>
+          <div class="fld"><label>Prix TTC €/L</label><input class="inp" type="number" id="gp" placeholder="2.25" step="0.01"></div>
+        </div>
+        <div class="f2">
+          <div class="fld"><label>Compteur tracteur (h)</label><input class="inp" type="number" id="gc" placeholder="1482"></div>
+          <div class="fld"><label>Date</label><input class="inp" type="date" id="gd"></div>
+        </div>
+        <button class="i2-btn" onclick="saveGz()">Enregistrer le plein</button>
+        <div class="mok" id="gmsg" style="color:var(--gd)"></div>
+      </div>
+      <div class="card"><div class="ctag">Historique pleins</div><div id="glist"><div class="ldr">…</div></div></div>
+    </div></div>
+
+  </div>
+</div>
+
+<div class="modal-bg" id="mposte">
   <div class="modal">
-    <button class="modal-close" onclick="closePosteModal()">✕</button>
-    <div class="modal-title" id="modal-poste-title">—</div>
-    <div id="modal-poste-content"></div>
-    <div style="height:16px"></div>
-    <div class="card-title">Ajouter une dépense réelle</div>
-    <div class="grid2">
-      <div class="field">
-        <label>Libellé</label>
-        <input type="text" id="modal-dep-label" placeholder="Ex: remplacement pneu">
-      </div>
-      <div class="field">
-        <label>Montant (€)</label>
-        <input type="number" id="modal-dep-montant" step="0.01" placeholder="0.00">
-      </div>
+    <div class="mt"><span id="mpn">Poste</span><button class="mc" onclick="cm('mposte')">✕</button></div>
+    <div class="kg" id="mpk" style="margin-bottom:16px"></div>
+    <div class="ctag">Dépenses sur ce poste</div>
+    <div id="mpd" style="margin-bottom:16px"></div>
+    <div class="ctag">Ajouter une dépense réelle</div>
+    <div class="f2">
+      <div class="fld"><label>Libellé</label><input class="inp" id="mpl" placeholder="Ex: pneu"></div>
+      <div class="fld"><label>Montant €</label><input class="inp" type="number" id="mpm" placeholder="0.00"></div>
     </div>
-    <div class="field">
-      <label>Date</label>
-      <input type="date" id="modal-dep-date">
-    </div>
-    <button class="btn btn-green" onclick="ajouterDepPoste()">Ajouter au poste</button>
-    <div id="modal-dep-msg" style="text-align:center;margin-top:8px;font-size:13px;color:#3B6D11;min-height:16px"></div>
+    <div class="fld"><label>Date</label><input class="inp" type="date" id="mpdt"></div>
+    <button class="i2-btn" onclick="saveDep()">Ajouter au poste</button>
+    <div class="mok" id="mpmsg" style="color:var(--gd)"></div>
   </div>
 </div>
+
+<div class="modal-bg" id="mbon">
+  <div class="modal">
+    <div class="mt"><span id="mbnt">Bon de chantier</span><button class="mc" onclick="cm('mbon')">✕</button></div>
+    <div id="mbnc"></div>
+    <button class="i2-btn" style="margin-top:12px" onclick="genPDF()">📄 Générer PDF</button>
+  </div>
+</div>
+
+<div class="modal-bg" id="msolde">
+  <div class="modal">
+    <div class="mt">Modifier le solde<button class="mc" onclick="cm('msolde')">✕</button></div>
+    <div class="fld"><label>Solde (€)</label><input class="inp" type="number" id="sinp" placeholder="0.00" step="0.01"></div>
+    <button class="i2-btn" onclick="svSolde()" style="margin-top:8px">Enregistrer</button>
+  </div>
+</div>
+
+<div class="toast" id="tst"></div>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, onSnapshot, orderBy, query, doc, updateDoc, arrayUnion, Timestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getFirestore,collection,addDoc,onSnapshot,orderBy,query,doc,updateDoc,setDoc,arrayUnion}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAL9eNyspMmf3JQRa0Phr_WzOMYNFruBWI",
-  authDomain: "cout-dt-tp76.firebaseapp.com",
-  projectId: "cout-dt-tp76",
-  storageBucket: "cout-dt-tp76.firebasestorage.app",
-  messagingSenderId: "742914854605",
-  appId: "1:742914854605:web:840d46d0d2d92b0db7a384"
-};
+const FC={apiKey:"AIzaSyAL9eNyspMmf3JQRa0Phr_WzOMYNFruBWI",authDomain:"cout-dt-tp76.firebaseapp.com",projectId:"cout-dt-tp76",storageBucket:"cout-dt-tp76.firebasestorage.app",messagingSenderId:"742914854605",appId:"1:742914854605:web:840d46d0d2d92b0db7a384"};
+const db=getFirestore(initializeApp(FC));
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const PIN1="1131",PIN2="19891986";
+const CONSO=17;
+const COUTS={tracteur:{l:"Tracteur",v:11},remorque:{l:"Remorque",v:7.15},voiture:{l:"Voiture + matériel",v:2.06},bfr:{l:"BFR",v:1.38},assurance:{l:"Assurance",v:1.14},salaire:{l:"Salaire",v:0},comptable:{l:"Comptable",v:2.31},revision:{l:"Révision",v:2.5},pneus:{l:"Pneus",v:8},reparations:{l:"Petites réparations",v:3.12}};
 
-// ─── CONFIG ───
-const PIN = "19891986";
-const CONSO = 17;
-const COUTS = {
-  tracteur:    {label:"Tracteur",            val:11},
-  remorque:    {label:"Remorque",            val:7.15},
-  voiture:     {label:"Voiture + matériel",  val:2.06},
-  bfr:         {label:"BFR",                 val:1.38},
-  assurance:   {label:"Assurance",           val:1.14},
-  salaire:     {label:"Salaire",             val:0},
-  comptable:   {label:"Comptable",           val:2.31},
-  revision:    {label:"Révision",            val:2.5},
-  pneus:       {label:"Pneus",               val:8},
-  reparations: {label:"Petites réparations", val:3.12},
-};
+let pv1="",pv2="";
+let bons=[],chantiers=[],encs=[],charges=[],clients=[],gazoles=[],postes={},deps=[],solde=0;
+let sigPad=null,curPoste=null,curBon=null;
 
-// ─── PIN ───
-let pinVal = "";
-window.pinPress = function(n) {
-  if(pinVal.length >= 8) return;
-  pinVal += n;
-  for(let i=0;i<8;i++) document.getElementById("d"+i).classList.toggle("filled", i<pinVal.length);
-  if(pinVal.length === 8) {
-    if(pinVal === PIN) {
-      document.getElementById("pin-screen").style.display = "none";
-      document.getElementById("app").style.display = "block";
-      initApp();
-    } else {
-      document.getElementById("pin-error").textContent = "Code incorrect";
-      setTimeout(()=>{ pinVal=""; for(let i=0;i<8;i++) document.getElementById("d"+i).classList.remove("filled"); document.getElementById("pin-error").textContent=""; }, 800);
+window.sp1=()=>{document.getElementById('pin1').style.display='flex';document.getElementById('pin2').style.display='none'};
+window.sp2=()=>{document.getElementById('pin1').style.display='none';document.getElementById('pin2').style.display='flex'};
+
+window.pp=(n,k)=>{
+  if(n===1){
+    if(pv1.length>=4)return; pv1+=k;
+    for(let i=0;i<4;i++)document.getElementById('pd1-'+i).classList.toggle('on',i<pv1.length);
+    if(pv1.length===4){
+      if(pv1===PIN1){document.getElementById('pin1').style.display='none';document.getElementById('app1').style.display='block';ia1();}
+      else{document.getElementById('pe1').textContent='Code incorrect';setTimeout(()=>{pv1='';for(let i=0;i<4;i++)document.getElementById('pd1-'+i).classList.remove('on');document.getElementById('pe1').textContent=''},800);}
+    }
+  }else{
+    if(pv2.length>=8)return; pv2+=k;
+    for(let i=0;i<8;i++)document.getElementById('pd2-'+i).classList.toggle('on',i<pv2.length);
+    if(pv2.length===8){
+      if(pv2===PIN2){document.getElementById('pin2').style.display='none';document.getElementById('app2').style.display='block';ia2();}
+      else{document.getElementById('pe2').textContent='Code incorrect';setTimeout(()=>{pv2='';for(let i=0;i<8;i++)document.getElementById('pd2-'+i).classList.remove('on');document.getElementById('pe2').textContent=''},800);}
     }
   }
 };
-window.pinDel = function() {
-  pinVal = pinVal.slice(0,-1);
-  for(let i=0;i<8;i++) document.getElementById("d"+i).classList.toggle("filled", i<pinVal.length);
+window.pd=n=>{
+  if(n===1){pv1=pv1.slice(0,-1);for(let i=0;i<4;i++)document.getElementById('pd1-'+i).classList.toggle('on',i<pv1.length);}
+  else{pv2=pv2.slice(0,-1);for(let i=0;i<8;i++)document.getElementById('pd2-'+i).classList.toggle('on',i<pv2.length);}
 };
 
-// ─── UTILS ───
-function parseH(str) {
-  str=(str||"").trim();
-  if(str.includes(":")) { const[h,m]=str.split(":").map(Number); return h+(m||0)/60; }
-  if(str.includes("h")) { const p=str.split("h"); return parseFloat(p[0])+(parseFloat(p[1])||0)/60; }
-  return parseFloat(str)||0;
+function pH(s){s=(s||'').trim();if(s.includes(':')){const[h,m]=s.split(':').map(Number);return h+(m||0)/60;}if(s.includes('h')){const p=s.split('h');return parseFloat(p[0])+(parseFloat(p[1])||0)/60;}return parseFloat(s)||0;}
+function eu(n){return Number(n).toFixed(2)+' €';}
+function fd(d){if(!d)return'—';if(typeof d==='string')d=new Date(d);if(d&&d.toDate)d=d.toDate();return d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'});}
+function dP(ds,del){if(!ds)return null;const d=new Date(ds);if(del==='comptant')return d;if(del==='30fm'){d.setDate(d.getDate()+30);return new Date(d.getFullYear(),d.getMonth()+1,0);}if(del==='45fm'){d.setDate(d.getDate()+45);return new Date(d.getFullYear(),d.getMonth()+1,0);}if(del==='60'){d.setDate(d.getDate()+60);return d;}return d;}
+function dj(d){if(!d)return null;const t=new Date();t.setHours(0,0,0,0);return Math.round((d-t)/86400000);}
+function calc(x){
+  const hp=pH(x.hprod),ht=pH(x.htransf),hto=hp+ht;
+  const pe=(x.prix||85)*(1-(x.reduc||0)/100);
+  const cHT=(x.carbu||2.25)/1.20,tGL=(x.carbu||2.25)-cHT,tGR=tGL*.80;
+  const cch=CONSO*cHT,cfh=Object.values(COUTS).reduce((s,c)=>s+c.v,0),crh=cfh+cch,ct=crh*hto;
+  const caHT=pe*hto,tvP=x.tva||20,tvC=caHT*tvP/100,caTTC=caHT+tvC;
+  const marge=caHT-ct,mP=caHT>0?marge/caHT*100:0,tGD=CONSO*hto*tGR;
+  return{hp,ht,hto,pe,cch,crh,ct,caHT,tvC,tvP,caTTC,marge,mP,tGD,cHT};
 }
-function eur(n) { return Number(n).toFixed(2)+" €"; }
-function fmtDate(d) {
-  if(!d) return "—";
-  if(typeof d === "string") d = new Date(d);
-  if(d.toDate) d = d.toDate();
-  return d.toLocaleDateString("fr-FR",{day:"2-digit",month:"2-digit",year:"numeric"});
-}
-function calcDP(dateStr, delai) {
-  if(!dateStr) return null;
-  const d = new Date(dateStr);
-  if(delai==="comptant") return d;
-  if(delai==="30fm") { d.setDate(d.getDate()+30); return new Date(d.getFullYear(),d.getMonth()+1,0); }
-  if(delai==="45fm") { d.setDate(d.getDate()+45); return new Date(d.getFullYear(),d.getMonth()+1,0); }
-  if(delai==="60")   { d.setDate(d.getDate()+60); return d; }
-  return d;
-}
-function diffJours(d) {
-  if(!d) return null;
-  const today = new Date(); today.setHours(0,0,0,0);
-  return Math.round((d-today)/86400000);
-}
-function calcChantier(data) {
-  const h_prod = parseH(data.hprod);
-  const h_transf = parseH(data.htransf);
-  const h_total = h_prod + h_transf;
-  const prix_eff = (data.prix||85) * (1-(data.reduc||0)/100);
-  const cout_carbu_h = CONSO * (data.carbu||2.25);
-  let cout_fixe_h = Object.values(COUTS).reduce((s,c)=>s+c.val,0);
-  const cout_rev_h = cout_fixe_h + cout_carbu_h;
-  const cout_total = cout_rev_h * h_total;
-  const ca_ht = prix_eff * h_total;
-  const tva_mnt = ca_ht * (data.tva||20) / 100;
-  const ca_ttc = ca_ht + tva_mnt;
-  const marge_ht = ca_ht - cout_total;
-  const marge_pct = ca_ht>0 ? marge_ht/ca_ht*100 : 0;
-  return {h_prod,h_transf,h_total,prix_eff,cout_carbu_h,cout_rev_h,cout_total,ca_ht,tva_mnt,ca_ttc,marge_ht,marge_pct};
+function tst(m){const t=document.getElementById('tst');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+
+// APP1
+function ia1(){
+  document.getElementById('i1d').textContent=new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+  const c=document.getElementById('sig-c');
+  c.width=c.offsetWidth||320;c.height=110;
+  sigPad=new SignaturePad(c,{backgroundColor:'rgba(0,0,0,0)',penColor:'#f0f0f0'});
+  onSnapshot(query(collection(db,'bons'),orderBy('date','desc')),s=>{bons=s.docs.map(d=>({id:d.id,...d.data()}));rBons();});
 }
 
-// ─── NAV ───
-window.goPage = function(p) {
-  document.querySelectorAll(".page").forEach(el=>el.classList.remove("active"));
-  document.querySelectorAll(".nav-btn").forEach(el=>el.classList.remove("active"));
-  document.getElementById("page-"+p).classList.add("active");
-  const idx = ["dashboard","saisie","historique","postes","depenses"].indexOf(p);
-  document.querySelectorAll(".nav-btn")[idx].classList.add("active");
-  if(p==="dashboard") renderDashboard();
-  if(p==="historique") renderHistorique();
-  if(p==="postes") renderPostes();
-  if(p==="depenses") renderDepenses();
+window.clrSig=()=>{if(sigPad)sigPad.clear();};
+window.t1=(b,t)=>{document.querySelectorAll('.i1-nb').forEach(x=>x.classList.remove('on'));b.classList.add('on');document.getElementById('i1-bon').classList.toggle('on',t==='bon');document.getElementById('i1-bons').classList.toggle('on',t==='bons');};
+
+window.saveBon=async()=>{
+  const cl=document.getElementById('bc').value;
+  const ch=document.getElementById('bch').value;
+  if(!cl){tst('⚠ Renseigne le client');return;}
+  if(!ch){tst('⚠ Renseigne le chef de chantier');return;}
+  if(sigPad&&sigPad.isEmpty()){tst('⚠ Signature manquante');return;}
+  document.getElementById('bm').textContent='Enregistrement…';
+  try{
+    await addDoc(collection(db,'bons'),{client:cl,adresse:document.getElementById('ba').value,ldv:document.getElementById('bl').value,chef:ch,sig:sigPad?sigPad.toDataURL():'',hn:document.getElementById('bhn').value,ht:document.getElementById('bht').value,hs:document.getElementById('bhs').value,hn2:document.getElementById('bhn2').value,hw:document.getElementById('bhw').value,date:new Date().toISOString().split('T')[0],createdAt:new Date().toISOString()});
+    document.getElementById('bm').textContent='✓ Bon enregistré !';
+    ['bc','ba','bl','bch','bhn','bht','bhs','bhn2','bhw'].forEach(id=>document.getElementById(id).value='');
+    if(sigPad)sigPad.clear();
+    setTimeout(()=>{document.getElementById('bm').textContent='';t1(document.querySelectorAll('.i1-nb')[1],'bons');},1500);
+  }catch(e){document.getElementById('bm').textContent='Erreur: '+e.message;}
 };
 
-// ─── DATA CACHE ───
-let chantiers = [];
-let depenses = [];
-let postesData = {};
-
-function initApp() {
-  const today = new Date();
-  document.getElementById("dash-date").textContent = today.toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
-  document.getElementById("s-date").value = today.toISOString().split("T")[0];
-  document.getElementById("dep-date").value = today.toISOString().split("T")[0];
-  document.getElementById("modal-dep-date").value = today.toISOString().split("T")[0];
-
-  // Écoute temps réel chantiers
-  onSnapshot(query(collection(db,"chantiers"),orderBy("date","desc")), snap => {
-    chantiers = snap.docs.map(d=>({id:d.id,...d.data()}));
-    renderDashboard();
-    const activePage = document.querySelector(".page.active").id.replace("page-","");
-    if(activePage==="historique") renderHistorique();
-    if(activePage==="postes") renderPostes();
-  });
-
-  // Écoute temps réel dépenses
-  onSnapshot(query(collection(db,"depenses"),orderBy("date","desc")), snap => {
-    depenses = snap.docs.map(d=>({id:d.id,...d.data()}));
-    const activePage = document.querySelector(".page.active").id.replace("page-","");
-    if(activePage==="depenses") renderDepenses();
-    if(activePage==="dashboard") renderDashboard();
-  });
-
-  // Écoute postes
-  onSnapshot(collection(db,"postes"), snap => {
-    postesData = {};
-    snap.docs.forEach(d=>{ postesData[d.id] = {id:d.id,...d.data()}; });
-    const activePage = document.querySelector(".page.active").id.replace("page-","");
-    if(activePage==="postes") renderPostes();
-  });
-
-  document.getElementById("s-date").addEventListener("change", updateDatePreview);
-  document.getElementById("s-delai").addEventListener("change", updateDatePreview);
-  updateDatePreview();
+function rBons(){
+  const el=document.getElementById('bons-list');
+  if(!bons.length){el.innerHTML='<div class="ldr">Aucun bon</div>';return;}
+  const td=new Date().toISOString().split('T')[0];
+  const auj=bons.filter(b=>b.date===td),rec=bons.filter(b=>b.date!==td);
+  let h='';
+  if(auj.length)h+=`<div class="i1-card"><div class="i1-tag">Aujourd'hui</div>${auj.map(bI).join('')}</div>`;
+  if(rec.length)h+=`<div class="i1-card"><div class="i1-tag">Bons récents</div>${rec.slice(0,15).map(bI).join('')}</div>`;
+  el.innerHTML=h;
 }
+function bI(b){return`<div class="bon-item"><div class="bon-top"><div class="bon-name">${b.client||'—'}</div><span style="color:var(--green);font-weight:700;font-size:12px">Signé ✓</span></div><div class="bon-sub">${fd(b.date)} · ${b.hn||'—'} norm · ${b.ht||'—'} transf · LDV: ${b.ldv||'—'}</div><div class="bon-act"><button class="btn-voir" onclick="vBon('${b.id}')">👁 Voir</button><button class="btn-pdf" onclick="vBon('${b.id}',true)">📄 PDF</button></div></div>`;}
 
-function updateDatePreview() {
-  const dp = calcDP(document.getElementById("s-date").value, document.getElementById("s-delai").value);
-  const el = document.getElementById("s-date-pay-preview");
-  if(!dp) { el.textContent=""; return; }
-  const diff = diffJours(dp);
-  const mention = diff>0?`dans ${diff} j`:diff===0?"aujourd'hui":`dépassé de ${-diff}j`;
-  el.textContent = `Paiement prévu le ${fmtDate(dp)} (${mention})`;
-}
-
-// ─── DASHBOARD ───
-function renderDashboard() {
-  const totalCA = chantiers.reduce((s,c)=>s+calcChantier(c).ca_ht,0);
-  const totalTTC = chantiers.reduce((s,c)=>s+calcChantier(c).ca_ttc,0);
-  const totalMarge = chantiers.reduce((s,c)=>s+calcChantier(c).marge_ht,0);
-  const totalDep = depenses.reduce((s,d)=>s+(d.montant||0),0);
-  const benefice = totalMarge - totalDep;
-
-  document.getElementById("dash-stats").innerHTML = `
-    <div class="stat"><div class="lbl">CA HT total</div><div class="val">${eur(totalCA)}</div><div class="sub">${chantiers.length} chantier(s)</div></div>
-    <div class="stat"><div class="lbl">CA TTC total</div><div class="val">${eur(totalTTC)}</div></div>
-    <div class="stat ${totalMarge>=0?'green':'red'}"><div class="lbl">Marge brute HT</div><div class="val">${eur(totalMarge)}</div></div>
-    <div class="stat ${benefice>=0?'green':'red'}"><div class="lbl">Bénéfice net</div><div class="val">${eur(benefice)}</div><div class="sub">Marge − dépenses diverses</div></div>
-  `;
-
-  const recent = chantiers.slice(0,3);
-  if(!recent.length) { document.getElementById("dash-recent").innerHTML="<div style='color:#888;font-size:13px'>Aucun chantier enregistré</div>"; }
-  else {
-    document.getElementById("dash-recent").innerHTML = recent.map(c=>{
-      const r = calcChantier(c);
-      return `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0">
-        <div><div style="font-weight:600">${c.client||"—"}</div><div style="font-size:12px;color:#888">${fmtDate(c.date)} · ${Number(r.h_total).toFixed(1)}h</div></div>
-        <div style="text-align:right"><div style="font-weight:600">${eur(r.ca_ht)}</div><div style="font-size:12px;color:${r.marge_ht>=0?'#3B6D11':'#c0392b'}">${eur(r.marge_ht)}</div></div>
-      </div>`;
-    }).join("");
-  }
-
-  const today = new Date(); today.setHours(0,0,0,0);
-  const upcoming = chantiers
-    .map(c=>({...c, dp: calcDP(c.date, c.delai)}))
-    .filter(c=>c.dp)
-    .map(c=>({...c, diff: diffJours(c.dp)}))
-    .filter(c=>c.diff >= -7)
-    .sort((a,b)=>a.diff-b.diff)
-    .slice(0,5);
-
-  if(!upcoming.length) { document.getElementById("dash-paiements").innerHTML="<div style='color:#888;font-size:13px'>Aucun paiement à venir</div>"; }
-  else {
-    document.getElementById("dash-paiements").innerHTML = upcoming.map(c=>{
-      const r = calcChantier(c);
-      const diffStr = c.diff>0?`J-${c.diff}`:c.diff===0?"Aujourd'hui":`<span style='color:#c0392b'>+${-c.diff}j</span>`;
-      return `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0">
-        <div><div style="font-weight:600">${c.client||"—"}</div><div class="date-pay-sub">${fmtDate(c.dp)} · ${diffStr}</div></div>
-        <div style="text-align:right;font-weight:600">${eur(r.ca_ttc)}</div>
-      </div>`;
-    }).join("");
-  }
-}
-
-// ─── SAISIE ───
-window.previewCalc = function() {
-  const data = getSaisieData();
-  const r = calcChantier(data);
-  document.getElementById("s-preview").style.display="block";
-  document.getElementById("s-preview-stats").innerHTML = `
-    <div class="stat"><div class="lbl">CA HT</div><div class="val">${eur(r.ca_ht)}</div></div>
-    <div class="stat"><div class="lbl">CA TTC</div><div class="val">${eur(r.ca_ttc)}</div></div>
-    <div class="stat"><div class="lbl">Coût revient</div><div class="val">${eur(r.cout_total)}</div></div>
-    <div class="stat ${r.marge_ht>=0?'green':'red'}"><div class="lbl">Marge HT</div><div class="val">${eur(r.marge_ht)}</div><div class="sub">${r.marge_pct.toFixed(1)}%</div></div>
-  `;
-  let rows = Object.values(COUTS).map(c=>`<tr><td>${c.label}</td><td style="text-align:right">${c.val.toFixed(2)} €/h</td><td style="text-align:right">${eur(c.val*r.h_total)}</td></tr>`).join("");
-  rows += `<tr><td>Carburant (${CONSO}L × ${data.carbu} €/L)</td><td style="text-align:right">${r.cout_carbu_h.toFixed(2)} €/h</td><td style="text-align:right">${eur(r.cout_carbu_h*r.h_total)}</td></tr>`;
-  rows += `<tr style="font-weight:700;background:#f8f9f8"><td>Total</td><td style="text-align:right">${r.cout_rev_h.toFixed(2)} €/h</td><td style="text-align:right">${eur(r.cout_total)}</td></tr>`;
-  document.getElementById("s-detail-table").innerHTML=`<div class="tbl-wrap"><table><thead><tr><th>Poste</th><th style="text-align:right">€/h</th><th style="text-align:right">Total (${r.h_total.toFixed(2)}h)</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+window.vBon=(id,pdf=false)=>{
+  const b=bons.find(x=>x.id===id);if(!b)return;
+  curBon=b;
+  document.getElementById('mbnt').textContent=`Bon — ${b.client||'—'}`;
+  document.getElementById('mbnc').innerHTML=`<div style="font-size:13px;line-height:2.2"><div><strong>Client :</strong> ${b.client||'—'}</div><div><strong>Adresse :</strong> ${b.adresse||'—'}</div><div><strong>N° LDV :</strong> ${b.ldv||'—'}</div><div><strong>Date :</strong> ${fd(b.date)}</div><div><strong>H. normales :</strong> ${b.hn||'0:00'}</div><div><strong>H. transfert :</strong> ${b.ht||'0:00'}</div><div><strong>H. supp. :</strong> ${b.hs||'0:00'}</div><div><strong>H. nuit :</strong> ${b.hn2||'0:00'}</div><div><strong>H. week-end :</strong> ${b.hw||'0:00'}</div><div><strong>Chef de chantier :</strong> ${b.chef||'—'}</div></div>${b.sig?`<div style="margin-top:12px;border:1px solid #e0e0e0;border-radius:8px;overflow:hidden;background:#f9f9f9"><div style="font-size:11px;color:#999;padding:6px 10px">Signature</div><img src="${b.sig}" style="width:100%;display:block;max-height:100px;object-fit:contain"></div>`:''}`;
+  document.getElementById('mbon').classList.add('open');
+  if(pdf)setTimeout(genPDF,200);
 };
 
-function getSaisieData() {
-  return {
-    client: document.getElementById("s-client").value||"—",
-    date: document.getElementById("s-date").value,
-    delai: document.getElementById("s-delai").value,
-    hprod: document.getElementById("s-hprod").value,
-    htransf: document.getElementById("s-htransf").value,
-    prix: parseFloat(document.getElementById("s-prix").value)||85,
-    carbu: parseFloat(document.getElementById("s-carbu").value)||2.25,
-    tva: parseFloat(document.getElementById("s-tva").value)||20,
-    reduc: parseFloat(document.getElementById("s-reduc").value)||0,
-    note: document.getElementById("s-note").value,
-  };
-}
-
-window.sauvegarder = async function() {
-  const data = getSaisieData();
-  if(!data.client || data.client==="—") { document.getElementById("s-msg").textContent="⚠ Renseigne le nom du client"; return; }
-  if(!data.date) { document.getElementById("s-msg").textContent="⚠ Renseigne la date"; return; }
-  document.getElementById("s-msg").textContent="Enregistrement…";
-  try {
-    await addDoc(collection(db,"chantiers"), {...data, createdAt: new Date().toISOString()});
-    document.getElementById("s-msg").textContent="✓ Chantier enregistré !";
-    document.getElementById("s-client").value="";
-    document.getElementById("s-hprod").value="0:00";
-    document.getElementById("s-htransf").value="0:00";
-    document.getElementById("s-reduc").value="0";
-    document.getElementById("s-note").value="";
-    document.getElementById("s-preview").style.display="none";
-    setTimeout(()=>document.getElementById("s-msg").textContent="",3000);
-  } catch(e) {
-    document.getElementById("s-msg").textContent="Erreur : "+e.message;
-  }
+window.genPDF=()=>{
+  const b=curBon;if(!b)return;
+  const w=window.open('','_blank');
+  w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Bon DT-TP76</title><style>body{font-family:Arial,sans-serif;padding:30px;max-width:600px;margin:0 auto}h1{color:#3B6D11;font-size:20px;margin-bottom:4px}.sub{color:#888;font-size:12px;margin-bottom:20px}.row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:14px}.co{font-size:12px;color:#888;margin-bottom:20px;border-bottom:2px solid #3B6D11;padding-bottom:10px}@media print{button{display:none}}</style></head><body><div class="co"><strong>DT-TP76</strong> — Divers Transport — Travaux Publics 76</div><h1>Bon de chantier</h1><div class="sub">${fd(b.date)}</div><div class="row"><span>Client</span><strong>${b.client||'—'}</strong></div><div class="row"><span>Adresse</span><span>${b.adresse||'—'}</span></div><div class="row"><span>N° Lettre de voiture</span><span>${b.ldv||'—'}</span></div><div class="row"><span>Heures normales</span><span>${b.hn||'0:00'}</span></div><div class="row"><span>Heures transfert</span><span>${b.ht||'0:00'}</span></div><div class="row"><span>Heures supplémentaires</span><span>${b.hs||'0:00'}</span></div><div class="row"><span>Heures nuit</span><span>${b.hn2||'0:00'}</span></div><div class="row"><span>Heures week-end</span><span>${b.hw||'0:00'}</span></div><div class="row"><span>Chef de chantier</span><strong>${b.chef||'—'}</strong></div>${b.sig?`<div style="margin-top:16px;border:1px solid #ddd;border-radius:8px;padding:10px;text-align:center"><div style="font-size:11px;color:#888;margin-bottom:6px">Signature pour accord</div><img src="${b.sig}" style="max-height:80px"></div>`:''}<div style="margin-top:24px;text-align:center"><button onclick="window.print()" style="background:#3B6D11;color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:14px;cursor:pointer">Imprimer / Enregistrer PDF</button></div></body></html>`);
+  w.document.close();
 };
 
-// ─── HISTORIQUE ───
-function renderHistorique() {
-  if(!chantiers.length) {
-    document.getElementById("hist-body").innerHTML="<tr><td colspan='9' class='loader'>Aucun chantier</td></tr>";
-    return;
-  }
-  let totalCA=0, totalTTC=0, totalMarge=0;
-  document.getElementById("hist-body").innerHTML = chantiers.map(c=>{
-    const r = calcChantier(c);
-    const dp = calcDP(c.date, c.delai);
-    const diff = diffJours(dp);
-    totalCA+=r.ca_ht; totalTTC+=r.ca_ttc; totalMarge+=r.marge_ht;
-    const mc = r.marge_pct>=30?"badge-green":r.marge_pct>=15?"badge-orange":"badge-red";
-    const dpStr = diff!==null ? (diff>0?`J-${diff}`:diff===0?"Auj.":`<span style='color:#c0392b'>+${-diff}j</span>`) : "";
-    return `<tr>
-      <td>${fmtDate(c.date)}</td>
-      <td style="font-weight:600">${c.client||"—"}</td>
-      <td>${parseH(c.hprod).toFixed(1)}+${parseH(c.htransf).toFixed(1)}h</td>
-      <td>${eur(r.ca_ht)}</td>
-      <td style="font-weight:600">${eur(r.ca_ttc)}</td>
-      <td>${eur(r.cout_total)}</td>
-      <td style="color:${r.marge_ht>=0?'#3B6D11':'#c0392b'};font-weight:600">${eur(r.marge_ht)}</td>
-      <td><span class="badge ${mc}">${r.marge_pct.toFixed(0)}%</span></td>
-      <td><span class="date-pay">${fmtDate(dp)}</span><br><span style="font-size:11px;color:#888">${dpStr}</span></td>
-    </tr>`;
-  }).join("");
-  document.getElementById("hist-total").innerHTML=`<div class="card"><div style="display:flex;justify-content:space-between"><span style="font-weight:600">Totaux</span></div><div class="stats" style="margin-top:10px"><div class="stat"><div class="lbl">CA HT</div><div class="val" style="font-size:16px">${eur(totalCA)}</div></div><div class="stat"><div class="lbl">CA TTC</div><div class="val" style="font-size:16px">${eur(totalTTC)}</div></div><div class="stat ${totalMarge>=0?'green':'red'}"><div class="lbl">Marge totale</div><div class="val" style="font-size:16px">${eur(totalMarge)}</div></div></div></div>`;
+// APP2
+const PGS=['menu','dash','couts','histo','postes','enc','treso','clients','gazole'];
+const PTIT={menu:'Menu principal',dash:'Tableau de bord',couts:'Coûts chantier',histo:'Historique',postes:'Postes de coût',enc:'Encaissements',treso:'Trésorerie',clients:'Clients',gazole:'Gazole'};
+
+function ia2(){
+  const d=new Date();
+  document.getElementById('mdate').textContent=d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  ['cd','edt','gd','fd2','mpdt'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=d.toISOString().split('T')[0];});
+  document.getElementById('cd').addEventListener('change',updPP);
+  document.getElementById('cdel').addEventListener('change',updPP);
+  updPP();
+  onSnapshot(query(collection(db,'chantiers'),orderBy('date','desc')),s=>{chantiers=s.docs.map(d=>({id:d.id,...d.data()}));rDash();rHisto();rPostes();});
+  onSnapshot(query(collection(db,'encaissements'),orderBy('date','asc')),s=>{encs=s.docs.map(d=>({id:d.id,...d.data()}));rEnc();rDash();});
+  onSnapshot(query(collection(db,'charges'),orderBy('jour','asc')),s=>{charges=s.docs.map(d=>({id:d.id,...d.data()}));rCh();});
+  onSnapshot(query(collection(db,'clients'),orderBy('nom','asc')),s=>{clients=s.docs.map(d=>({id:d.id,...d.data()}));rCl();});
+  onSnapshot(query(collection(db,'gazoles'),orderBy('date','desc')),s=>{gazoles=s.docs.map(d=>({id:d.id,...d.data()}));rGz();});
+  onSnapshot(collection(db,'postes'),s=>{postes={};s.docs.forEach(d=>{postes[d.id]={id:d.id,...d.data()};});rPostes();});
+  onSnapshot(query(collection(db,'depenses'),orderBy('date','desc')),s=>{deps=s.docs.map(d=>({id:d.id,...d.data()}));rDash();rPostes();});
+  onSnapshot(doc(db,'config','solde'),s=>{if(s.exists()){solde=s.data().val||0;document.getElementById('sval').textContent=eu(solde);}});
 }
 
-// ─── POSTES ───
-function renderPostes() {
-  const totalH = chantiers.reduce((s,c)=>s+calcChantier(c).h_total,0);
-  const html = Object.entries(COUTS).map(([key,poste])=>{
-    const provision = poste.val * totalH;
-    const pd = postesData[key] || {depenses:[]};
-    const depTotal = (pd.depenses||[]).reduce((s,d)=>s+(d.montant||0),0);
-    const ecart = provision - depTotal;
-    const ecartClass = ecart>=0?"ecart-pos":"ecart-neg";
-    return `<div class="poste-card" onclick="openPoste('${key}')">
-      <div class="poste-header">
-        <div class="poste-name">${poste.label}</div>
-        <div style="font-size:12px;color:#888">${poste.val.toFixed(2)} €/h</div>
-      </div>
-      <div class="poste-amounts">
-        <div class="poste-amount">Provision<span>${eur(provision)}</span></div>
-        <div class="poste-amount">Dépensé<span>${eur(depTotal)}</span></div>
-        <div class="poste-amount">Écart<span class="${ecartClass}">${ecart>=0?"+":""}${eur(ecart)}</span></div>
-      </div>
-    </div>`;
-  }).join("");
-  document.getElementById("postes-list").innerHTML = html || "<div class='loader'>Aucune donnée</div>";
+window.gp=p=>{PGS.forEach(t=>document.getElementById('i2-'+t).classList.toggle('on',t===p));document.getElementById('bkbtn').classList.toggle('show',p!=='menu');document.getElementById('lg2').style.display=p==='menu'?'block':'none';document.getElementById('i2pt').textContent=PTIT[p]||'';if(p==='dash')rDash();};
+window.goMenu=()=>gp('menu');
+
+window.updPP=()=>{
+  const dp=dP(document.getElementById('cd').value,document.getElementById('cdel').value);
+  const el=document.getElementById('ppv');
+  if(!dp){el.textContent='';return;}
+  const diff=dj(dp);
+  el.textContent=`→ Paiement prévu le ${fd(dp)} (${diff>0?'dans '+diff+'j':diff===0?"aujourd'hui":'dépassé de '+(-diff)+'j'})`;
+};
+
+function rDash(){
+  const mk=new Date().toISOString().slice(0,7);
+  const mc=chantiers.filter(c=>c.date&&c.date.slice(0,7)===mk);
+  const tCA=chantiers.reduce((s,c)=>s+calc(c).caHT,0);
+  const tM=chantiers.reduce((s,c)=>s+calc(c).marge,0);
+  const tD=deps.reduce((s,d)=>s+(d.montant||0),0);
+  const bn=tM-tD;
+  const tvC=mc.reduce((s,c)=>s+calc(c).tvC,0);
+  const tvG=mc.reduce((s,c)=>s+calc(c).tGD,0);
+  const tvN=tvC-tvG;
+  const now=new Date();now.setHours(0,0,0,0);
+  const ret=encs.filter(e=>!e.paid&&e.date&&new Date(e.date)<now);
+  document.getElementById('dkpis').innerHTML=`<div class="kp g"><div class="kl">CA HT total</div><div class="kv">${eu(tCA)}</div><div class="ks">${chantiers.length} chantier(s)</div></div><div class="kp ${bn>=0?'g':'r'}"><div class="kl">Bénéfice net</div><div class="kv">${eu(bn)}</div><div class="ks">Marge − dépenses</div></div><div class="kp o"><div class="kl">TVA à reverser</div><div class="kv">${eu(tvN)}</div><div class="ks">Ce mois</div></div><div class="kp ${ret.length>0?'r':'g'}"><div class="kl">Retards paiement</div><div class="kv">${ret.length}</div></div>`;
+  const mn=new Date().toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
+  document.getElementById('dtvatit').textContent=`TVA à déclarer — ${mn}`;
+  document.getElementById('dtvabox').innerHTML=`<div class="tr"><span>TVA collectée</span><span style="color:#c0392b">+${eu(tvC)}</span></div><div class="tr"><span>TVA déductible gazole (80%)</span><span style="color:var(--gd)">−${eu(tvG)}</span></div><div class="tr"><span>Net à reverser</span><span style="color:#c0392b">${eu(tvN)}</span></div>`;
+  document.getElementById('dret').innerHTML=ret.length?ret.map(e=>{const diff=-dj(new Date(e.date));return`<div class="er"><div><div style="font-weight:600">${e.client||'—'}</div><div style="font-size:11px;color:#999">Éch. ${fd(e.date)} — +${diff}j</div></div><div><span class="bdg br">+${diff}j</span><div style="font-weight:700;color:#c0392b;margin-top:2px">${eu(e.montant)}</div></div></div>`;}).join(''):'<div style="font-size:13px;color:#999;padding:8px 0">Aucun retard 🎉</div>';
 }
 
-let currentPoste = null;
-window.openPoste = function(key) {
-  currentPoste = key;
-  const poste = COUTS[key];
-  const totalH = chantiers.reduce((s,c)=>s+calcChantier(c).h_total,0);
-  const provision = poste.val * totalH;
-  const pd = postesData[key] || {depenses:[]};
-  const deps = pd.depenses||[];
-  const depTotal = deps.reduce((s,d)=>s+(d.montant||0),0);
-  const ecart = provision - depTotal;
-
-  document.getElementById("modal-poste-title").textContent = poste.label;
-  document.getElementById("modal-dep-label").value="";
-  document.getElementById("modal-dep-montant").value="";
-  document.getElementById("modal-dep-msg").textContent="";
-
-  let depsHtml = deps.length ? deps.map(d=>`
-    <div class="dep-item">
-      <div class="dep-info"><div class="dep-label">${d.label||"—"}</div><div class="dep-date">${fmtDate(d.date)}</div></div>
-      <div class="dep-montant neg">−${eur(d.montant)}</div>
-    </div>`).join("") : "<div style='color:#888;font-size:13px;padding:8px 0'>Aucune dépense saisie</div>";
-
-  document.getElementById("modal-poste-content").innerHTML=`
-    <div class="stats" style="margin-bottom:12px">
-      <div class="stat"><div class="lbl">Provision (${totalH.toFixed(1)}h)</div><div class="val" style="font-size:16px">${eur(provision)}</div></div>
-      <div class="stat"><div class="lbl">Dépensé</div><div class="val" style="font-size:16px;color:#c0392b">${eur(depTotal)}</div></div>
-      <div class="stat ${ecart>=0?'green':'red'}"><div class="lbl">Écart</div><div class="val" style="font-size:16px">${ecart>=0?"+":""}${eur(ecart)}</div></div>
-    </div>
-    <div class="card-title">Dépenses sur ce poste</div>
-    ${depsHtml}
-  `;
-  document.getElementById("modal-poste").classList.add("open");
+window.prevC=()=>{
+  const x={hprod:document.getElementById('chp').value,htransf:document.getElementById('cht').value,prix:parseFloat(document.getElementById('cpx').value)||85,carbu:parseFloat(document.getElementById('cgz').value)||2.25,tva:parseFloat(document.getElementById('ctv').value)||20,reduc:parseFloat(document.getElementById('crd').value)||0};
+  const r=calc(x);
+  document.getElementById('cprev').style.display='block';
+  document.getElementById('cstat').innerHTML=`<div class="pss"><div class="pl">CA HT</div><div class="pv">${eu(r.caHT)}</div></div><div class="pss"><div class="pl">CA TTC</div><div class="pv">${eu(r.caTTC)}</div></div><div class="pss"><div class="pl">Coût revient</div><div class="pv">${eu(r.ct)}</div></div><div class="pss ${r.marge>=0?'g':'r'}"><div class="pl">Marge HT</div><div class="pv">${eu(r.marge)}</div></div>`;
+  let rows=Object.values(COUTS).map(c=>`<div class="pr"><span>${c.l}</span><span style="color:#999">${c.v.toFixed(2)} €/h</span><span style="font-weight:600">${eu(c.v*r.hto)}</span></div>`).join('');
+  rows+=`<div class="pr"><span>Gazole (${CONSO}L × ${r.cHT.toFixed(3)} HT)</span><span style="color:#999">${r.cch.toFixed(2)} €/h</span><span style="font-weight:600">${eu(r.cch*r.hto)}</span></div>`;
+  rows+=`<div class="totr"><span>Total</span><span>${eu(r.crh)}/h</span><span style="color:#c0392b">${eu(r.ct)}</span></div>`;
+  rows+=`<div style="background:#f0f7e8;border-radius:8px;padding:8px 10px;margin-top:8px;font-size:12px;color:var(--gd);display:flex;justify-content:space-between"><span>TVA gazole déductible 80%</span><span style="font-weight:600">+${eu(r.tGD)}</span></div>`;
+  document.getElementById('cdet').innerHTML=rows;
 };
 
-window.closePosteModal = function() { document.getElementById("modal-poste").classList.remove("open"); };
-window.closeModal = function(e) { if(e.target.id==="modal-poste") closePosteModal(); };
-
-window.ajouterDepPoste = async function() {
-  const label = document.getElementById("modal-dep-label").value;
-  const montant = parseFloat(document.getElementById("modal-dep-montant").value);
-  const date = document.getElementById("modal-dep-date").value;
-  if(!label || !montant || !date) { document.getElementById("modal-dep-msg").textContent="⚠ Remplis tous les champs"; return; }
-  document.getElementById("modal-dep-msg").textContent="Enregistrement…";
-  try {
-    const ref = doc(db,"postes",currentPoste);
-    const pd = postesData[currentPoste];
-    if(pd) {
-      await updateDoc(ref, { depenses: arrayUnion({label,montant,date}) });
-    } else {
-      const {setDoc} = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
-      await setDoc(ref, { depenses: [{label,montant,date}] });
-    }
-    document.getElementById("modal-dep-msg").textContent="✓ Ajouté !";
-    document.getElementById("modal-dep-label").value="";
-    document.getElementById("modal-dep-montant").value="";
-    setTimeout(()=>{ closePosteModal(); renderPostes(); },800);
-  } catch(e) { document.getElementById("modal-dep-msg").textContent="Erreur : "+e.message; }
+window.saveC=async()=>{
+  const cl=document.getElementById('cc').value;
+  const dt=document.getElementById('cd').value;
+  if(!cl){tst('⚠ Renseigne le client');return;}
+  if(!dt){tst('⚠ Renseigne la date');return;}
+  document.getElementById('cmsg').textContent='Enregistrement…';
+  try{
+    await addDoc(collection(db,'chantiers'),{client:cl,date:dt,delai:document.getElementById('cdel').value,hprod:document.getElementById('chp').value,htransf:document.getElementById('cht').value,prix:parseFloat(document.getElementById('cpx').value)||85,carbu:parseFloat(document.getElementById('cgz').value)||2.25,tva:parseFloat(document.getElementById('ctv').value)||20,reduc:parseFloat(document.getElementById('crd').value)||0,createdAt:new Date().toISOString()});
+    document.getElementById('cmsg').textContent='✓ Enregistré !';
+    ['cc','chp','cht'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('cprev').style.display='none';
+    setTimeout(()=>{document.getElementById('cmsg').textContent='';gp('histo');},1500);
+  }catch(e){document.getElementById('cmsg').textContent='Erreur: '+e.message;}
 };
 
-// ─── DEPENSES DIVERSES ───
-window.ajouterDepense = async function() {
-  const label = document.getElementById("dep-label").value;
-  const montant = parseFloat(document.getElementById("dep-montant").value);
-  const cat = document.getElementById("dep-cat").value;
-  const date = document.getElementById("dep-date").value;
-  if(!label||!montant||!date) { document.getElementById("dep-msg").textContent="⚠ Remplis tous les champs"; return; }
-  document.getElementById("dep-msg").textContent="Enregistrement…";
-  try {
-    await addDoc(collection(db,"depenses"),{label,montant,cat,date,createdAt:new Date().toISOString()});
-    document.getElementById("dep-msg").textContent="✓ Dépense ajoutée !";
-    document.getElementById("dep-label").value="";
-    document.getElementById("dep-montant").value="";
-    setTimeout(()=>document.getElementById("dep-msg").textContent="",3000);
-  } catch(e) { document.getElementById("dep-msg").textContent="Erreur : "+e.message; }
-};
-
-function renderDepenses() {
-  if(!depenses.length) { document.getElementById("dep-list").innerHTML="<div style='color:#888;font-size:13px'>Aucune dépense enregistrée</div>"; return; }
-  const cats = {repas:"Repas",vetements:"Vêtements",pub:"Pub",divers:"Divers"};
-  const total = depenses.reduce((s,d)=>s+(d.montant||0),0);
-  document.getElementById("dep-list").innerHTML = depenses.map(d=>`
-    <div class="dep-item">
-      <div class="dep-info">
-        <div class="dep-label">${d.label||"—"}</div>
-        <div class="dep-date">${fmtDate(d.date)} · ${cats[d.cat]||d.cat||"—"}</div>
-      </div>
-      <div class="dep-montant neg">−${eur(d.montant)}</div>
-    </div>`).join("") + `<div style="display:flex;justify-content:space-between;padding:10px 0;font-weight:700;border-top:2px solid #e8e8e8;margin-top:4px"><span>Total dépenses</span><span style="color:#c0392b">−${eur(total)}</span></div>`;
+function rHisto(){
+  if(!chantiers.length){document.getElementById('hbody').innerHTML='<tr><td colspan="7" class="ldr">Aucun chantier</td></tr>';return;}
+  let tCA=0,tM=0;
+  document.getElementById('hbody').innerHTML=chantiers.map(c=>{
+    const r=calc(c);const dp=dP(c.date,c.delai);const diff=dj(dp);
+    tCA+=r.caHT;tM+=r.marge;
+    const mc=r.mP>=30?'bg':r.mP>=15?'bo':'br';
+    const ds=diff!==null?(diff>0?`J-${diff}`:diff===0?'Auj.':`<span style="color:#c0392b">+${-diff}j</span>`):'';
+    return`<tr><td>${fd(c.date)}</td><td style="font-weight:600">${c.client||'—'}</td><td>${r.hp.toFixed(1)}+${r.ht.toFixed(1)}</td><td>${eu(r.caHT)}</td><td style="color:${r.marge>=0?'var(--gd)':'#c0392b'};font-weight:600">${eu(r.marge)}</td><td><span class="bdg ${mc}">${r.mP.toFixed(0)}%</span></td><td><span style="font-size:11px;color:var(--gd)">${fd(dp)}</span><br><span style="font-size:10px;color:#999">${ds}</span></td></tr>`;
+  }).join('');
+  document.getElementById('htot').innerHTML=`<div class="kp g"><div class="kl">CA HT total</div><div class="kv">${eu(tCA)}</div></div><div class="kp ${tM>=0?'g':'r'}"><div class="kl">Marge totale</div><div class="kv">${eu(tM)}</div></div>`;
 }
+
+function rPostes(){
+  const tH=chantiers.reduce((s,c)=>s+calc(c).hto,0);
+  document.getElementById('plist').innerHTML=Object.entries(COUTS).map(([k,p])=>{
+    const pv=p.v*tH;const pd=postes[k]||{depenses:[]};
+    const dt=(pd.depenses||[]).reduce((s,d)=>s+(d.montant||0),0);
+    const ec=pv-dt;
+    return`<div class="pc" onclick="opP('${k}')"><div style="display:flex;justify-content:space-between;align-items:center"><div style="font-size:14px;font-weight:600">${p.l}</div><div style="font-size:11px;color:#999">${p.v.toFixed(2)} €/h</div></div><div class="pb"><div class="pbi"><div class="pbi-l">Provision</div><div class="pbi-v" style="color:#1565c0">${eu(pv)}</div></div><div class="pbi"><div class="pbi-l">Dépensé</div><div class="pbi-v" style="color:#c0392b">${eu(dt)}</div></div><div class="pbi"><div class="pbi-l">Écart</div><div class="pbi-v" style="color:${ec>=0?'var(--gd)':'#c0392b'}">${ec>=0?'+':''}${eu(ec)}</div></div></div></div>`;
+  }).join('');
+  const tD=deps.reduce((s,d)=>s+(d.montant||0),0);
+  if(tD>0){const el=document.getElementById('dhp');el.style.display='flex';document.getElementById('dhpv').textContent='−'+eu(tD);}
+}
+
+window.opP=k=>{
+  curPoste=k;const p=COUTS[k];const tH=chantiers.reduce((s,c)=>s+calc(c).hto,0);
+  const pv=p.v*tH;const pd=postes[k]||{depenses:[]};const ds=pd.depenses||[];
+  const dt=ds.reduce((s,d)=>s+(d.montant||0),0);const ec=pv-dt;
+  document.getElementById('mpn').textContent=p.l;
+  document.getElementById('mpl').value='';document.getElementById('mpm').value='';document.getElementById('mpmsg').textContent='';
+  document.getElementById('mpk').innerHTML=`<div class="kp"><div class="kl">Provision</div><div class="kv" style="color:#1565c0;font-size:15px">${eu(pv)}</div><div class="ks">${p.v.toFixed(2)} €/h · ${tH.toFixed(1)}h</div></div><div class="kp r"><div class="kl">Dépensé</div><div class="kv" style="font-size:15px">${eu(dt)}</div></div><div class="kp ${ec>=0?'g':'r'}"><div class="kl">Écart</div><div class="kv" style="font-size:15px;color:${ec>=0?'var(--gd)':'#c0392b'}">${ec>=0?'+':''}${eu(ec)}</div></div>`;
+  document.getElementById('mpd').innerHTML=ds.length?ds.map(d=>`<div class="cr"><div><div style="font-weight:600">${d.label||'—'}</div><div style="font-size:11px;color:#999">${fd(d.date)}</div></div><div style="font-weight:700;color:#c0392b">−${eu(d.montant)}</div></div>`).join(''):'<div style="font-size:13px;color:#999;padding:8px 0">Aucune dépense saisie</div>';
+  document.getElementById('mposte').classList.add('open');
+};
+
+window.saveDep=async()=>{
+  const l=document.getElementById('mpl').value,m=parseFloat(document.getElementById('mpm').value),dt=document.getElementById('mpdt').value;
+  if(!l||!m||!dt){document.getElementById('mpmsg').textContent='⚠ Remplis tous les champs';return;}
+  document.getElementById('mpmsg').textContent='Enregistrement…';
+  try{
+    const ref=doc(db,'postes',curPoste);
+    if(postes[curPoste])await updateDoc(ref,{depenses:arrayUnion({label:l,montant:m,date:dt})});
+    else await setDoc(ref,{depenses:[{label:l,montant:m,date:dt}]});
+    document.getElementById('mpmsg').textContent='✓ Ajouté !';
+    document.getElementById('mpl').value='';document.getElementById('mpm').value='';
+    setTimeout(()=>{cm('mposte');rPostes();},800);
+  }catch(e){document.getElementById('mpmsg').textContent='Erreur';}
+};
+
+window.saveEnc=async()=>{
+  const cl=document.getElementById('ecl').value,mt=parseFloat(document.getElementById('emt').value),dt=document.getElementById('edt').value;
+  if(!cl||!mt||!dt){tst('⚠ Remplis tous les champs');return;}
+  try{
+    await addDoc(collection(db,'encaissements'),{client:cl,montant:mt,date:dt,ref:document.getElementById('erf').value,paid:false,createdAt:new Date().toISOString()});
+    document.getElementById('emsg').textContent='✓ Ajouté !';
+    document.getElementById('ecl').value='';document.getElementById('emt').value='';
+    setTimeout(()=>document.getElementById('emsg').textContent='',2000);
+  }catch(e){tst('Erreur');}
+};
+
+function rEnc(){
+  const now=new Date();now.setHours(0,0,0,0);
+  const att=encs.filter(e=>!e.paid),pay=encs.filter(e=>e.paid);
+  document.getElementById('eat').innerHTML=att.length?att.map(e=>{
+    const dp=new Date(e.date),diff=dj(dp);
+    const cl=diff<0?'br':diff<=7?'bo':'bg';
+    const lb=diff<0?`+${-diff}j retard`:diff===0?'Auj.':`J-${diff}`;
+    return`<div class="er"><div><div style="font-weight:600">${e.client||'—'}</div><div style="font-size:11px;color:#999">Éch. ${fd(e.date)}${e.ref?' · '+e.ref:''}</div></div><div style="display:flex;align-items:center;gap:6px"><div style="text-align:right"><div style="font-weight:700">${eu(e.montant)}</div><span class="bdg ${cl}">${lb}</span></div><button class="ck" onclick="payE('${e.id}')">✓</button></div></div>`;
+  }).join(''):'<div style="font-size:13px;color:#999;padding:8px 0">Aucun encaissement en attente</div>';
+  document.getElementById('epd').innerHTML=pay.length?pay.slice(0,10).map(e=>`<div class="er"><div><div style="font-weight:600">${e.client||'—'}</div><div style="font-size:11px;color:#999">${eu(e.montant)}</div></div><span class="bdg bg">Payé ✓</span></div>`).join(''):'<div style="font-size:13px;color:#999;padding:8px 0">Aucun paiement reçu</div>';
+}
+window.payE=async id=>{try{await updateDoc(doc(db,'encaissements',id),{paid:true});tst('✓ Paiement validé !');}catch(e){tst('Erreur');}};
+
+function rCh(){
+  if(!charges.length){document.getElementById('chlist').innerHTML='<div style="font-size:13px;color:#999">Aucune charge</div>';document.getElementById('chtot').style.display='none';return;}
+  let tot=0;
+  document.getElementById('chlist').innerHTML=charges.map(c=>{tot+=c.montant||0;return`<div class="cr"><div><div style="font-weight:600">${c.label||'—'}</div><div style="font-size:11px;color:#999">Le ${c.jour||'?'} · ${c.freq||'mensuel'}</div></div><div style="font-weight:700;color:#c0392b">−${eu(c.montant)}</div></div>`;}).join('');
+  const el=document.getElementById('chtot');el.style.display='flex';document.getElementById('chtotv').textContent='−'+eu(tot);
+}
+window.saveCh=async()=>{
+  const l=document.getElementById('chl').value,m=parseFloat(document.getElementById('chm').value),j=parseInt(document.getElementById('chj').value)||1,f=document.getElementById('chf').value;
+  if(!l||!m){tst('⚠ Remplis tous les champs');return;}
+  try{await addDoc(collection(db,'charges'),{label:l,montant:m,jour:j,freq:f,createdAt:new Date().toISOString()});document.getElementById('chmsg').textContent='✓ Ajoutée !';document.getElementById('chl').value='';document.getElementById('chm').value='';setTimeout(()=>document.getElementById('chmsg').textContent='',2000);}catch(e){tst('Erreur');}
+};
+window.saveFac=async()=>{
+  const l=document.getElementById('fl').value,m=parseFloat(document.getElementById('fm').value),d=document.getElementById('fd2').value,c=document.getElementById('fc').value||'divers';
+  if(!l||!m||!d){tst('⚠ Remplis tous les champs');return;}
+  try{await addDoc(collection(db,'depenses'),{label:l,montant:m,date:d,cat:c,createdAt:new Date().toISOString()});document.getElementById('fmsg').textContent='✓ Enregistrée !';document.getElementById('fl').value='';document.getElementById('fm').value='';document.getElementById('fc').value='';setTimeout(()=>document.getElementById('fmsg').textContent='',2000);}catch(e){tst('Erreur');}
+};
+window.editSolde=()=>{document.getElementById('sinp').value=solde||'';document.getElementById('msolde').classList.add('open');};
+window.svSolde=async()=>{const v=parseFloat(document.getElementById('sinp').value)||0;try{await setDoc(doc(db,'config','solde'),{val:v});tst('✓ Solde mis à jour');cm('msolde');}catch(e){tst('Erreur');}};
+
+function rCl(){
+  document.getElementById('cllist').innerHTML=clients.length?clients.map(c=>{
+    const sc=c.statut==='client'?'bg':c.statut==='prospect'?'bo':'';
+    return`<div class="lr"><div><div style="font-weight:600">${c.prenom||''} ${c.nom||''} ${c.entreprise?'· '+c.entreprise:''}</div><div style="font-size:11px;color:#999">${c.tel||''} ${c.email?'· '+c.email:''}</div></div><span class="bdg ${sc}">${c.statut||'—'}</span></div>`;
+  }).join(''):'<div style="font-size:13px;color:#999">Aucun client</div>';
+}
+window.saveCl=async()=>{
+  const n=document.getElementById('cln').value;if(!n){tst('⚠ Renseigne le nom');return;}
+  try{await addDoc(collection(db,'clients'),{prenom:document.getElementById('clp').value,nom:n,entreprise:document.getElementById('cle').value,tel:document.getElementById('clt').value,email:document.getElementById('clm').value,statut:document.getElementById('cls').value,prix:parseFloat(document.getElementById('clx').value)||85,createdAt:new Date().toISOString()});document.getElementById('clmsg').textContent='✓ Enregistré !';['clp','cln','cle','clt','clm','clx'].forEach(id=>document.getElementById(id).value='');setTimeout(()=>document.getElementById('clmsg').textContent='',2000);}catch(e){tst('Erreur');}
+};
+
+function rGz(){
+  if(!gazoles.length){document.getElementById('cval').textContent='—';document.getElementById('csub').textContent='Aucune donnée';document.getElementById('glist').innerHTML='<div style="font-size:13px;color:#999">Aucun plein saisi</div>';return;}
+  const sorted=[...gazoles].sort((a,b)=>new Date(a.date)-new Date(b.date));
+  let tL=0,tH=0;
+  for(let i=1;i<sorted.length;i++){const dH=sorted[i].compteur-sorted[i-1].compteur;if(dH>0){tL+=sorted[i].litres||0;tH+=dH;}}
+  const co=tH>0?(tL/tH):0;
+  document.getElementById('cval').textContent=co>0?co.toFixed(1):'—';
+  document.getElementById('csub').textContent=`Calculée sur ${tH.toFixed(0)}h · ${tL.toFixed(0)}L total`;
+  document.getElementById('glist').innerHTML=gazoles.slice(0,10).map(g=>`<div class="cr"><div><div style="font-weight:600">${(g.litres||0).toFixed(2)}L — ${(g.prix||0).toFixed(3)} €/L</div><div style="font-size:11px;color:#999">${fd(g.date)} · ${g.compteur||'?'}h</div></div><div style="font-weight:600;color:#c0392b">${eu((g.litres||0)*(g.prix||0))}</div></div>`).join('');
+}
+window.saveGz=async()=>{
+  const l=parseFloat(document.getElementById('gl').value),p=parseFloat(document.getElementById('gp').value),c=parseFloat(document.getElementById('gc').value),d=document.getElementById('gd').value;
+  if(!l||!p||!c||!d){tst('⚠ Remplis tous les champs');return;}
+  try{await addDoc(collection(db,'gazoles'),{litres:l,prix:p,compteur:c,date:d,createdAt:new Date().toISOString()});document.getElementById('gmsg').textContent='✓ Plein enregistré !';document.getElementById('gl').value='';document.getElementById('gp').value='';document.getElementById('gc').value='';setTimeout(()=>document.getElementById('gmsg').textContent='',2000);}catch(e){tst('Erreur');}
+};
+
+window.cm=id=>document.getElementById(id).classList.remove('open');
+document.querySelectorAll('.modal-bg').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('open');}));
 </script>
 </body>
 </html>
