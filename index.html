@@ -65,6 +65,7 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
 .bon-act{display:flex;gap:8px}
 .btn-voir{flex:1;height:36px;background:var(--bg4);border:1px solid var(--bor2);border-radius:8px;color:#ccc;font-size:12px;font-weight:600;cursor:pointer;font-family:'Montserrat',sans-serif}
 .btn-pdf{flex:1;height:36px;background:var(--green);border:none;border-radius:8px;color:var(--bg);font-size:12px;font-weight:800;cursor:pointer;font-family:'Montserrat',sans-serif}
+.btn-del{width:36px;height:36px;background:transparent;border:1px solid #c0392b;border-radius:8px;color:#c0392b;font-size:14px;cursor:pointer;flex-shrink:0}
 .mok{text-align:center;font-size:13px;color:var(--green);min-height:18px;margin-top:8px;font-weight:600}
 .i2-top{background:#fff;padding:11px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f0f0f0;position:sticky;top:0;z-index:50}
 .i2-logo{height:32px;padding:0 12px;background:var(--gd);border-radius:7px;display:inline-flex;align-items:center;font-size:12px;font-weight:800;color:#fff;letter-spacing:.5px}
@@ -513,7 +514,8 @@ function ia1(){
   document.getElementById('i1d').textContent=new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
   const c=document.getElementById('sig-c');
   c.width=c.offsetWidth||320;c.height=110;
-  // Fond blanc
+  // Fond blanc FORCE
+  c.style.background='#ffffff';
   const ctx=c.getContext('2d');
   ctx.fillStyle='#ffffff';ctx.fillRect(0,0,c.width,c.height);
   // Dessin tactile maison — trait noir opaque garanti
@@ -544,7 +546,7 @@ function ia1(){
   onSnapshot(query(collection(db,'bons'),orderBy('date','desc')),s=>{bons=s.docs.map(d=>({id:d.id,...d.data()}));rBons();});
 }
 
-window.clrSig=()=>{if(window._clearSigCanvas)window._clearSigCanvas();};
+window.clrSig=()=>{if(window._clearSigCanvas){window._clearSigCanvas();ctx.fillStyle='#ffffff';ctx.fillRect(0,0,c.width,c.height);}};
 window.t1=(b,t)=>{document.querySelectorAll('.i1-nb').forEach(x=>x.classList.remove('on'));b.classList.add('on');document.getElementById('i1-bon').classList.toggle('on',t==='bon');document.getElementById('i1-bons').classList.toggle('on',t==='bons');};
 
 window.saveBon=async()=>{
@@ -589,8 +591,16 @@ function rBons(){
   if(rec.length)h+=`<div class="i1-card"><div class="i1-tag">Bons récents</div>${rec.slice(0,15).map(bI).join('')}</div>`;
   el.innerHTML=h;
 }
-function bI(b){return`<div class="bon-item"><div class="bon-top"><div class="bon-name">${b.client||'—'}</div><span style="color:var(--green);font-weight:700;font-size:12px">Signé ✓</span></div><div class="bon-sub">${fd(b.date)} · ${b.hn||'—'} norm · ${b.ht||'—'} transf · LDV: ${b.ldv||'—'}</div><div class="bon-act"><button class="btn-voir" onclick="vBon('${b.id}')">👁 Voir</button><button class="btn-pdf" onclick="vBon('${b.id}',true)">📄 PDF</button></div></div>`;}
+function bI(b){return`<div class="bon-item"><div class="bon-top"><div class="bon-name">${b.client||'—'}</div><span style="color:var(--green);font-weight:700;font-size:12px">Signé ✓</span></div><div class="bon-sub">${fd(b.date)} · ${b.hn||'—'} norm · ${b.ht||'—'} transf · LDV: ${b.ldv||'—'}</div><div class="bon-act"><button class="btn-voir" onclick="vBon('${b.id}')">👁 Voir</button><button class="btn-pdf" onclick="vBon('${b.id}',true)">📄 PDF</button><button class="btn-del" onclick="delBon('${b.id}')">🗑</button></div></div>`;}
 
+window.delBon=(id)=>{
+  const pin=prompt('Code PIN pour supprimer ce bon :');
+  if(pin!=='1131'){tst('⚠ Code incorrect');return;}
+  if(!confirm('Supprimer ce bon définitivement ?'))return;
+  import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js').then(({deleteDoc,doc:fdoc})=>{
+    deleteDoc(fdoc(db,'bons',id)).then(()=>tst('✓ Bon supprimé')).catch(()=>tst('Erreur suppression'));
+  });
+};
 window.vBon=(id,pdf=false)=>{
   const b=bons.find(x=>x.id===id);if(!b)return;
   curBon=b;
