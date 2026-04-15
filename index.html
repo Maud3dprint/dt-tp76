@@ -336,9 +336,19 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
 
     <div class="i2-p" id="i2-treso"><div class="inn">
       <div class="soldc">
-        <div style="font-size:12px;opacity:.8;margin-bottom:4px">Solde actuel</div>
+        <div style="font-size:12px;opacity:.8;margin-bottom:4px">Solde calculé automatiquement</div>
         <div style="font-size:30px;font-weight:800" id="sval">—</div>
-        <button onclick="editSolde()" style="margin-top:10px;background:rgba(255,255,255,.2);border:none;border-radius:8px;padding:6px 14px;color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:'Montserrat',sans-serif">Modifier</button>
+        <button onclick="editSolde()" style="margin-top:10px;background:rgba(255,255,255,.2);border:none;border-radius:8px;padding:6px 14px;color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:'Montserrat',sans-serif">Modifier le solde de départ</button>
+      </div>
+      <div class="card" id="solde-detail">
+        <div class="ctag">Détail du calcul</div>
+        <div class="cr"><span>Solde de départ</span><span id="sd-base" style="font-weight:700;color:var(--gd)">—</span></div>
+        <div class="cr"><span>Charges mensuelles</span><span id="sd-charges" style="font-weight:700;color:#c0392b">—</span></div>
+        <div class="cr"><span>Dépenses / factures</span><span id="sd-deps" style="font-weight:700;color:#c0392b">—</span></div>
+        <div class="cr"><span>Encaissements reçus</span><span id="sd-encs" style="font-weight:700;color:var(--gd)">—</span></div>
+        <div style="border-top:2px solid #e0e0e0;padding-top:10px;margin-top:4px;display:flex;justify-content:space-between;font-weight:700;font-size:14px">
+          <span>Solde actuel</span><span id="sd-total" style="color:var(--gd)">—</span>
+        </div>
       </div>
       <div class="card">
         <div class="ctag">Charges mensuelles</div>
@@ -359,6 +369,10 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
         </div>
         <button class="i2-btn" onclick="saveCh()">Ajouter</button>
         <div class="mok" id="chmsg" style="color:var(--gd)"></div>
+      </div>
+      <div class="card">
+        <div class="ctag">Historique dépenses / factures</div>
+        <div id="fac-list"><div class="ldr">Chargement…</div></div>
       </div>
       <div class="card">
         <div class="ctag">Saisir une facture / dépense</div>
@@ -773,7 +787,7 @@ function ia2(){
   onSnapshot(query(collection(db,'clients'),orderBy('nom','asc')),s=>{clients=s.docs.map(d=>({id:d.id,...d.data()}));rCl();});
   onSnapshot(query(collection(db,'gazoles'),orderBy('date','desc')),s=>{gazoles=s.docs.map(d=>({id:d.id,...d.data()}));rGz();});
   onSnapshot(collection(db,'postes'),s=>{postes={};s.docs.forEach(d=>{postes[d.id]={id:d.id,...d.data()};});rPostes();});
-  onSnapshot(query(collection(db,'depenses'),orderBy('date','desc')),s=>{deps=s.docs.map(d=>({id:d.id,...d.data()}));rDash();rPostes();});
+  onSnapshot(query(collection(db,'depenses'),orderBy('date','desc')),s=>{deps=s.docs.map(d=>({id:d.id,...d.data()}));rDash();rPostes();rFacs();});
   onSnapshot(doc(db,'config','solde'),s=>{if(s.exists()){solde=s.data().val||0;document.getElementById('sval').textContent=eu(solde);}});
 }
 
@@ -800,7 +814,25 @@ function rDash(){
   const tvN=tvC-tvG;
   const now=new Date();now.setHours(0,0,0,0);
   const ret=encs.filter(e=>!e.paid&&e.date&&new Date(e.date)<now);
-  document.getElementById('dkpis').innerHTML=`<div class="kp g"><div class="kl">CA HT total</div><div class="kv">${eu(tCA)}</div><div class="ks">${chantiers.length} chantier(s)</div></div><div class="kp ${bn>=0?'g':'r'}"><div class="kl">Bénéfice net</div><div class="kv">${eu(bn)}</div><div class="ks">Marge − dépenses</div></div><div class="kp o"><div class="kl">TVA à reverser</div><div class="kv">${eu(tvN)}</div><div class="ks">Ce mois</div></div><div class="kp ${ret.length>0?'r':'g'}"><div class="kl">Retards paiement</div><div class="kv">${ret.length}</div></div>`;
+
+  // Calcul solde réel = solde de base - dépenses - charges prélevées ce mois + encaissements reçus
+  const moisCourant=new Date().getMonth()+1;
+  const totalDeps=deps.reduce((s,d)=>s+(d.montant||0),0);
+  const totalCharges=charges.reduce((s,c)=>s+(c.montant||0),0);
+  const totalEncsRecus=encs.filter(e=>e.paid).reduce((s,e)=>s+(e.montant||0),0);
+  const soldeReel=solde-totalDeps-totalCharges+totalEncsRecus;
+
+  // Mettre à jour l'affichage solde dans trésorerie
+  const sEl=document.getElementById('sval');
+  if(sEl) sEl.textContent=eu(soldeReel);
+  // Détail calcul
+  const sdB=document.getElementById('sd-base');if(sdB)sdB.textContent=eu(solde);
+  const sdC=document.getElementById('sd-charges');if(sdC)sdC.textContent='−'+eu(totalCharges);
+  const sdD=document.getElementById('sd-deps');if(sdD)sdD.textContent='−'+eu(totalDeps);
+  const sdE=document.getElementById('sd-encs');if(sdE)sdE.textContent='+'+eu(totalEncsRecus);
+  const sdT=document.getElementById('sd-total');if(sdT){sdT.textContent=eu(soldeReel);sdT.style.color=soldeReel>=0?'var(--gd)':'#c0392b';}
+
+  document.getElementById('dkpis').innerHTML=`<div class="kp ${soldeReel>=0?'g':'r'}"><div class="kl">Solde compte</div><div class="kv">${eu(soldeReel)}</div><div class="ks">Mis à jour auto</div></div><div class="kp ${bn>=0?'g':'r'}"><div class="kl">Bénéfice net</div><div class="kv">${eu(bn)}</div><div class="ks">Marge − dépenses</div></div><div class="kp o"><div class="kl">TVA à reverser</div><div class="kv">${eu(tvN)}</div><div class="ks">Ce mois</div></div><div class="kp ${ret.length>0?'r':'g'}"><div class="kl">Retards paiement</div><div class="kv">${ret.length}</div></div>`;
   const mn=new Date().toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
   document.getElementById('dtvatit').textContent=`TVA à déclarer — ${mn}`;
   document.getElementById('dtvabox').innerHTML=`<div class="tr"><span>TVA collectée</span><span style="color:#c0392b">+${eu(tvC)}</span></div><div class="tr"><span>TVA déductible gazole (80%)</span><span style="color:var(--gd)">−${eu(tvG)}</span></div><div class="tr"><span>Net à reverser</span><span style="color:#c0392b">${eu(tvN)}</span></div>`;
@@ -908,6 +940,13 @@ function rEnc(){
 }
 window.payE=async id=>{try{await updateDoc(doc(db,'encaissements',id),{paid:true});tst('✓ Paiement validé !');}catch(e){tst('Erreur');}};
 
+function rFacs(){
+  const el=document.getElementById('fac-list');if(!el)return;
+  if(!deps.length){el.innerHTML='<div style="font-size:13px;color:#999">Aucune dépense saisie</div>';return;}
+  const total=deps.reduce((s,d)=>s+(d.montant||0),0);
+  el.innerHTML=deps.map(d=>`<div class="cr"><div><div style="font-weight:600">${d.label||'—'}</div><div style="font-size:11px;color:#999">${fd(d.date)} · ${d.cat||'divers'}</div></div><div style="font-weight:700;color:#c0392b">−${eu(d.montant)}</div></div>`).join('')
+  +`<div style="border-top:2px solid #e0e0e0;padding-top:10px;margin-top:4px;display:flex;justify-content:space-between;font-weight:700;font-size:13px"><span>Total dépenses</span><span style="color:#c0392b">−${eu(total)}</span></div>`;
+}
 function rCh(){
   if(!charges.length){document.getElementById('chlist').innerHTML='<div style="font-size:13px;color:#999">Aucune charge</div>';document.getElementById('chtot').style.display='none';return;}
   let tot=0;
