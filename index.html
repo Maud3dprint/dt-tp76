@@ -788,7 +788,7 @@ function ia2(){
   onSnapshot(query(collection(db,'gazoles'),orderBy('date','desc')),s=>{gazoles=s.docs.map(d=>({id:d.id,...d.data()}));rGz();});
   onSnapshot(collection(db,'postes'),s=>{postes={};s.docs.forEach(d=>{postes[d.id]={id:d.id,...d.data()};});rPostes();});
   onSnapshot(query(collection(db,'depenses'),orderBy('date','desc')),s=>{deps=s.docs.map(d=>({id:d.id,...d.data()}));rDash();rPostes();rFacs();});
-  onSnapshot(doc(db,'config','solde'),s=>{if(s.exists()){solde=s.data().val||0;document.getElementById('sval').textContent=eu(solde);}});
+  onSnapshot(doc(db,'config','solde'),s=>{if(s.exists()){solde=s.data().val||0;}else{solde=0;}rDash();rFacs();});
 }
 
 window.gp=p=>{PGS.forEach(t=>document.getElementById('i2-'+t).classList.toggle('on',t===p));document.getElementById('bkbtn').classList.toggle('show',p!=='menu');document.getElementById('lg2').style.display=p==='menu'?'block':'none';document.getElementById('i2pt').textContent=PTIT[p]||'';if(p==='dash')rDash();};
