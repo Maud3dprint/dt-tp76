@@ -52,7 +52,7 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
 .i1-inp:focus{outline:none;border-color:var(--green)}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-.sig-wrap{border:1px solid var(--bor2);border-radius:8px;overflow:hidden;background:var(--bg4);margin-bottom:6px}
+.sig-wrap{border:2px solid var(--green);border-radius:8px;overflow:hidden;background:#ffffff !important;margin-bottom:6px}
 #sig-c{width:100%;height:110px;display:block;touch-action:none}
 .sig-clr{font-size:11px;color:var(--tx3);background:none;border:none;cursor:pointer;font-family:'Montserrat',sans-serif;padding:4px 0;margin-bottom:10px}
 .btn-reg{width:100%;height:50px;background:#fff;border:2.5px solid var(--green);border-radius:12px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px;color:var(--green);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
@@ -219,7 +219,7 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
       <div class="i1-card">
         <div class="i1-tag">Bon pour accord client</div>
         <div class="i1-field"><label>Nom du chef de chantier</label><input class="i1-inp" id="bch" placeholder="Prénom Nom"></div>
-        <div class="sig-wrap"><canvas id="sig-c"></canvas></div>
+        <div class="sig-wrap"><canvas id="sig-c" style="background:#ffffff;display:block"></canvas></div>
         <button class="sig-clr" onclick="clrSig()">✕ Effacer la signature</button>
         <button class="btn-reg" onclick="saveBon()">✓ Enregistrer le bon</button>
         <div class="mok" id="bm"></div>
@@ -513,11 +513,38 @@ function ia1(){
   document.getElementById('i1d').textContent=new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
   const c=document.getElementById('sig-c');
   c.width=c.offsetWidth||320;c.height=110;
-  sigPad=new SignaturePad(c,{backgroundColor:'rgba(0,0,0,0)',penColor:'#f0f0f0'});
+  // Fond blanc
+  const ctx=c.getContext('2d');
+  ctx.fillStyle='#ffffff';ctx.fillRect(0,0,c.width,c.height);
+  // Dessin tactile maison — trait noir opaque garanti
+  let drawing=false,lastX=0,lastY=0;
+  function getPos(e,el){
+    const r=el.getBoundingClientRect();
+    const src=e.touches?e.touches[0]:e;
+    return{x:src.clientX-r.left,y:src.clientY-r.top};
+  }
+  function startDraw(e){e.preventDefault();drawing=true;const p=getPos(e,c);lastX=p.x;lastY=p.y;}
+  function draw(e){
+    if(!drawing)return;e.preventDefault();
+    const p=getPos(e,c);
+    ctx.beginPath();ctx.moveTo(lastX,lastY);ctx.lineTo(p.x,p.y);
+    ctx.strokeStyle='#000000';ctx.lineWidth=3;ctx.lineCap='round';ctx.lineJoin='round';
+    ctx.globalAlpha=1;ctx.stroke();
+    lastX=p.x;lastY=p.y;
+  }
+  function stopDraw(){drawing=false;}
+  c.addEventListener('mousedown',startDraw);c.addEventListener('mousemove',draw);c.addEventListener('mouseup',stopDraw);
+  c.addEventListener('touchstart',startDraw,{passive:false});c.addEventListener('touchmove',draw,{passive:false});c.addEventListener('touchend',stopDraw);
+  // Effacer
+  window._clearSigCanvas=()=>{ctx.fillStyle='#ffffff';ctx.fillRect(0,0,c.width,c.height);}
+  window._isSigEmpty=()=>{
+    const d=ctx.getImageData(0,0,c.width,c.height).data;
+    for(let i=0;i<d.length;i+=4){if(d[i]<250)return false;}return true;
+  };
   onSnapshot(query(collection(db,'bons'),orderBy('date','desc')),s=>{bons=s.docs.map(d=>({id:d.id,...d.data()}));rBons();});
 }
 
-window.clrSig=()=>{if(sigPad)sigPad.clear();};
+window.clrSig=()=>{if(window._clearSigCanvas)window._clearSigCanvas();};
 window.t1=(b,t)=>{document.querySelectorAll('.i1-nb').forEach(x=>x.classList.remove('on'));b.classList.add('on');document.getElementById('i1-bon').classList.toggle('on',t==='bon');document.getElementById('i1-bons').classList.toggle('on',t==='bons');};
 
 window.saveBon=async()=>{
@@ -525,10 +552,26 @@ window.saveBon=async()=>{
   const ch=document.getElementById('bch').value;
   if(!cl){tst('⚠ Renseigne le client');return;}
   if(!ch){tst('⚠ Renseigne le chef de chantier');return;}
-  if(sigPad&&sigPad.isEmpty()){tst('⚠ Signature manquante');return;}
+  if(window._isSigEmpty&&window._isSigEmpty()){tst('⚠ Signature manquante');return;}
   document.getElementById('bm').textContent='Enregistrement…';
   try{
-    await addDoc(collection(db,'bons'),{client:cl,adresse:document.getElementById('ba').value,ldv:document.getElementById('bl').value,chef:ch,sig:sigPad?sigPad.toDataURL():'',hn:document.getElementById('bhn').value,ht:document.getElementById('bht').value,hs:document.getElementById('bhs').value,hn2:document.getElementById('bhn2').value,hw:document.getElementById('bhw').value,date:new Date().toISOString().split('T')[0],createdAt:new Date().toISOString()});
+    // Forcer la signature en noir pur avant sauvegarde
+    const sigCanvas=document.getElementById('sig-c');
+    const tmpC=document.createElement('canvas');
+    tmpC.width=sigCanvas.width;tmpC.height=sigCanvas.height;
+    const tmpX=tmpC.getContext('2d');
+    tmpX.fillStyle='#ffffff';
+    tmpX.fillRect(0,0,tmpC.width,tmpC.height);
+    tmpX.drawImage(sigCanvas,0,0);
+    const pxData=tmpX.getImageData(0,0,tmpC.width,tmpC.height);
+    for(let i=0;i<pxData.data.length;i+=4){
+      const lum=pxData.data[i]*0.299+pxData.data[i+1]*0.587+pxData.data[i+2]*0.114;
+      if(lum<240){pxData.data[i]=0;pxData.data[i+1]=0;pxData.data[i+2]=0;pxData.data[i+3]=255;}
+      else{pxData.data[i]=255;pxData.data[i+1]=255;pxData.data[i+2]=255;pxData.data[i+3]=255;}
+    }
+    tmpX.putImageData(pxData,0,0);
+    const sigData=tmpC.toDataURL('image/png');
+    await addDoc(collection(db,'bons'),{client:cl,adresse:document.getElementById('ba').value,ldv:document.getElementById('bl').value,chef:ch,sig:sigData,hn:document.getElementById('bhn').value,ht:document.getElementById('bht').value,hs:document.getElementById('bhs').value,hn2:document.getElementById('bhn2').value,hw:document.getElementById('bhw').value,date:new Date().toISOString().split('T')[0],createdAt:new Date().toISOString()});
     document.getElementById('bm').textContent='✓ Bon enregistré !';
     ['bc','ba','bl','bch','bhn','bht','bhs','bhn2','bhw'].forEach(id=>document.getElementById(id).value='');
     if(sigPad)sigPad.clear();
@@ -678,38 +721,19 @@ window.genPDF=()=>{
   };
 
   if(b.sig){
-    const img=new Image();
-    img.onload=()=>{
-      // Fond blanc dans la zone signature
-      cx.fillStyle='#ffffff';
-      cx.fillRect(mg+2,y+22,W-mg*2-4,86);
-      // Dessiner la signature avec globalCompositeOperation pour garder seulement les traits
-      const tc=document.createElement('canvas');
-      tc.width=600;tc.height=120;
-      const tx=tc.getContext('2d');
-      // Fond blanc
-      tx.fillStyle='#ffffff';
-      tx.fillRect(0,0,600,120);
-      // Dessiner l'image originale
-      tx.drawImage(img,0,0,600,120);
-      // Parcourir les pixels : si pixel sombre ou semi-transparent → noir, sinon blanc
-      const id=tx.getImageData(0,0,600,120);
-      for(let i=0;i<id.data.length;i+=4){
-        const r=id.data[i],g=id.data[i+1],b=id.data[i+2],a=id.data[i+3];
-        // Pixel de signature : alpha élevé OU couleur sombre
-        const estTrait = a > 50 || (r < 200 && g < 200 && b < 200);
-        if(estTrait){
-          id.data[i]=0;id.data[i+1]=0;id.data[i+2]=0;id.data[i+3]=255;
-        } else {
-          id.data[i]=255;id.data[i+1]=255;id.data[i+2]=255;id.data[i+3]=255;
-        }
-      }
-      tx.putImageData(id,0,0);
-      cx.drawImage(tc,mg+8,y+24,W-mg*2-16,80);
-      finalize();
-    };
-    img.onerror=finalize;
-    img.src=b.sig;
+    // Fond blanc zone signature
+    cx.fillStyle='#ffffff';
+    cx.fillRect(mg+2,y+22,W-mg*2-4,86);
+    if(b.sig){
+      const img=new Image();
+      img.onload=()=>{
+        // Dessiner l'image — elle est déjà noir sur blanc
+        cx.drawImage(img,mg+8,y+24,W-mg*2-16,80);
+        finalize();
+      };
+      img.onerror=finalize;
+      img.src=b.sig;
+    } else { finalize(); }
   } else {
     cx.font='12px Arial';
     cx.fillStyle='#cccccc';
