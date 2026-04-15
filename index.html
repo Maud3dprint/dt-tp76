@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -559,10 +560,153 @@ window.vBon=(id,pdf=false)=>{
 
 window.genPDF=()=>{
   const b=curBon;if(!b)return;
-  const w=window.open('','_blank');
-  w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Bon DT-TP76</title><style>body{font-family:Arial,sans-serif;padding:30px;max-width:600px;margin:0 auto}h1{color:#3B6D11;font-size:20px;margin-bottom:4px}.sub{color:#888;font-size:12px;margin-bottom:20px}.row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:14px}.co{font-size:12px;color:#888;margin-bottom:20px;border-bottom:2px solid #3B6D11;padding-bottom:10px}@media print{button{display:none}}</style></head><body><div class="co"><strong>DT-TP76</strong> — Divers Transport — Travaux Publics 76</div><h1>Bon de chantier</h1><div class="sub">${fd(b.date)}</div><div class="row"><span>Client</span><strong>${b.client||'—'}</strong></div><div class="row"><span>Adresse</span><span>${b.adresse||'—'}</span></div><div class="row"><span>N° Lettre de voiture</span><span>${b.ldv||'—'}</span></div><div class="row"><span>Heures normales</span><span>${b.hn||'0:00'}</span></div><div class="row"><span>Heures transfert</span><span>${b.ht||'0:00'}</span></div><div class="row"><span>Heures supplémentaires</span><span>${b.hs||'0:00'}</span></div><div class="row"><span>Heures nuit</span><span>${b.hn2||'0:00'}</span></div><div class="row"><span>Heures week-end</span><span>${b.hw||'0:00'}</span></div><div class="row"><span>Chef de chantier</span><strong>${b.chef||'—'}</strong></div>${b.sig?`<div style="margin-top:16px;border:1px solid #ddd;border-radius:8px;padding:10px;text-align:center"><div style="font-size:11px;color:#888;margin-bottom:6px">Signature pour accord</div><img src="${b.sig}" style="max-height:80px"></div>`:''}<div style="margin-top:24px;text-align:center"><button onclick="window.print()" style="background:#3B6D11;color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:14px;cursor:pointer">Imprimer / Enregistrer PDF</button></div></body></html>`);
-  w.document.close();
-};
+  tst('⏳ Génération du PDF…');
+
+  // Canvas A4 à 96dpi = 794x1123px
+  const W=794,H=1123,mg=50;
+  const cv=document.createElement('canvas');
+  cv.width=W;cv.height=H;
+  const cx=cv.getContext('2d');
+
+  // Fond blanc
+  cx.fillStyle='#ffffff';
+  cx.fillRect(0,0,W,H);
+
+  // Barre verte en-tête
+  cx.fillStyle='#3B6D11';
+  cx.fillRect(mg,mg,W-mg*2,4);
+
+  // Nom entreprise
+  cx.fillStyle='#3B6D11';
+  cx.font='bold 28px Arial';
+  cx.fillText('DT-TP76',mg,mg+40);
+
+  cx.fillStyle='#555555';
+  cx.font='14px Arial';
+  cx.fillText('Divers Transport — Travaux Publics 76',mg,mg+60);
+
+  // Titre bon
+  cx.fillStyle='#0e0e0e';
+  cx.font='bold 20px Arial';
+  cx.textAlign='right';
+  cx.fillText('Bon de chantier',W-mg,mg+40);
+  cx.fillStyle='#888888';
+  cx.font='13px Arial';
+  cx.fillText(fd(b.date),W-mg,mg+58);
+  cx.textAlign='left';
+
+  // Ligne séparatrice
+  cx.strokeStyle='#3B6D11';
+  cx.lineWidth=2;
+  cx.beginPath();cx.moveTo(mg,mg+72);cx.lineTo(W-mg,mg+72);cx.stroke();
+
+  let y=mg+95;
+
+  // Fonction section
+  const sect=(titre)=>{
+    cx.fillStyle='#3B6D11';
+    cx.fillRect(mg,y,4,20);
+    cx.font='bold 11px Arial';
+    cx.fillStyle='#3B6D11';
+    cx.fillText(titre.toUpperCase(),mg+12,y+14);
+    y+=30;
+  };
+
+  // Fonction ligne
+  const row=(k,v)=>{
+    cx.fillStyle='#f8f9f8';
+    cx.fillRect(mg,y-2,W-mg*2,26);
+    cx.font='14px Arial';
+    cx.fillStyle='#666666';
+    cx.fillText(k,mg+8,y+16);
+    cx.font='bold 14px Arial';
+    cx.fillStyle='#0e0e0e';
+    cx.textAlign='right';
+    cx.fillText(String(v||'—'),W-mg-8,y+16);
+    cx.textAlign='left';
+    cx.strokeStyle='#eeeeee';
+    cx.lineWidth=0.5;
+    cx.beginPath();cx.moveTo(mg,y+24);cx.lineTo(W-mg,y+24);cx.stroke();
+    y+=28;
+  };
+
+  sect('Informations chantier');
+  row('Client',b.client);
+  row('Adresse du chantier',b.adresse);
+  row('N° Lettre de voiture',b.ldv);
+  y+=8;
+
+  sect('Heures effectuées');
+  row('Heures normales',b.hn||'0:00');
+  row('Heures transfert',b.ht||'0:00');
+  row('Heures supplémentaires',b.hs||'0:00');
+  row('Heures nuit',b.hn2||'0:00');
+  row('Heures week-end',b.hw||'0:00');
+  y+=8;
+
+  sect('Bon pour accord');
+  row('Chef de chantier',b.chef);
+  y+=8;
+
+  // Cadre signature
+  cx.strokeStyle='#0e0e0e';
+  cx.lineWidth=1.5;
+  cx.beginPath();cx.roundRect(mg,y,W-mg*2,110,6);cx.stroke();
+  cx.font='bold 11px Arial';
+  cx.fillStyle='#444444';
+  cx.fillText('Signature — '+(b.chef||'—'),mg+10,y+18);
+
+  const finalize=()=>{
+    // Pied de page
+    cx.strokeStyle='#dddddd';
+    cx.lineWidth=1;
+    cx.beginPath();cx.moveTo(mg,H-40);cx.lineTo(W-mg,H-40);cx.stroke();
+    cx.font='11px Arial';
+    cx.fillStyle='#aaaaaa';
+    cx.textAlign='center';
+    cx.fillText('DT-TP76 · Buchy, Seine-Maritime · Bon généré le '+fd(b.date),W/2,H-20);
+    cx.textAlign='left';
+
+    // Télécharger comme image PNG (fonctionne parfaitement sur Android)
+    const link=document.createElement('a');
+    const nom='bon-'+(b.client||'chantier').replace(/\s+/g,'-')+'-'+fd(b.date).replace(/\//g,'-');
+    link.download=nom+'.png';
+    link.href=cv.toDataURL('image/png',1.0);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    tst('✓ Bon téléchargé !');
+  };
+
+  if(b.sig){
+    const img=new Image();
+    img.onload=()=>{
+      // Rendre signature en noir
+      const tc=document.createElement('canvas');
+      tc.width=img.width;tc.height=img.height;
+      const tx=tc.getContext('2d');
+      tx.fillStyle='#ffffff';tx.fillRect(0,0,tc.width,tc.height);
+      tx.drawImage(img,0,0);
+      const id=tx.getImageData(0,0,tc.width,tc.height);
+      for(let i=0;i<id.data.length;i+=4){
+        if(id.data[i+3]>30){id.data[i]=0;id.data[i+1]=0;id.data[i+2]=0;id.data[i+3]=255;}
+        else{id.data[i]=255;id.data[i+1]=255;id.data[i+2]=255;id.data[i+3]=255;}
+      }
+      tx.putImageData(id,0,0);
+      cx.drawImage(tc,mg+8,y+24,W-mg*2-16,80);
+      finalize();
+    };
+    img.onerror=finalize;
+    img.src=b.sig;
+  } else {
+    cx.font='12px Arial';
+    cx.fillStyle='#cccccc';
+    cx.textAlign='center';
+    cx.fillText('Aucune signature',W/2,y+65);
+    cx.textAlign='left';
+    finalize();
+  }
+};;
 
 // APP2
 const PGS=['menu','dash','couts','histo','postes','enc','treso','clients','gazole'];
