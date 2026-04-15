@@ -204,6 +204,7 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
         <div class="i1-field"><label>Client / Entreprise</label><input class="i1-inp" id="bc" placeholder="Ex: Via France Terrassement"></div>
         <div class="i1-field"><label>Adresse du chantier</label><input class="i1-inp" id="ba" placeholder="Adresse complète"></div>
         <div class="i1-field"><label>N° Lettre de voiture</label><input class="i1-inp" id="bl" placeholder="LDV-2025-001"></div>
+        <div class="i1-field"><label>Descriptif / Remarques</label><textarea class="i1-inp" id="bdesc" placeholder="Ex: terrassement zone nord, matériaux spéciaux…" style="height:70px;padding:10px 12px;resize:none"></textarea></div>
       </div>
       <div class="i1-card">
         <div class="i1-tag">Heures effectuées</div>
@@ -573,9 +574,9 @@ window.saveBon=async()=>{
     }
     tmpX.putImageData(pxData,0,0);
     const sigData=tmpC.toDataURL('image/png');
-    await addDoc(collection(db,'bons'),{client:cl,adresse:document.getElementById('ba').value,ldv:document.getElementById('bl').value,chef:ch,sig:sigData,hn:document.getElementById('bhn').value,ht:document.getElementById('bht').value,hs:document.getElementById('bhs').value,hn2:document.getElementById('bhn2').value,hw:document.getElementById('bhw').value,date:new Date().toISOString().split('T')[0],createdAt:new Date().toISOString()});
+    await addDoc(collection(db,'bons'),{client:cl,adresse:document.getElementById('ba').value,ldv:document.getElementById('bl').value,chef:ch,desc:document.getElementById('bdesc').value,sig:sigData,hn:document.getElementById('bhn').value,ht:document.getElementById('bht').value,hs:document.getElementById('bhs').value,hn2:document.getElementById('bhn2').value,hw:document.getElementById('bhw').value,date:new Date().toISOString().split('T')[0],createdAt:new Date().toISOString()});
     document.getElementById('bm').textContent='✓ Bon enregistré !';
-    ['bc','ba','bl','bch','bhn','bht','bhs','bhn2','bhw'].forEach(id=>document.getElementById(id).value='');
+    ['bc','ba','bl','bch','bhn','bht','bhs','bhn2','bhw','bdesc'].forEach(id=>document.getElementById(id).value='');
     if(sigPad)sigPad.clear();
     setTimeout(()=>{document.getElementById('bm').textContent='';t1(document.querySelectorAll('.i1-nb')[1],'bons');},1500);
   }catch(e){document.getElementById('bm').textContent='Erreur: '+e.message;}
@@ -605,7 +606,7 @@ window.vBon=(id,pdf=false)=>{
   const b=bons.find(x=>x.id===id);if(!b)return;
   curBon=b;
   document.getElementById('mbnt').textContent=`Bon — ${b.client||'—'}`;
-  document.getElementById('mbnc').innerHTML=`<div style="font-size:13px;line-height:2.2"><div><strong>Client :</strong> ${b.client||'—'}</div><div><strong>Adresse :</strong> ${b.adresse||'—'}</div><div><strong>N° LDV :</strong> ${b.ldv||'—'}</div><div><strong>Date :</strong> ${fd(b.date)}</div><div><strong>H. normales :</strong> ${b.hn||'0:00'}</div><div><strong>H. transfert :</strong> ${b.ht||'0:00'}</div><div><strong>H. supp. :</strong> ${b.hs||'0:00'}</div><div><strong>H. nuit :</strong> ${b.hn2||'0:00'}</div><div><strong>H. week-end :</strong> ${b.hw||'0:00'}</div><div><strong>Chef de chantier :</strong> ${b.chef||'—'}</div></div>${b.sig?`<div style="margin-top:12px;border:1px solid #e0e0e0;border-radius:8px;overflow:hidden;background:#f9f9f9"><div style="font-size:11px;color:#999;padding:6px 10px">Signature</div><img src="${b.sig}" style="width:100%;display:block;max-height:100px;object-fit:contain"></div>`:''}`;
+  document.getElementById('mbnc').innerHTML=`<div style="font-size:13px;line-height:2.2"><div><strong>Client :</strong> ${b.client||'—'}</div><div><strong>Adresse :</strong> ${b.adresse||'—'}</div><div><strong>N° LDV :</strong> ${b.ldv||'—'}</div><div><strong>Date :</strong> ${fd(b.date)}</div><div><strong>H. normales :</strong> ${b.hn||'0:00'}</div><div><strong>H. transfert :</strong> ${b.ht||'0:00'}</div><div><strong>H. supp. :</strong> ${b.hs||'0:00'}</div><div><strong>H. nuit :</strong> ${b.hn2||'0:00'}</div><div><strong>H. week-end :</strong> ${b.hw||'0:00'}</div><div><strong>Chef de chantier :</strong> ${b.chef||'—'}</div>${b.desc?`<div><strong>Descriptif :</strong> ${b.desc}</div>`:''}</div>${b.sig?`<div style="margin-top:12px;border:1px solid #e0e0e0;border-radius:8px;overflow:hidden;background:#f9f9f9"><div style="font-size:11px;color:#999;padding:6px 10px">Signature</div><img src="${b.sig}" style="width:100%;display:block;max-height:100px;object-fit:contain"></div>`:''}`;
   document.getElementById('mbon').classList.add('open');
   if(pdf)setTimeout(genPDF,200);
 };
@@ -698,6 +699,7 @@ window.genPDF=()=>{
 
   sect('Bon pour accord');
   row('Chef de chantier',b.chef);
+  if(b.desc){row('Descriptif',b.desc);}
   y+=8;
 
   // Cadre signature
