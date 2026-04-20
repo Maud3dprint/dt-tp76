@@ -303,10 +303,7 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
     </div></div>
 
     <div class="i2-p" id="i2-histo"><div class="inn">
-      <div class="hw"><table class="ht">
-        <thead><tr><th>Date</th><th>Client</th><th>H.</th><th>CA HT</th><th>Marge</th><th>%</th><th>Paiement</th><th></th></tr></thead>
-        <tbody id="hbody"><tr><td colspan="7" class="ldr">Chargement…</td></tr></tbody>
-      </table></div>
+      <div id="histo-cards"><div class="ldr">Chargement…</div></div>
       <div class="kg" style="margin-top:12px" id="htot"></div>
     </div></div>
 
@@ -999,6 +996,16 @@ function rDash(){
   document.getElementById('dret').innerHTML=ret.length?alerteHtml+ret.map(e=>{const diff=-dj(new Date(e.date));return`<div class="er"><div><div style="font-weight:600">${e.client||'—'}</div><div style="font-size:11px;color:#999">Éch. ${fd(e.date)} — +${diff}j</div></div><div><span class="bdg br">+${diff}j</span><div style="font-weight:700;color:#c0392b;margin-top:2px">${eu(e.montant)}</div></div></div>`;}).join(''):'<div style="font-size:13px;color:#999;padding:8px 0">Aucun retard 🎉</div>';
 }
 
+window.delChantier=async(id)=>{
+  const pin=prompt('Code PIN pour supprimer :');
+  if(pin!=='19891986'){tst('⚠ Code incorrect');return;}
+  if(!confirm('Supprimer ce chantier définitivement ?'))return;
+  try{
+    const{deleteDoc,doc:fd2}=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+    await deleteDoc(fd2(db,'chantiers',id));
+    tst('✓ Chantier supprimé');
+  }catch(e){tst('Erreur suppression');}
+};
 window.prefillCout=(id)=>{
   const c=chantiers.find(x=>x.id===id);if(!c)return;
   document.getElementById('cc').value=c.client||'';
@@ -1048,12 +1055,13 @@ window.saveC=async()=>{
     document.getElementById('cmsg').textContent='✓ Enregistré !';
     ['cc','chp','cht'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('cprev').style.display='none';
+    document.getElementById('cout-edit-id').value='';
     setTimeout(()=>{document.getElementById('cmsg').textContent='';document.getElementById('cmsg').style.color='var(--gd)';gp('histo');},1500);
   }catch(e){document.getElementById('cmsg').textContent='Erreur: '+e.message;}
 };
 
 function rHisto(){
-  if(!chantiers.length){document.getElementById('hbody').innerHTML='<tr><td colspan="7" class="ldr">Aucun chantier</td></tr>';return;}
+  if(!chantiers.length){document.getElementById('histo-cards').innerHTML='<div class="ldr">Aucun chantier</div>';return;}
   let tCA=0,tM=0;
   document.getElementById('hbody').innerHTML=chantiers.map(c=>{
     const r=calc(c);const dp=dP(c.date,c.delai);const diff=dj(dp);
