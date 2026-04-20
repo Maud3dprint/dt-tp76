@@ -638,6 +638,27 @@ window.saveBon=async()=>{
       await addDoc(collection(db,'bons'),{...bonData,createdAt:new Date().toISOString()});
     }
     document.getElementById('bm').textContent='✓ Bon enregistré !';
+    // Créer automatiquement un chantier pré-rempli dans l'interface 2
+    if(!bonEditId){
+      try{
+        await addDoc(collection(db,'chantiers'),{
+          client:cl,
+          date:bonData.date,
+          hprod:bonData.hn,
+          htransf:bonData.ht,
+          // Valeurs par défaut à compléter par Sam
+          prix:85,
+          carbu:2.25,
+          tva:20,
+          reduc:0,
+          delai:'30fm',
+          // Marqué comme "à compléter"
+          aCompleter:true,
+          bonRef:bonData.ldv||'',
+          createdAt:new Date().toISOString()
+        });
+      }catch(e){console.log('Chantier auto non créé:',e);}
+    }
     ['bc','ba','bl','bch','bhn','bht','bhs','bhn2','bhw','bdesc'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('bdate').value=new Date().toISOString().split('T')[0];
     window._sigModified=false;
@@ -962,9 +983,39 @@ function rDash(){
       <span style="color:${tvNPrev>=0?'#c0392b':'var(--gd)'};">${eu(Math.abs(tvNPrev))}</span>
     </div>
   `;
-  document.getElementById('dret').innerHTML=ret.length?ret.map(e=>{const diff=-dj(new Date(e.date));return`<div class="er"><div><div style="font-weight:600">${e.client||'—'}</div><div style="font-size:11px;color:#999">Éch. ${fd(e.date)} — +${diff}j</div></div><div><span class="bdg br">+${diff}j</span><div style="font-weight:700;color:#c0392b;margin-top:2px">${eu(e.montant)}</div></div></div>`;}).join(''):'<div style="font-size:13px;color:#999;padding:8px 0">Aucun retard 🎉</div>';
+  // Alertes chantiers à compléter
+  const aCompleter=chantiers.filter(c=>c.aCompleter);
+  const dashRetEl=document.getElementById('dret');
+  let alerteHtml='';
+  if(aCompleter.length){
+    alerteHtml=`<div style="background:#fff3e0;border:1px solid #ffe0b2;border-radius:8px;padding:10px;margin-bottom:10px;font-size:13px">
+      <div style="font-weight:700;color:#e65100;margin-bottom:6px">⚠ ${aCompleter.length} chantier(s) à compléter</div>
+      ${aCompleter.map(c=>`<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #ffe0b2">
+        <span>${c.client||'—'} · ${fd(c.date)}</span>
+        <button onclick="goPage('couts');prefillCout('${c.id}')" style="background:#e65100;color:#fff;border:none;border-radius:6px;padding:3px 10px;font-size:11px;cursor:pointer;font-weight:600;font-family:'Montserrat',sans-serif">Compléter →</button>
+      </div>`).join('')}
+    </div>`;
+  }
+  document.getElementById('dret').innerHTML=ret.length?alerteHtml+ret.map(e=>{const diff=-dj(new Date(e.date));return`<div class="er"><div><div style="font-weight:600">${e.client||'—'}</div><div style="font-size:11px;color:#999">Éch. ${fd(e.date)} — +${diff}j</div></div><div><span class="bdg br">+${diff}j</span><div style="font-weight:700;color:#c0392b;margin-top:2px">${eu(e.montant)}</div></div></div>`;}).join(''):'<div style="font-size:13px;color:#999;padding:8px 0">Aucun retard 🎉</div>';
 }
 
+window.prefillCout=(id)=>{
+  const c=chantiers.find(x=>x.id===id);if(!c)return;
+  document.getElementById('cc').value=c.client||'';
+  document.getElementById('cd').value=c.date||'';
+  document.getElementById('chp').value=c.hprod||'';
+  document.getElementById('cht').value=c.htransf||'';
+  document.getElementById('cpx').value=c.prix||85;
+  document.getElementById('cgz').value=c.carbu||2.25;
+  document.getElementById('ctv').value=c.tva||20;
+  document.getElementById('crd').value=c.reduc||0;
+  document.getElementById('cdel').value=c.delai||'30fm';
+  // Stocker l'ID pour mise à jour au lieu de création
+  document.getElementById('cout-edit-id').value=id;
+  document.getElementById('cmsg').textContent='Chantier pré-rempli — complète et enregistre';
+  document.getElementById('cmsg').style.color='#e65100';
+  updPP();
+};
 window.prevC=()=>{
   const x={hprod:document.getElementById('chp').value,htransf:document.getElementById('cht').value,prix:parseFloat(document.getElementById('cpx').value)||85,carbu:parseFloat(document.getElementById('cgz').value)||2.25,tva:parseFloat(document.getElementById('ctv').value)||20,reduc:parseFloat(document.getElementById('crd').value)||0};
   const r=calc(x);
@@ -983,12 +1034,19 @@ window.saveC=async()=>{
   if(!cl){tst('⚠ Renseigne le client');return;}
   if(!dt){tst('⚠ Renseigne la date');return;}
   document.getElementById('cmsg').textContent='Enregistrement…';
+  const coutEditId=document.getElementById('cout-edit-id').value;
+  const cData={client:cl,date:dt,delai:document.getElementById('cdel').value,hprod:document.getElementById('chp').value,htransf:document.getElementById('cht').value,prix:parseFloat(document.getElementById('cpx').value)||85,carbu:parseFloat(document.getElementById('cgz').value)||2.25,tva:parseFloat(document.getElementById('ctv').value)||20,reduc:parseFloat(document.getElementById('crd').value)||0,aCompleter:false};
   try{
-    await addDoc(collection(db,'chantiers'),{client:cl,date:dt,delai:document.getElementById('cdel').value,hprod:document.getElementById('chp').value,htransf:document.getElementById('cht').value,prix:parseFloat(document.getElementById('cpx').value)||85,carbu:parseFloat(document.getElementById('cgz').value)||2.25,tva:parseFloat(document.getElementById('ctv').value)||20,reduc:parseFloat(document.getElementById('crd').value)||0,createdAt:new Date().toISOString()});
+    if(coutEditId){
+      await updateDoc(doc(db,'chantiers',coutEditId),cData);
+      document.getElementById('cout-edit-id').value='';
+    } else {
+      await addDoc(collection(db,'chantiers'),{...cData,createdAt:new Date().toISOString()});
+    }
     document.getElementById('cmsg').textContent='✓ Enregistré !';
     ['cc','chp','cht'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('cprev').style.display='none';
-    setTimeout(()=>{document.getElementById('cmsg').textContent='';gp('histo');},1500);
+    setTimeout(()=>{document.getElementById('cmsg').textContent='';document.getElementById('cmsg').style.color='var(--gd)';gp('histo');},1500);
   }catch(e){document.getElementById('cmsg').textContent='Erreur: '+e.message;}
 };
 
