@@ -304,7 +304,7 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
 
     <div class="i2-p" id="i2-histo"><div class="inn">
       <div class="hw"><table class="ht">
-        <thead><tr><th>Date</th><th>Client</th><th>H.</th><th>CA HT</th><th>Marge</th><th>%</th><th>Paiement</th></tr></thead>
+        <thead><tr><th>Date</th><th>Client</th><th>H.</th><th>CA HT</th><th>Marge</th><th>%</th><th>Paiement</th><th></th></tr></thead>
         <tbody id="hbody"><tr><td colspan="7" class="ldr">Chargement…</td></tr></tbody>
       </table></div>
       <div class="kg" style="margin-top:12px" id="htot"></div>
@@ -1010,11 +1010,13 @@ window.prefillCout=(id)=>{
   document.getElementById('ctv').value=c.tva||20;
   document.getElementById('crd').value=c.reduc||0;
   document.getElementById('cdel').value=c.delai||'30fm';
-  // Stocker l'ID pour mise à jour au lieu de création
   document.getElementById('cout-edit-id').value=id;
-  document.getElementById('cmsg').textContent='Chantier pré-rempli — complète et enregistre';
-  document.getElementById('cmsg').style.color='#e65100';
+  document.getElementById('cmsg').textContent=c.aCompleter?'⚠ Chantier à compléter — remplis le prix, gazole, TVA et délai':'✏️ Mode modification — modifie et enregistre';
+  document.getElementById('cmsg').style.color=c.aCompleter?'#e65100':'#3B6D11';
+  document.getElementById('cprev').style.display='none';
   updPP();
+  // Scroll vers le haut du formulaire
+  document.getElementById('cc').scrollIntoView({behavior:'smooth',block:'start'});
 };
 window.prevC=()=>{
   const x={hprod:document.getElementById('chp').value,htransf:document.getElementById('cht').value,prix:parseFloat(document.getElementById('cpx').value)||85,carbu:parseFloat(document.getElementById('cgz').value)||2.25,tva:parseFloat(document.getElementById('ctv').value)||20,reduc:parseFloat(document.getElementById('crd').value)||0};
