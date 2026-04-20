@@ -571,7 +571,7 @@ function ia1(){
     const src=e.touches?e.touches[0]:e;
     return{x:src.clientX-r.left,y:src.clientY-r.top};
   }
-  function startDraw(e){e.preventDefault();drawing=true;const p=getPos(e,c);lastX=p.x;lastY=p.y;}
+  function startDraw(e){e.preventDefault();drawing=true;const p=getPos(e,c);lastX=p.x;lastY=p.y;window._sigModified=true;}
   function draw(e){
     if(!drawing)return;e.preventDefault();
     const p=getPos(e,c);
@@ -600,25 +600,35 @@ window.saveBon=async()=>{
   const ch=document.getElementById('bch').value;
   if(!cl){tst('⚠ Renseigne le client');return;}
   if(!ch){tst('⚠ Renseigne le chef de chantier');return;}
-  if(window._isSigEmpty&&window._isSigEmpty()){tst('⚠ Signature manquante');return;}
+  const isEditMode=!!document.getElementById('bon-edit-id').value;
+  if(!isEditMode&&window._isSigEmpty&&window._isSigEmpty()){tst('⚠ Signature manquante');return;}
   document.getElementById('bm').textContent='Enregistrement…';
   try{
-    // Forcer la signature en noir pur avant sauvegarde
+    // Récupérer la signature — si mode modif et pas re-signée, garder l'originale
     const sigCanvas=document.getElementById('sig-c');
-    const tmpC=document.createElement('canvas');
-    tmpC.width=sigCanvas.width;tmpC.height=sigCanvas.height;
-    const tmpX=tmpC.getContext('2d');
-    tmpX.fillStyle='#ffffff';
-    tmpX.fillRect(0,0,tmpC.width,tmpC.height);
-    tmpX.drawImage(sigCanvas,0,0);
-    const pxData=tmpX.getImageData(0,0,tmpC.width,tmpC.height);
-    for(let i=0;i<pxData.data.length;i+=4){
-      const lum=pxData.data[i]*0.299+pxData.data[i+1]*0.587+pxData.data[i+2]*0.114;
-      if(lum<240){pxData.data[i]=0;pxData.data[i+1]=0;pxData.data[i+2]=0;pxData.data[i+3]=255;}
-      else{pxData.data[i]=255;pxData.data[i+1]=255;pxData.data[i+2]=255;pxData.data[i+3]=255;}
+    const bonEditIdCheck=document.getElementById('bon-edit-id').value;
+    const bonOriginal=bonEditIdCheck?bons.find(x=>x.id===bonEditIdCheck):null;
+    let sigData='';
+    if(bonOriginal&&bonOriginal.sig&&!window._sigModified){
+      // Garder la signature originale
+      sigData=bonOriginal.sig;
+    } else {
+      // Forcer noir pur sur le canvas
+      const tmpC=document.createElement('canvas');
+      tmpC.width=sigCanvas.width;tmpC.height=sigCanvas.height;
+      const tmpX=tmpC.getContext('2d');
+      tmpX.fillStyle='#ffffff';tmpX.fillRect(0,0,tmpC.width,tmpC.height);
+      tmpX.drawImage(sigCanvas,0,0);
+      const pxData=tmpX.getImageData(0,0,tmpC.width,tmpC.height);
+      for(let i=0;i<pxData.data.length;i+=4){
+        const lum=pxData.data[i]*0.299+pxData.data[i+1]*0.587+pxData.data[i+2]*0.114;
+        if(lum<240){pxData.data[i]=0;pxData.data[i+1]=0;pxData.data[i+2]=0;pxData.data[i+3]=255;}
+        else{pxData.data[i]=255;pxData.data[i+1]=255;pxData.data[i+2]=255;pxData.data[i+3]=255;}
+      }
+      tmpX.putImageData(pxData,0,0);
+      sigData=tmpC.toDataURL('image/png');
     }
-    tmpX.putImageData(pxData,0,0);
-    const sigData=tmpC.toDataURL('image/png');
+    window._sigModified=false;
     const bonEditId=document.getElementById('bon-edit-id').value;
     const bonData={client:cl,adresse:document.getElementById('ba').value,ldv:document.getElementById('bl').value,chef:ch,desc:document.getElementById('bdesc').value,sig:sigData,hn:document.getElementById('bhn').value,ht:document.getElementById('bht').value,hs:document.getElementById('bhs').value,hn2:document.getElementById('bhn2').value,hw:document.getElementById('bhw').value,date:document.getElementById('bdate').value||new Date().toISOString().split('T')[0]};
     if(bonEditId){
@@ -630,6 +640,7 @@ window.saveBon=async()=>{
     document.getElementById('bm').textContent='✓ Bon enregistré !';
     ['bc','ba','bl','bch','bhn','bht','bhs','bhn2','bhw','bdesc'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('bdate').value=new Date().toISOString().split('T')[0];
+    window._sigModified=false;
     if(sigPad)sigPad.clear();
     setTimeout(()=>{document.getElementById('bm').textContent='';t1(document.querySelectorAll('.i1-nb')[1],'bons');},1500);
   }catch(e){document.getElementById('bm').textContent='Erreur: '+e.message;}
@@ -645,7 +656,18 @@ function rBons(){
   if(rec.length)h+=`<div class="i1-card"><div class="i1-tag">Bons récents</div>${rec.slice(0,15).map(bI).join('')}</div>`;
   el.innerHTML=h;
 }
-function bI(b){return`<div class="bon-item"><div class="bon-top"><div class="bon-name">${b.client||'—'}</div><span style="color:var(--green);font-weight:700;font-size:12px">Signé ✓</span></div><div class="bon-sub">${fd(b.date)} · ${b.hn||'—'} norm · ${b.ht||'—'} transf · LDV: ${b.ldv||'—'}</div><div class="bon-act"><button class="btn-voir" onclick="vBon('${b.id}')">👁 Voir</button><button class="btn-pdf" onclick="vBon('${b.id}',true)">📄 PDF</button><button class="btn-del" onclick="delBon('${b.id}')">🗑</button></div></div>`;}
+function bI(b){return`<div class="bon-item">
+  <div class="bon-top"><div class="bon-name">${b.client||'—'}</div><span style="color:var(--green);font-weight:700;font-size:12px">Signé ✓</span></div>
+  <div class="bon-sub">${fd(b.date)} · ${b.hn||'—'} norm · ${b.ht||'—'} transf · LDV: ${b.ldv||'—'}</div>
+  <div class="bon-act">
+    <button class="btn-voir" onclick="vBon('${b.id}')">👁 Voir</button>
+    <button class="btn-pdf" onclick="vBon('${b.id}',true)">📄 PDF</button>
+  </div>
+  <div class="bon-act" style="margin-top:6px">
+    <button class="btn-voir" style="color:#e65100;border-color:#e65100" onclick="editBonDirect('${b.id}')">✏️ Modifier</button>
+    <button class="btn-del" onclick="delBon('${b.id}')">🗑</button>
+  </div>
+</div>`;}
 
 window.delBon=(id)=>{
   const pin=prompt('Code PIN pour supprimer ce bon :');
@@ -655,10 +677,14 @@ window.delBon=(id)=>{
     deleteDoc(fdoc(db,'bons',id)).then(()=>tst('✓ Bon supprimé')).catch(()=>tst('Erreur suppression'));
   });
 };
+window.editBonDirect=(id)=>{
+  const b=bons.find(x=>x.id===id);if(!b)return;
+  curBon=b;
+  editBon();
+};
 window.editBon=()=>{
   const b=curBon;if(!b)return;
   cm('mbon');
-  // Remplir le formulaire bon avec les données existantes
   document.getElementById('bc').value=b.client||'';
   document.getElementById('ba').value=b.adresse||'';
   document.getElementById('bl').value=b.ldv||'';
@@ -671,11 +697,18 @@ window.editBon=()=>{
   document.getElementById('bch').value=b.chef||'';
   document.getElementById('bdesc').value=b.desc||'';
   document.getElementById('bon-edit-id').value=b.id;
-  document.getElementById('bm').textContent='Mode modification — signe à nouveau et enregistre';
+  document.getElementById('bm').textContent='Mode modification — la signature existante est conservée';
   document.getElementById('bm').style.color='#e65100';
-  // Aller sur l'onglet nouveau bon
   t1(document.querySelectorAll('.i1-nb')[0],'bon');
-  window._clearSigCanvas&&window._clearSigCanvas();
+  // Recharger la signature existante dans le canvas
+  if(b.sig){
+    const c=document.getElementById('sig-c');
+    const ctx=c.getContext('2d');
+    ctx.fillStyle='#ffffff';ctx.fillRect(0,0,c.width,c.height);
+    const img=new Image();
+    img.onload=()=>ctx.drawImage(img,0,0,c.width,c.height);
+    img.src=b.sig;
+  }
 };
 window.vBon=(id,pdf=false)=>{
   const b=bons.find(x=>x.id===id);if(!b)return;
@@ -870,6 +903,7 @@ function rDash(){
   const tM=chantiers.reduce((s,c)=>s+calc(c).marge,0);
   const tD=deps.filter(d=>!d.type||d.type==='depense').reduce((s,d)=>s+(d.montant||0),0);
   const tE=deps.filter(d=>d.type==='entree').reduce((s,d)=>s+(d.montant||0),0);
+  // Bénéfice = marge brute des chantiers - dépenses diverses hors exploitation + entrées diverses
   const bn=tM-tD+tE;
   const tvC=mc.reduce((s,c)=>s+calc(c).tvC,0);
   const tvG=mc.reduce((s,c)=>s+calc(c).tGD,0);
@@ -908,19 +942,25 @@ function rDash(){
   document.getElementById('dkpis').innerHTML=`<div class="kp ${soldeReel>=0?'g':'r'}"><div class="kl">Solde compte</div><div class="kv">${eu(soldeReel)}</div><div class="ks">Mis à jour auto</div></div><div class="kp ${bn>=0?'g':'r'}"><div class="kl">Bénéfice net</div><div class="kv">${eu(bn)}</div><div class="ks">Marge − dépenses</div></div><div class="kp o"><div class="kl">TVA à reverser</div><div class="kv">${eu(tvN)}</div><div class="ks">Ce mois</div></div><div class="kp ${ret.length>0?'r':'g'}"><div class="kl">Retards paiement</div><div class="kv">${ret.length}</div></div>`;
   const mn=new Date().toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
   const mnPrev=new Date(new Date().getFullYear(),new Date().getMonth()-1,1).toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
-  document.getElementById('dtvatit').textContent=`TVA — ${mn}`;
+  document.getElementById('dtvatit').textContent=`TVA à déclarer`;
   document.getElementById('dtvabox').innerHTML=`
-    <div style="font-size:11px;font-weight:600;color:#e65100;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Mois en cours — ${mn}</div>
-    <div class="tr"><span>TVA collectée clients</span><span style="color:#c0392b">+${eu(tvC)}</span></div>
-    <div class="tr"><span>TVA déductible gazole (80%)</span><span style="color:var(--gd)">−${eu(tvG)}</span></div>
-    <div class="tr"><span>TVA déductible factures achats</span><span style="color:var(--gd)">−${eu(tvFacDed)}</span></div>
-    <div class="tr"><span style="font-weight:700">Net à reverser / récupérer</span><span style="font-weight:700;color:${tvN>=0?'#c0392b':'var(--gd)'};">${tvN>=0?'+':''}${eu(tvN)}</span></div>
-    <div style="border-top:2px solid #e0e0e0;margin:10px 0 6px"></div>
-    <div style="font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Mois précédent — ${mnPrev} (déclaration en cours)</div>
-    <div class="tr"><span>TVA collectée clients</span><span style="color:#c0392b">+${eu(tvCPrev)}</span></div>
-    <div class="tr"><span>TVA déductible gazole (80%)</span><span style="color:var(--gd)">−${eu(tvGPrev)}</span></div>
-    <div class="tr"><span>TVA déductible factures achats</span><span style="color:var(--gd)">−${eu(tvFacPrev)}</span></div>
-    <div class="tr"><span style="font-weight:700">Net déclaré</span><span style="font-weight:700;color:${tvNPrev>=0?'#c0392b':'var(--gd)'};">${tvNPrev>=0?'À payer: ':'À recevoir: '}${eu(Math.abs(tvNPrev))}</span></div>
+    <div style="font-size:11px;font-weight:700;color:#e65100;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">📅 Mois en cours — ${mn}</div>
+    <div class="tr"><span>TVA collectée (clients)</span><span style="color:#c0392b;font-weight:600">+${eu(tvC)}</span></div>
+    <div class="tr"><span>TVA déductible gazole (80%)</span><span style="color:var(--gd);font-weight:600">−${eu(tvG)}</span></div>
+    <div class="tr"><span>TVA déductible factures</span><span style="color:var(--gd);font-weight:600">−${eu(tvFacDed)}</span></div>
+    <div style="display:flex;justify-content:space-between;padding:10px 0;font-weight:700;font-size:15px;border-top:2px solid #e0e0e0;margin-top:6px">
+      <span>${tvN>=0?'À reverser':'À récupérer'}</span>
+      <span style="color:${tvN>=0?'#c0392b':'var(--gd)'};">${eu(Math.abs(tvN))}</span>
+    </div>
+    <div style="border-top:2px solid #f0f0f0;margin:8px 0 10px"></div>
+    <div style="font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">📅 Mois précédent — ${mnPrev}</div>
+    <div class="tr"><span>TVA collectée (clients)</span><span style="color:#c0392b;font-weight:600">+${eu(tvCPrev)}</span></div>
+    <div class="tr"><span>TVA déductible gazole (80%)</span><span style="color:var(--gd);font-weight:600">−${eu(tvGPrev)}</span></div>
+    <div class="tr"><span>TVA déductible factures</span><span style="color:var(--gd);font-weight:600">−${eu(tvFacPrev)}</span></div>
+    <div style="display:flex;justify-content:space-between;padding:10px 0;font-weight:700;font-size:15px;border-top:2px solid #e0e0e0;margin-top:6px">
+      <span>${tvNPrev>=0?'À reverser':'À récupérer'}</span>
+      <span style="color:${tvNPrev>=0?'#c0392b':'var(--gd)'};">${eu(Math.abs(tvNPrev))}</span>
+    </div>
   `;
   document.getElementById('dret').innerHTML=ret.length?ret.map(e=>{const diff=-dj(new Date(e.date));return`<div class="er"><div><div style="font-weight:600">${e.client||'—'}</div><div style="font-size:11px;color:#999">Éch. ${fd(e.date)} — +${diff}j</div></div><div><span class="bdg br">+${diff}j</span><div style="font-weight:700;color:#c0392b;margin-top:2px">${eu(e.montant)}</div></div></div>`;}).join(''):'<div style="font-size:13px;color:#999;padding:8px 0">Aucun retard 🎉</div>';
 }
@@ -973,8 +1013,16 @@ function rPostes(){
     const ec=pv-dt;
     return`<div class="pc" onclick="opP('${k}')"><div style="display:flex;justify-content:space-between;align-items:center"><div style="font-size:14px;font-weight:600">${p.l}</div><div style="font-size:11px;color:#999">${p.v.toFixed(2)} €/h</div></div><div class="pb"><div class="pbi"><div class="pbi-l">Provision</div><div class="pbi-v" style="color:#1565c0">${eu(pv)}</div></div><div class="pbi"><div class="pbi-l">Dépensé</div><div class="pbi-v" style="color:#c0392b">${eu(dt)}</div></div><div class="pbi"><div class="pbi-l">Écart</div><div class="pbi-v" style="color:${ec>=0?'var(--gd)':'#c0392b'}">${ec>=0?'+':''}${eu(ec)}</div></div></div></div>`;
   }).join('');
-  const tD=deps.reduce((s,d)=>s+(d.montant||0),0);
+  const tD=deps.filter(d=>!d.type||d.type==='depense').reduce((s,d)=>s+(d.montant||0),0);
   if(tD>0){const el=document.getElementById('dhp');el.style.display='flex';document.getElementById('dhpv').textContent='−'+eu(tD);}
+  // Total provisions
+  const totProv=Object.values(COUTS).reduce((s,p)=>s+p.v*tH,0);
+  const totDep=Object.keys(COUTS).reduce((s,k)=>{const pd=postes[k]||{depenses:[]};return s+(pd.depenses||[]).reduce((ss,d)=>ss+(d.montant||0),0);},0);
+  const ecartProv=totProv-totDep;
+  const ptEl=document.getElementById('postes-total');if(ptEl)ptEl.style.display='block';
+  const ptP=document.getElementById('pt-prov');if(ptP)ptP.textContent=eu(totProv);
+  const ptD=document.getElementById('pt-dep');if(ptD)ptD.textContent='−'+eu(totDep);
+  const ptE=document.getElementById('pt-ecart');if(ptE){ptE.textContent=(ecartProv>=0?'+':'')+eu(ecartProv);ptE.style.color=ecartProv>=0?'var(--gd)':'#c0392b';}
 }
 
 window.opP=k=>{
@@ -1134,12 +1182,12 @@ window.saveFac=async()=>{
   if(!l||!m||!d){tst('⚠ Remplis tous les champs');return;}
   try{
     if(feditId){
-      await updateDoc(doc(db,'depenses',feditId),{label:l,montant:m,date:d,cat:c,type:ftype,tva:ftva});
+      await updateDoc(doc(db,'depenses',feditId),{label:String(l),montant:Number(m),date:String(d),cat:String(c),type:String(ftype),tva:Number(ftva)});
       document.getElementById('fmsg').textContent='✓ Modifiée !';
       document.getElementById('fmsg').style.color='var(--gd)';
       document.getElementById('fac-edit-id').value='';
     } else {
-      await addDoc(collection(db,'depenses'),{label:l,montant:m,date:d,cat:c,type:ftype,tva:ftva,createdAt:new Date().toISOString()});
+      await addDoc(collection(db,'depenses'),{label:String(l),montant:Number(m),date:String(d),cat:String(c),type:String(ftype),tva:Number(ftva),createdAt:new Date().toISOString()});
       document.getElementById('fmsg').textContent='✓ Enregistrée !';
     }
     document.getElementById('fl').value='';
