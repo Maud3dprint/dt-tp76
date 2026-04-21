@@ -2,86 +2,72 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 <meta name="theme-color" content="#0e0e0e">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="DT-TP76">
-<title>DT-TP76 — Gestion</title>
+<title>DT-TP76</title>
 <link rel="manifest" href="manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <style>
-:root{--green:#82ac32;--gd:#3B6D11;--bg:#1a1a1a;--bg2:#222;--bg3:#242424;--bg4:#2e2e2e;--bor:#333;--bor2:#444;--tx:#f0f0f0;--tx2:#bbb;--tx3:#888;--tx4:#555}
+:root{--g:#82ac32;--gd:#3B6D11;--bg:#1a1a1a;--bg2:#222;--bg3:#242424;--bg4:#2e2e2e;--bor:#333;--bor2:#444;--tx:#f0f0f0;--tx2:#bbb;--tx3:#888;--tx4:#555}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-height:100vh;overflow-x:hidden}
-.pin-screen{position:fixed;inset:0;z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:20px}
-#pin1{background:var(--bg)}#pin2{background:#fff;display:none}
-.pl-dark{height:40px;padding:0 14px;background:var(--green);border-radius:8px;display:inline-flex;align-items:center;font-size:14px;font-weight:800;color:var(--bg);letter-spacing:.5px}
-.pl-light{height:40px;padding:0 14px;background:var(--gd);border-radius:8px;display:inline-flex;align-items:center;font-size:14px;font-weight:800;color:#fff;letter-spacing:.5px}
-.pt-dark{font-size:20px;font-weight:800;color:#fff;text-align:center}
-.pt-light{font-size:20px;font-weight:800;color:#0e0e0e;text-align:center}
-.ps{font-size:12px;color:#666;text-align:center;margin-top:-12px}
+.pin-sc{position:fixed;inset:0;z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:20px}
+#p1{background:var(--bg)}#p2{background:#fff;display:none}
+.pld{height:40px;padding:0 14px;background:var(--g);border-radius:8px;display:inline-flex;align-items:center;font-size:14px;font-weight:800;color:var(--bg)}
+.pll{height:40px;padding:0 14px;background:var(--gd);border-radius:8px;display:inline-flex;align-items:center;font-size:14px;font-weight:800;color:#fff}
+.ptd{font-size:20px;font-weight:800;color:#fff;text-align:center}
+.ptl{font-size:20px;font-weight:800;color:#0e0e0e;text-align:center}
+.psb{font-size:12px;color:#666;text-align:center;margin-top:-12px}
 .pdots{display:flex;gap:12px}
-.pd-d{width:13px;height:13px;border-radius:50%;border:2px solid #333;background:transparent;transition:background .15s}
-.pd-d.on{background:var(--green);border-color:var(--green)}
-.pd-l{width:13px;height:13px;border-radius:50%;border:2px solid #ddd;background:transparent;transition:background .15s}
-.pd-l.on{background:var(--gd);border-color:var(--gd)}
+.pd-d{width:13px;height:13px;border-radius:50%;border:2px solid #333;background:transparent}.pd-d.on{background:var(--g);border-color:var(--g)}
+.pd-l{width:13px;height:13px;border-radius:50%;border:2px solid #ddd;background:transparent}.pd-l.on{background:var(--gd);border-color:var(--gd)}
 .ppad{display:grid;grid-template-columns:repeat(3,70px);gap:10px}
-.pk-d{width:70px;height:70px;border-radius:50%;background:#1f1f1f;border:1px solid #2e2e2e;font-size:22px;font-weight:400;color:#f0f0f0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif}
-.pk-d:active{background:#2a2a2a}
-.pk-l{width:70px;height:70px;border-radius:50%;background:#f5f5f5;border:1px solid #e0e0e0;font-size:22px;font-weight:400;color:#0e0e0e;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif}
-.pk-l:active{background:#eee}
+.pk-d{width:70px;height:70px;border-radius:50%;background:#1f1f1f;border:1px solid #2e2e2e;font-size:22px;color:#f0f0f0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif}.pk-d:active{background:#2a2a2a}
+.pk-l{width:70px;height:70px;border-radius:50%;background:#f5f5f5;border:1px solid #e0e0e0;font-size:22px;color:#0e0e0e;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif}.pk-l:active{background:#eee}
 .perr{font-size:12px;min-height:18px;color:#e84040;text-align:center}
-.psw{font-size:12px;color:#555;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.psw{font-size:12px;color:#555;cursor:pointer;text-decoration:underline}
 #app1,#app2{display:none;min-height:100vh}
-.i1-top{background:var(--bg2);padding:11px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bor);position:sticky;top:0;z-index:50}
-.i1-logo{height:32px;padding:0 12px;background:var(--green);border-radius:7px;display:inline-flex;align-items:center;font-size:12px;font-weight:800;color:var(--bg);letter-spacing:.5px}
-.i1-date{font-size:11px;color:#fff;font-weight:500}
-.i1-nav{background:var(--green);display:flex;position:sticky;top:54px;z-index:49}
-.i1-nb{flex:1;padding:12px 8px 10px;border:none;background:transparent;font-size:12px;color:rgba(0,0,0,.4);cursor:pointer;border-bottom:3px solid transparent;font-family:'Montserrat',sans-serif;font-weight:700}
-.i1-nb.on{color:var(--bg);border-bottom-color:var(--bg);background:rgba(0,0,0,.1)}
-.i1-body{background:var(--bg);min-height:calc(100vh - 102px)}
-.i1-p{display:none;padding:14px}.i1-p.on{display:block}
-.i1-card{background:var(--bg3);border:1px solid var(--bor);border-radius:12px;padding:14px;margin-bottom:12px}
-.i1-tag{font-size:10px;color:var(--green);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
-.i1-field{margin-bottom:10px}
-.i1-field label{display:block;font-size:12px;color:var(--tx2);margin-bottom:4px;font-weight:500}
-.i1-inp{width:100%;height:40px;background:var(--bg4);border:1px solid var(--bor2);border-radius:8px;padding:0 12px;font-size:14px;color:var(--tx);font-family:'Montserrat',sans-serif}
-.i1-inp::placeholder{color:var(--tx4)}
-.i1-inp:focus{outline:none;border-color:var(--green)}
+.i1top{background:var(--bg2);padding:11px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bor);position:sticky;top:0;z-index:50}
+.i1logo{height:32px;padding:0 12px;background:var(--g);border-radius:7px;display:inline-flex;align-items:center;font-size:12px;font-weight:800;color:var(--bg)}
+.i1dt{font-size:11px;color:#fff;font-weight:500}
+.i1nav{background:var(--g);display:flex;position:sticky;top:54px;z-index:49}
+.i1nb{flex:1;padding:12px 8px 10px;border:none;background:transparent;font-size:12px;color:rgba(0,0,0,.4);cursor:pointer;border-bottom:3px solid transparent;font-family:'Montserrat',sans-serif;font-weight:700}.i1nb.on{color:var(--bg);border-bottom-color:var(--bg);background:rgba(0,0,0,.1)}
+.i1body{background:var(--bg);min-height:calc(100vh - 102px)}
+.i1pg{display:none;padding:14px}.i1pg.on{display:block}
+.i1c{background:var(--bg3);border:1px solid var(--bor);border-radius:12px;padding:14px;margin-bottom:12px}
+.i1t{font-size:10px;color:var(--g);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.i1f{margin-bottom:10px}
+.i1f label{display:block;font-size:12px;color:var(--tx2);margin-bottom:4px;font-weight:500}
+.i1i{width:100%;height:40px;background:var(--bg4);border:1px solid var(--bor2);border-radius:8px;padding:0 12px;font-size:14px;color:var(--tx);font-family:'Montserrat',sans-serif}.i1i::placeholder{color:var(--tx4)}.i1i:focus{outline:none;border-color:var(--g)}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-.sig-wrap{border:2px solid var(--green);border-radius:8px;overflow:hidden;background:#ffffff !important;margin-bottom:6px}
-#sig-c{width:100%;height:110px;display:block;touch-action:none}
-.sig-clr{font-size:11px;color:var(--tx3);background:none;border:none;cursor:pointer;font-family:'Montserrat',sans-serif;padding:4px 0;margin-bottom:10px}
-.btn-reg{width:100%;height:50px;background:#fff;border:2.5px solid var(--green);border-radius:12px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px;color:var(--green);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
-.btn-reg:active{background:#f5fae8}
-.bon-item{padding:12px 0;border-bottom:1px solid var(--bg4)}
-.bon-item:last-child{border-bottom:none}
-.bon-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px}
-.bon-name{font-weight:700;color:var(--tx);font-size:14px}
-.bon-sub{font-size:11px;color:var(--tx3);margin-bottom:8px}
-.bon-act{display:flex;gap:8px}
-.btn-voir{flex:1;height:36px;background:var(--bg4);border:1px solid var(--bor2);border-radius:8px;color:#ccc;font-size:12px;font-weight:600;cursor:pointer;font-family:'Montserrat',sans-serif}
-.btn-pdf{flex:1;height:36px;background:var(--green);border:none;border-radius:8px;color:var(--bg);font-size:12px;font-weight:800;cursor:pointer;font-family:'Montserrat',sans-serif}
-.btn-del{width:36px;height:36px;background:transparent;border:1px solid #c0392b;border-radius:8px;color:#c0392b;font-size:14px;cursor:pointer;flex-shrink:0}
-.mok{text-align:center;font-size:13px;color:var(--green);min-height:18px;margin-top:8px;font-weight:600}
-.i2-top{background:#fff;padding:11px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f0f0f0;position:sticky;top:0;z-index:50}
-.i2-logo{height:32px;padding:0 12px;background:var(--gd);border-radius:7px;display:inline-flex;align-items:center;font-size:12px;font-weight:800;color:#fff;letter-spacing:.5px}
-.bk{background:none;border:none;font-size:13px;color:var(--gd);cursor:pointer;font-weight:700;display:none;align-items:center;gap:4px}
-.bk.show{display:flex}
-.i2-pt{font-size:11px;color:#999;font-weight:500}
-.i2-body{background:#f5f5f5;min-height:calc(100vh - 54px)}
-.i2-p{display:none;padding:0}.i2-p.on{display:block}
+.sigwrap{border:2px solid var(--g);border-radius:8px;overflow:hidden;background:#fff;margin-bottom:6px}
+#sigc{width:100%;height:110px;display:block;touch-action:none;background:#fff}
+.sigclr{font-size:11px;color:var(--tx3);background:none;border:none;cursor:pointer;font-family:'Montserrat',sans-serif;padding:4px 0;margin-bottom:10px}
+.btnreg{width:100%;height:50px;background:#fff;border:2.5px solid var(--g);border-radius:12px;font-family:'Montserrat',sans-serif;font-weight:800;font-size:15px;color:var(--g);cursor:pointer}
+.bi{padding:12px 0;border-bottom:1px solid var(--bg4)}.bi:last-child{border-bottom:none}
+.bitop{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px}
+.biname{font-weight:700;color:var(--tx);font-size:14px}
+.bisub{font-size:11px;color:var(--tx3);margin-bottom:8px}
+.biact{display:flex;gap:8px}
+.bvr{flex:1;height:36px;background:var(--bg4);border:1px solid var(--bor2);border-radius:8px;color:#ccc;font-size:12px;font-weight:600;cursor:pointer;font-family:'Montserrat',sans-serif}
+.bpdf{flex:1;height:36px;background:var(--g);border:none;border-radius:8px;color:var(--bg);font-size:12px;font-weight:800;cursor:pointer;font-family:'Montserrat',sans-serif}
+.bedt{flex:1;height:36px;background:transparent;border:1px solid #e65100;border-radius:8px;color:#e65100;font-size:12px;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif}
+.bdel{width:36px;height:36px;background:transparent;border:1px solid #c0392b;border-radius:8px;color:#c0392b;font-size:14px;cursor:pointer}
+.mok{text-align:center;font-size:13px;min-height:18px;margin-top:8px;font-weight:600;color:var(--g)}
+.i2top{background:#fff;padding:11px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f0f0f0;position:sticky;top:0;z-index:50}
+.i2logo{height:32px;padding:0 12px;background:var(--gd);border-radius:7px;display:inline-flex;align-items:center;font-size:12px;font-weight:800;color:#fff}
+.bk{background:none;border:none;font-size:13px;color:var(--gd);cursor:pointer;font-weight:700;display:none;align-items:center}.bk.show{display:flex}
+.i2pt{font-size:11px;color:#999}
+.i2body{background:#f5f5f5;min-height:calc(100vh - 54px)}
+.i2pg{display:none}.i2pg.on{display:block}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px}
 .mhdr{padding:12px 16px 4px;font-size:12px;color:#999}
-.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px 16px}
-.mcard{background:#fff;border-radius:14px;padding:16px;cursor:pointer;border:1px solid #e8e8e8;transition:transform .1s}
-.mcard:active{transform:scale(.96)}
+.mcard{background:#fff;border-radius:14px;padding:16px;cursor:pointer;border:1px solid #e8e8e8}.mcard:active{opacity:.8}
 .micon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:10px}
 .mtitle{font-size:14px;font-weight:700;color:#0e0e0e;margin-bottom:2px}
 .msub{font-size:11px;color:#999}
-.mbadge{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;margin-top:6px;background:#fce8e8;color:#c0392b}
 .inn{padding:14px}
 .card{background:#fff;border:1px solid #ececec;border-radius:12px;padding:14px;margin-bottom:12px}
 .ctag{font-size:11px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
@@ -91,65 +77,55 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
 .kv{font-size:18px;font-weight:700}
 .ks{font-size:10px;color:#999;margin-top:2px}
 .kp.g .kv{color:var(--gd)}.kp.r .kv{color:#c0392b}.kp.o .kv{color:#e65100}
-.lr{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f5f5f5;font-size:13px}
-.lr:last-child{border-bottom:none}
+.lr{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f5f5f5;font-size:13px}.lr:last-child{border-bottom:none}
 .bdg{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
 .bg{background:#e8f5e0;color:#2d5a0e}.bo{background:#fff3e0;color:#e65100}.br{background:#fce8e8;color:#c0392b}
-.tr{display:flex;justify-content:space-between;padding:6px 0;font-size:13px;border-bottom:1px solid #f5f5f5}
-.tr:last-child{border-bottom:none;font-weight:700;font-size:15px;padding-top:10px}
+.tr{display:flex;justify-content:space-between;padding:6px 0;font-size:13px;border-bottom:1px solid #f5f5f5}.tr:last-child{border-bottom:none}
 .soldc{background:linear-gradient(135deg,var(--gd),#5a9e20);border-radius:14px;padding:18px;color:#fff;margin-bottom:14px;text-align:center}
-.cr{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #f5f5f5;font-size:13px}
-.cr:last-child{border-bottom:none}
-.er{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #f5f5f5;font-size:13px}
-.er:last-child{border-bottom:none}
-.ck{width:28px;height:28px;border-radius:50%;border:1.5px solid #ddd;background:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:13px;margin-left:8px;flex-shrink:0;font-family:'Montserrat',sans-serif}
-.ck.paid{background:var(--gd);border-color:var(--gd);color:#fff}
+.cr{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #f5f5f5;font-size:13px}.cr:last-child{border-bottom:none}
+.er{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #f5f5f5;font-size:13px}.er:last-child{border-bottom:none}
+.ck{width:28px;height:28px;border-radius:50%;border:1.5px solid #ddd;background:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:13px;margin-left:8px;flex-shrink:0}.ck.paid{background:var(--gd);border-color:var(--gd);color:#fff}
 .f2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .f3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
 .fld{margin-bottom:10px}
 .fld label{display:block;font-size:12px;color:#666;margin-bottom:4px;font-weight:500}
-.inp{width:100%;height:40px;border:1px solid #e0e0e0;border-radius:8px;padding:0 12px;font-size:14px;background:#fff;color:#0e0e0e;font-family:'Montserrat',sans-serif}
-.inp:focus{outline:none;border-color:var(--gd)}
-.i2-btn{width:100%;height:44px;background:var(--gd);border:none;border-radius:10px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:14px;color:#fff;cursor:pointer;margin-top:4px}
-.i2-btn:active{opacity:.85}
+.inp{width:100%;height:40px;border:1px solid #e0e0e0;border-radius:8px;padding:0 12px;font-size:14px;background:#fff;color:#0e0e0e;font-family:'Montserrat',sans-serif}.inp:focus{outline:none;border-color:var(--gd)}
+.i2btn{width:100%;height:44px;background:var(--gd);border:none;border-radius:10px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:14px;color:#fff;cursor:pointer;margin-top:4px}
 .crd{width:130px;height:130px;border-radius:50%;background:var(--gd);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:4px auto 12px;box-shadow:0 0 0 10px #e8f5e0}
 .cv{font-size:30px;font-weight:800;color:#fff;line-height:1}
 .cu{font-size:11px;color:#c5e0a0;margin-top:3px}
-.pc{background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:14px;margin-bottom:10px;cursor:pointer}
-.pc:active{background:#fafafa}
+.pc{background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:14px;margin-bottom:10px;cursor:pointer}.pc:active{background:#fafafa}
 .pb{display:flex;gap:8px;margin-top:8px}
 .pbi{flex:1;background:#f8f9f8;border-radius:8px;padding:8px}
 .pbi-l{font-size:10px;color:#999;margin-bottom:2px}
 .pbi-v{font-size:13px;font-weight:700}
-.pr{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f5f5f5;font-size:13px}
-.pr:last-child{border-bottom:none}
-.totr{display:flex;justify-content:space-between;padding:10px 0;font-size:14px;font-weight:700;border-top:2px solid #e0e0e0;margin-top:4px}
 .psg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
 .pss{background:#f8f9f8;border-radius:8px;padding:10px}
 .pss .pl{font-size:10px;color:#999;margin-bottom:2px}
 .pss .pv{font-size:16px;font-weight:700}
 .pss.g .pv{color:var(--gd)}.pss.r .pv{color:#c0392b}
-.hw{overflow-x:auto}
-.ht{width:100%;border-collapse:collapse;font-size:12px}
-.ht th{text-align:left;padding:6px 8px;border-bottom:2px solid #e8e8e8;color:#999;font-size:10px;font-weight:600;white-space:nowrap}
-.ht td{padding:7px 8px;border-bottom:1px solid #f5f5f5;white-space:nowrap}
 .ppv{font-size:12px;color:var(--gd);margin:-4px 0 10px;font-weight:600;min-height:16px}
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:300;align-items:flex-end;justify-content:center}
-.modal-bg.open{display:flex}
+.mbg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:300;align-items:flex-end;justify-content:center}.mbg.open{display:flex}
 .modal{background:#fff;border-radius:20px 20px 0 0;padding:20px 16px 32px;width:100%;max-width:500px;max-height:85vh;overflow-y:auto}
-.mt{font-size:16px;font-weight:700;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
-.mc{background:none;border:none;font-size:22px;cursor:pointer;color:#999;line-height:1}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;z-index:999;transition:transform .3s;white-space:nowrap}
-.toast.show{transform:translateX(-50%) translateY(0)}
+.mtt{font-size:16px;font-weight:700;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.mcc{background:none;border:none;font-size:22px;cursor:pointer;color:#999}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;z-index:999;transition:transform .3s;white-space:nowrap}.toast.show{transform:translateX(-50%) translateY(0)}
 .ldr{text-align:center;padding:32px;color:#999;font-size:13px}
+.hcard{background:#fff;border:1px solid #ececec;border-radius:12px;padding:14px;margin-bottom:10px}.hcard.ac{background:#fffbf0;border-color:#ffe0b2}
+.btnrow{display:flex;gap:8px;align-items:center}
+.btnv{background:none;border:1px solid var(--gd);border-radius:6px;color:var(--gd);font-size:11px;padding:4px 10px;cursor:pointer;font-weight:600;font-family:'Montserrat',sans-serif}
+.btnr{background:none;border:1px solid #c0392b;border-radius:6px;color:#c0392b;font-size:11px;padding:4px 10px;cursor:pointer;font-weight:600;font-family:'Montserrat',sans-serif}
+.progbar{background:#f0f0f0;border-radius:6px;height:8px;margin-bottom:10px;overflow:hidden}
+.progfill{height:100%;border-radius:6px;transition:width .3s}
 </style>
 </head>
 <body>
 
-<div class="pin-screen" id="pin1">
-  <div class="pl-dark">DT-TP76</div>
-  <div class="pt-dark">Bon de chantier</div>
-  <div class="ps">Code Manu — 4 chiffres</div>
+<!-- PIN 1 MANU -->
+<div class="pin-sc" id="p1">
+  <div class="pld">DT-TP76</div>
+  <div class="ptd">Bon de chantier</div>
+  <div class="psb">Code Manu — 4 chiffres</div>
   <div class="pdots" id="pd1">
     <div class="pd-d" id="pd1-0"></div><div class="pd-d" id="pd1-1"></div>
     <div class="pd-d" id="pd1-2"></div><div class="pd-d" id="pd1-3"></div>
@@ -160,16 +136,17 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
     <div class="pk-d" onclick="pp(1,'7')">7</div><div class="pk-d" onclick="pp(1,'8')">8</div><div class="pk-d" onclick="pp(1,'9')">9</div>
     <div style="visibility:hidden" class="pk-d"></div>
     <div class="pk-d" onclick="pp(1,'0')">0</div>
-    <div class="pk-d" style="font-size:16px;color:#888" onclick="pd(1)">⌫</div>
+    <div class="pk-d" style="font-size:16px;color:#888" onclick="ppd(1)">⌫</div>
   </div>
   <div class="perr" id="pe1"></div>
   <div class="psw" onclick="sp2()">Accès gestion →</div>
 </div>
 
-<div class="pin-screen" id="pin2">
-  <div class="pl-light">DT-TP76</div>
-  <div class="pt-light">Gestion</div>
-  <div class="ps">Code direction — 8 chiffres</div>
+<!-- PIN 2 SAM -->
+<div class="pin-sc" id="p2">
+  <div class="pll">DT-TP76</div>
+  <div class="ptl">Gestion</div>
+  <div class="psb">Code direction — 8 chiffres</div>
   <div class="pdots" id="pd2">
     <div class="pd-l" id="pd2-0"></div><div class="pd-l" id="pd2-1"></div>
     <div class="pd-l" id="pd2-2"></div><div class="pd-l" id="pd2-3"></div>
@@ -182,76 +159,79 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
     <div class="pk-l" onclick="pp(2,'7')">7</div><div class="pk-l" onclick="pp(2,'8')">8</div><div class="pk-l" onclick="pp(2,'9')">9</div>
     <div style="visibility:hidden" class="pk-l"></div>
     <div class="pk-l" onclick="pp(2,'0')">0</div>
-    <div class="pk-l" style="font-size:16px;color:#888" onclick="pd(2)">⌫</div>
+    <div class="pk-l" style="font-size:16px;color:#888" onclick="ppd(2)">⌫</div>
   </div>
   <div class="perr" id="pe2"></div>
   <div class="psw" onclick="sp1()">← Code Manu</div>
 </div>
 
+<!-- APP 1 MANU -->
 <div id="app1">
-  <div class="i1-top">
-    <div class="i1-logo">DT-TP76</div>
-    <div class="i1-date" id="i1d"></div>
+  <div class="i1top">
+    <div class="i1logo">DT-TP76</div>
+    <div class="i1dt" id="i1dt"></div>
   </div>
-  <nav class="i1-nav">
-    <button class="i1-nb on" onclick="t1(this,'bon')">Nouveau bon</button>
-    <button class="i1-nb" onclick="t1(this,'bons')">Mes bons</button>
+  <nav class="i1nav">
+    <button class="i1nb on" onclick="t1(this,'bon')">Nouveau bon</button>
+    <button class="i1nb" onclick="t1(this,'bons')">Mes bons</button>
   </nav>
-  <div class="i1-body">
-    <div class="i1-p on" id="i1-bon">
-      <div class="i1-card">
-        <div class="i1-tag">Informations chantier</div>
-        <div class="i1-field"><label>Client / Entreprise</label><input class="i1-inp" id="bc" placeholder="Ex: Via France Terrassement"></div>
-        <div class="i1-field"><label>Date du chantier</label><input class="i1-inp" type="date" id="bdate"></div>
-        <div class="i1-field"><label>Adresse du chantier</label><input class="i1-inp" id="ba" placeholder="Adresse complète"></div>
-        <div class="i1-field"><label>N° Lettre de voiture</label><input class="i1-inp" id="bl" placeholder="LDV-2025-001"></div>
-        <div class="i1-field"><label>Descriptif / Remarques</label><textarea class="i1-inp" id="bdesc" placeholder="Ex: terrassement zone nord, matériaux spéciaux…" style="height:70px;padding:10px 12px;resize:none"></textarea></div>
+  <div class="i1body">
+    <div class="i1pg on" id="i1bon">
+      <div class="i1c">
+        <div class="i1t">Informations chantier</div>
+        <div class="i1f"><label>Client / Entreprise</label><input class="i1i" id="bc" placeholder="Ex: Via France"></div>
+        <div class="i1f"><label>Date du chantier</label><input class="i1i" type="date" id="bdate"></div>
+        <div class="i1f"><label>Adresse du chantier</label><input class="i1i" id="ba" placeholder="Adresse complète"></div>
+        <div class="i1f"><label>N° Lettre de voiture</label><input class="i1i" id="bl" placeholder="LDV-2025-001"></div>
+        <div class="i1f"><label>Descriptif / Remarques</label><textarea class="i1i" id="bdesc" placeholder="Type de travaux, remarques…" style="height:70px;padding:10px 12px;resize:none"></textarea></div>
       </div>
-      <div class="i1-card">
-        <div class="i1-tag">Heures effectuées</div>
+      <div class="i1c">
+        <div class="i1t">Heures effectuées</div>
         <div class="g3">
-          <div class="i1-field"><label>Normales</label><input class="i1-inp" id="bhn" placeholder="6:30"></div>
-          <div class="i1-field"><label>Transfert</label><input class="i1-inp" id="bht" placeholder="1:00"></div>
-          <div class="i1-field"><label>Supp.</label><input class="i1-inp" id="bhs" placeholder="0:00"></div>
+          <div class="i1f"><label>Normales</label><input class="i1i" id="bhn" placeholder="6:30"></div>
+          <div class="i1f"><label>Transfert</label><input class="i1i" id="bht" placeholder="1:00"></div>
+          <div class="i1f"><label>Supp.</label><input class="i1i" id="bhs" placeholder="0:00"></div>
         </div>
         <div class="g2">
-          <div class="i1-field"><label>Nuit</label><input class="i1-inp" id="bhn2" placeholder="0:00"></div>
-          <div class="i1-field"><label>Week-end</label><input class="i1-inp" id="bhw" placeholder="0:00"></div>
+          <div class="i1f"><label>Nuit</label><input class="i1i" id="bhn2" placeholder="0:00"></div>
+          <div class="i1f"><label>Week-end</label><input class="i1i" id="bhw" placeholder="0:00"></div>
         </div>
       </div>
-      <div class="i1-card">
-        <div class="i1-tag">Bon pour accord client</div>
-        <div class="i1-field"><label>Nom du chef de chantier</label><input class="i1-inp" id="bch" placeholder="Prénom Nom"></div>
-        <div class="sig-wrap"><canvas id="sig-c" style="background:#ffffff;display:block"></canvas></div>
-        <button class="sig-clr" onclick="clrSig()">✕ Effacer la signature</button>
-        <input type="hidden" id="bon-edit-id" value="">
-        <button class="btn-reg" onclick="saveBon()">✓ Enregistrer le bon</button>
-        <div class="mok" id="bm"></div>
+      <div class="i1c">
+        <div class="i1t">Bon pour accord client</div>
+        <div class="i1f"><label>Nom du chef de chantier</label><input class="i1i" id="bch" placeholder="Prénom Nom"></div>
+        <div class="sigwrap"><canvas id="sigc"></canvas></div>
+        <button class="sigclr" onclick="clrSig()">✕ Effacer la signature</button>
+        <input type="hidden" id="bon-eid" value="">
+        <button class="btnreg" onclick="saveBon()">✓ Enregistrer le bon</button>
+        <div class="mok" id="bmsg"></div>
       </div>
     </div>
-    <div class="i1-p" id="i1-bons">
+    <div class="i1pg" id="i1bons">
       <div id="bons-list"><div class="ldr">Chargement…</div></div>
     </div>
   </div>
 </div>
 
+<!-- APP 2 SAM -->
 <div id="app2">
-  <div class="i2-top">
+  <div class="i2top">
     <div style="display:flex;align-items:center;gap:10px">
       <button class="bk" id="bkbtn" onclick="goMenu()">← Retour</button>
-      <div id="lg2"><div class="i2-logo">DT-TP76</div></div>
+      <div id="lg2"><div class="i2logo">DT-TP76</div></div>
     </div>
-    <div class="i2-pt" id="i2pt">Menu principal</div>
+    <div class="i2pt" id="i2pt">Menu</div>
   </div>
-  <div class="i2-body">
+  <div class="i2body">
 
-    <div class="i2-p on" id="i2-menu">
+    <!-- MENU -->
+    <div class="i2pg on" id="i2-menu">
       <div class="mhdr" id="mdate"></div>
       <div class="mgrid">
         <div class="mcard" onclick="gp('dash')"><div class="micon" style="background:#e8f5e0">📊</div><div class="mtitle">Tableau de bord</div><div class="msub">Solde, TVA, alertes</div></div>
         <div class="mcard" onclick="gp('couts')"><div class="micon" style="background:#e3f2fd">🧮</div><div class="mtitle">Coûts chantier</div><div class="msub">Saisie et calcul</div></div>
         <div class="mcard" onclick="gp('histo')"><div class="micon" style="background:#f3e5f5">📋</div><div class="mtitle">Historique</div><div class="msub">Tous les chantiers</div></div>
-        <div class="mcard" onclick="gp('postes')"><div class="micon" style="background:#fff3e0">⚙️</div><div class="mtitle">Postes de coût</div><div class="msub">Provision vs réel</div></div>
+        <div class="mcard" onclick="gp('postes')"><div class="micon" style="background:#fff3e0">⚙️</div><div class="mtitle">Postes de coût</div><div class="msub">Cagnottes & objectifs</div></div>
         <div class="mcard" onclick="gp('enc')"><div class="micon" style="background:#fce4ec">💰</div><div class="mtitle">Encaissements</div><div class="msub">Suivi paiements</div></div>
         <div class="mcard" onclick="gp('treso')"><div class="micon" style="background:#e8f5e0">🏦</div><div class="mtitle">Trésorerie</div><div class="msub">Solde et charges</div></div>
         <div class="mcard" onclick="gp('clients')"><div class="micon" style="background:#e3f2fd">👥</div><div class="mtitle">Clients</div><div class="msub">Base de données</div></div>
@@ -259,13 +239,15 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
       </div>
     </div>
 
-    <div class="i2-p" id="i2-dash"><div class="inn">
+    <!-- DASHBOARD -->
+    <div class="i2pg" id="i2-dash"><div class="inn">
       <div class="kg" id="dkpis"><div class="ldr" style="grid-column:span 2">Chargement…</div></div>
-      <div class="card"><div class="ctag" id="dtvatit">TVA ce mois</div><div id="dtvabox"><div class="ldr">…</div></div></div>
-      <div class="card"><div class="ctag">Paiements en retard</div><div id="dret"><div class="ldr">…</div></div></div>
+      <div class="card"><div class="ctag" id="dtvatit">TVA à déclarer</div><div id="dtvabox"><div class="ldr">…</div></div></div>
+      <div class="card"><div class="ctag">Alertes &amp; retards</div><div id="dret"><div class="ldr">…</div></div></div>
     </div></div>
 
-    <div class="i2-p" id="i2-couts"><div class="inn">
+    <!-- COUTS -->
+    <div class="i2pg" id="i2-couts"><div class="inn">
       <div class="card">
         <div class="f2">
           <div class="fld"><label>Client</label><input class="inp" id="cc" placeholder="Nom client"></div>
@@ -287,41 +269,52 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
         </div>
         <div class="f3">
           <div class="fld"><label>Gazole TTC €/L</label><input class="inp" type="number" id="cgz" value="2.25" step="0.01"></div>
-          <div class="fld"><label>TVA client</label><select class="inp" id="ctv"><option value="20">Standard 20%</option><option value="10">Bâtiment 10%</option><option value="5.5">Agri 5,5%</option><option value="0">Exonéré 0%</option></select></div>
-          <div class="fld"><label>Réduction %</label><input class="inp" type="number" id="crd" value="0" min="0" max="100"></div>
+          <div class="fld"><label>TVA client</label>
+            <select class="inp" id="ctv">
+              <option value="20">Standard 20%</option>
+              <option value="10">Bâtiment 10%</option>
+              <option value="5.5">Agri 5,5%</option>
+              <option value="0">Exonéré 0%</option>
+            </select>
+          </div>
+          <div class="fld"><label>Réduction %</label><input class="inp" type="number" id="crd" value="0"></div>
         </div>
       </div>
       <div class="card" id="cprev" style="display:none">
-        <div class="ctag">Aperçu</div>
+        <div class="ctag">Aperçu calcul</div>
         <div class="psg" id="cstat"></div>
         <div class="ctag" style="margin-top:4px">Détail postes</div>
         <div id="cdet"></div>
       </div>
-      <button class="i2-btn" style="background:#f0f0f0;color:var(--gd);border:2px solid var(--gd);margin-bottom:8px" onclick="prevC()">Prévisualiser</button>
-      <button class="i2-btn" onclick="saveC()">✓ Enregistrer le chantier</button>
+      <input type="hidden" id="cout-eid" value="">
+      <button class="i2btn" style="background:#f0f0f0;color:var(--gd);border:2px solid var(--gd);margin-bottom:8px" onclick="prevC()">Prévisualiser</button>
+      <button class="i2btn" onclick="saveC()">✓ Enregistrer le chantier</button>
       <div class="mok" id="cmsg" style="color:var(--gd)"></div>
     </div></div>
 
-    <div class="i2-p" id="i2-histo"><div class="inn">
+    <!-- HISTORIQUE -->
+    <div class="i2pg" id="i2-histo"><div class="inn">
       <div id="histo-cards"><div class="ldr">Chargement…</div></div>
-      <div class="kg" style="margin-top:12px" id="htot"></div>
+      <div class="kg" style="margin-top:4px" id="htot"></div>
     </div></div>
 
-    <div class="i2-p" id="i2-postes"><div class="inn">
-      <div style="font-size:12px;color:#999;margin-bottom:12px">Cliquez sur un poste pour saisir une dépense</div>
+    <!-- POSTES -->
+    <div class="i2pg" id="i2-postes"><div class="inn">
+      <div style="font-size:12px;color:#999;margin-bottom:12px">Cliquez sur un poste pour saisir une dépense réelle</div>
       <div id="plist"><div class="ldr">Chargement…</div></div>
       <div id="dhp" style="display:none;background:#f0f7e8;border:1px solid #c5e0a0;border-radius:10px;padding:12px;font-size:13px;color:var(--gd);justify-content:space-between;font-weight:600;margin-top:4px">
         <span>Dépenses hors postes</span><span id="dhpv">0 €</span>
       </div>
-      <div id="postes-total" style="display:none;background:#e3f2fd;border:1px solid #90caf9;border-radius:10px;padding:12px;margin-top:8px">
-        <div style="font-size:11px;font-weight:600;color:#1565c0;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Récapitulatif provisions</div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>Total provisions cumulées</span><span id="pt-prov" style="font-weight:700;color:#1565c0"></span></div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>Total dépensé sur postes</span><span id="pt-dep" style="font-weight:700;color:#c0392b"></span></div>
-        <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;border-top:1px solid #90caf9;padding-top:8px;margin-top:4px"><span>Solde provisions</span><span id="pt-ecart"></span></div>
+      <div id="postes-recap" style="display:none;background:#e3f2fd;border:1px solid #90caf9;border-radius:10px;padding:12px;margin-top:8px">
+        <div style="font-size:11px;font-weight:700;color:#1565c0;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Récapitulatif annuel</div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>Total mis de côté (depuis dernière dép.)</span><span id="rp-cag" style="font-weight:700;color:#1565c0"></span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>Total dépensé sur postes</span><span id="rp-dep" style="font-weight:700;color:#c0392b"></span></div>
+        <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;border-top:1px solid #90caf9;padding-top:8px;margin-top:4px"><span>Objectif annuel total</span><span id="rp-obj" style="color:#1565c0"></span></div>
       </div>
     </div></div>
 
-    <div class="i2-p" id="i2-enc"><div class="inn">
+    <!-- ENCAISSEMENTS -->
+    <div class="i2pg" id="i2-enc"><div class="inn">
       <div class="card">
         <div class="ctag">Ajouter un encaissement</div>
         <div class="f2">
@@ -330,31 +323,30 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
         </div>
         <div class="f2">
           <div class="fld"><label>Date échéance</label><input class="inp" type="date" id="edt"></div>
-          <div class="fld"><label>Réf. chantier</label><input class="inp" id="erf" placeholder="Optionnel"></div>
+          <div class="fld"><label>Réf.</label><input class="inp" id="erf" placeholder="Optionnel"></div>
         </div>
-        <button class="i2-btn" onclick="saveEnc()">Ajouter</button>
+        <button class="i2btn" onclick="saveEnc()">Ajouter</button>
         <div class="mok" id="emsg" style="color:var(--gd)"></div>
       </div>
       <div class="card"><div class="ctag">En attente</div><div id="eat"><div class="ldr">…</div></div></div>
       <div class="card"><div class="ctag">Payés</div><div id="epd"><div class="ldr">…</div></div></div>
     </div></div>
 
-    <div class="i2-p" id="i2-treso"><div class="inn">
+    <!-- TRESORERIE -->
+    <div class="i2pg" id="i2-treso"><div class="inn">
       <div class="soldc">
         <div style="font-size:12px;opacity:.8;margin-bottom:4px">Solde calculé automatiquement</div>
         <div style="font-size:30px;font-weight:800" id="sval">—</div>
         <button onclick="editSolde()" style="margin-top:10px;background:rgba(255,255,255,.2);border:none;border-radius:8px;padding:6px 14px;color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:'Montserrat',sans-serif">Modifier le solde de départ</button>
       </div>
-      <div class="card" id="solde-detail">
+      <div class="card">
         <div class="ctag">Détail du calcul</div>
         <div class="cr"><span>Solde de départ</span><span id="sd-base" style="font-weight:700;color:var(--gd)">—</span></div>
-        <div class="cr"><span>Charges mensuelles</span><span id="sd-charges" style="font-weight:700;color:#c0392b">—</span></div>
-        <div class="cr"><span>Dépenses / factures</span><span id="sd-deps" style="font-weight:700;color:#c0392b">—</span></div>
-        <div class="cr"><span>Encaissements clients reçus</span><span id="sd-encs" style="font-weight:700;color:var(--gd)">—</span></div>
-        <div class="cr"><span>Entrées diverses (remb., avoir…)</span><span id="sd-entrees" style="font-weight:700;color:var(--gd)">—</span></div>
-        <div style="border-top:2px solid #e0e0e0;padding-top:10px;margin-top:4px;display:flex;justify-content:space-between;font-weight:700;font-size:14px">
-          <span>Solde actuel</span><span id="sd-total" style="color:var(--gd)">—</span>
-        </div>
+        <div class="cr"><span>− Charges mensuelles</span><span id="sd-ch" style="font-weight:700;color:#c0392b">—</span></div>
+        <div class="cr"><span>− Dépenses / factures</span><span id="sd-dep" style="font-weight:700;color:#c0392b">—</span></div>
+        <div class="cr"><span>+ Entrées diverses</span><span id="sd-ent" style="font-weight:700;color:var(--gd)">—</span></div>
+        <div class="cr"><span>+ Encaissements clients reçus</span><span id="sd-enc" style="font-weight:700;color:var(--gd)">—</span></div>
+        <div style="border-top:2px solid #e0e0e0;padding-top:10px;margin-top:4px;display:flex;justify-content:space-between;font-weight:700;font-size:14px"><span>Solde actuel</span><span id="sd-tot">—</span></div>
       </div>
       <div class="card">
         <div class="ctag">Charges mensuelles</div>
@@ -364,56 +356,54 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
         </div>
       </div>
       <div class="card">
-        <div class="ctag">Ajouter une charge</div>
+        <div class="ctag">Ajouter / modifier une charge</div>
         <div class="f2">
           <div class="fld"><label>Libellé</label><input class="inp" id="chl" placeholder="Ex: assurance"></div>
           <div class="fld"><label>Montant €</label><input class="inp" type="number" id="chm" placeholder="0.00"></div>
         </div>
-        <div class="f2">
-          <div class="fld"><label>Jour prélèvement</label><input class="inp" type="number" id="chj" placeholder="Ex: 5" min="1" max="31"></div>
-          <div class="fld"><label>Fréquence</label><select class="inp" id="chf"><option value="mensuel">Mensuel</option><option value="trimestriel">Trimestriel</option><option value="annuel">Annuel</option></select></div>
+        <div class="f3">
+          <div class="fld"><label>Jour prélèv.</label><input class="inp" type="number" id="chj" placeholder="Ex: 5"></div>
+          <div class="fld"><label>Fréquence</label>
+            <select class="inp" id="chf"><option value="mensuel">Mensuel</option><option value="trimestriel">Trimestriel</option><option value="annuel">Annuel</option></select>
+          </div>
+          <div class="fld"><label>TVA</label>
+            <select class="inp" id="chtva"><option value="0">Sans TVA</option><option value="20">20%</option><option value="10">10%</option><option value="5.5">5,5%</option></select>
+          </div>
         </div>
-        <input type="hidden" id="ch-edit-id" value="">
-        <button class="i2-btn" onclick="saveCh()">Enregistrer</button>
+        <input type="hidden" id="ch-eid" value="">
+        <button class="i2btn" onclick="saveCh()">Enregistrer</button>
         <div class="mok" id="chmsg" style="color:var(--gd)"></div>
       </div>
       <div class="card">
-        <div class="ctag">Historique dépenses / factures</div>
-        <div id="fac-list"><div class="ldr">Chargement…</div></div>
+        <div class="ctag">Historique dépenses / entrées</div>
+        <div id="fac-list"><div class="ldr">…</div></div>
       </div>
       <div class="card">
-        <div class="ctag">Saisir une facture / dépense</div>
+        <div class="ctag">Saisir une opération</div>
         <div class="f2">
           <div class="fld"><label>Libellé</label><input class="inp" id="fl" placeholder="Ex: gazole station"></div>
           <div class="fld"><label>Montant €</label><input class="inp" type="number" id="fm" placeholder="0.00"></div>
         </div>
         <div class="f2">
-          <div class="fld"><label>Date</label><input class="inp" type="date" id="fd2"></div>
-          <div class="fld"><label>Catégorie</label><input class="inp" id="fc" placeholder="Ex: gazole, repas…"></div>
+          <div class="fld"><label>Date</label><input class="inp" type="date" id="fdat"></div>
+          <div class="fld"><label>Catégorie</label><input class="inp" id="fcat" placeholder="Ex: gazole, repas…"></div>
         </div>
         <div class="f2">
           <div class="fld"><label>Type</label>
-            <select class="inp" id="ftype">
-              <option value="depense">Dépense (−)</option>
-              <option value="entree">Entrée (+)</option>
-            </select>
+            <select class="inp" id="ftype"><option value="depense">Dépense (−)</option><option value="entree">Entrée (+)</option></select>
           </div>
-          <div class="fld"><label>TVA sur cette opération</label>
-            <select class="inp" id="ftva">
-              <option value="0">Sans TVA</option>
-              <option value="20">TVA 20%</option>
-              <option value="10">TVA 10%</option>
-              <option value="5.5">TVA 5,5%</option>
-            </select>
+          <div class="fld"><label>TVA</label>
+            <select class="inp" id="ftva"><option value="0">Sans TVA</option><option value="20">20%</option><option value="10">10%</option><option value="5.5">5,5%</option></select>
           </div>
         </div>
-        <input type="hidden" id="fac-edit-id" value="">
-        <button class="i2-btn" onclick="saveFac()">Enregistrer</button>
+        <input type="hidden" id="fac-eid" value="">
+        <button class="i2btn" onclick="saveFac()">Enregistrer</button>
         <div class="mok" id="fmsg" style="color:var(--gd)"></div>
       </div>
     </div></div>
 
-    <div class="i2-p" id="i2-clients"><div class="inn">
+    <!-- CLIENTS -->
+    <div class="i2pg" id="i2-clients"><div class="inn">
       <div class="card">
         <div class="ctag">Ajouter client / prospect</div>
         <div class="f2">
@@ -426,70 +416,76 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
           <div class="fld"><label>Email</label><input class="inp" id="clm" placeholder="email@..."></div>
         </div>
         <div class="f2">
-          <div class="fld"><label>Statut</label><select class="inp" id="cls"><option value="client">Client actif</option><option value="prospect">Prospect</option><option value="inactif">Inactif</option></select></div>
-          <div class="fld"><label>Prix horaire HT (€)</label><input class="inp" type="number" id="clx" placeholder="85"></div>
+          <div class="fld"><label>Statut</label>
+            <select class="inp" id="cls"><option value="client">Client actif</option><option value="prospect">Prospect</option><option value="inactif">Inactif</option></select>
+          </div>
+          <div class="fld"><label>Prix horaire HT €</label><input class="inp" type="number" id="clx" placeholder="85"></div>
         </div>
-        <button class="i2-btn" onclick="saveCl()">Enregistrer</button>
+        <button class="i2btn" onclick="saveCl()">Enregistrer</button>
         <div class="mok" id="clmsg" style="color:var(--gd)"></div>
       </div>
       <div class="card"><div class="ctag">Base clients</div><div id="cllist"><div class="ldr">…</div></div></div>
     </div></div>
 
-    <div class="i2-p" id="i2-gazole"><div class="inn">
-      <div class="crd"><div class="cv" id="cval">—</div><div class="cu">L / heure</div></div>
-      <div style="font-size:11px;color:#888;text-align:center;margin-bottom:16px" id="csub">Aucune donnée</div>
+    <!-- GAZOLE -->
+    <div class="i2pg" id="i2-gazole"><div class="inn">
+      <div class="crd"><div class="cv" id="gzcval">—</div><div class="cu">L / heure</div></div>
+      <div style="font-size:11px;color:#888;text-align:center;margin-bottom:16px" id="gzcsub">Aucune donnée</div>
       <div class="card">
         <div class="ctag">Nouvelle saisie gazole</div>
         <div class="f2">
-          <div class="fld"><label>Litres</label><input class="inp" type="number" id="gl" placeholder="101.81" step="0.01"></div>
-          <div class="fld"><label>Prix TTC €/L</label><input class="inp" type="number" id="gp" placeholder="2.25" step="0.01"></div>
+          <div class="fld"><label>Litres</label><input class="inp" type="number" id="gzl" placeholder="101.81" step="0.01"></div>
+          <div class="fld"><label>Prix TTC €/L</label><input class="inp" type="number" id="gzp" placeholder="2.25" step="0.01"></div>
         </div>
         <div class="f2">
-          <div class="fld"><label>Compteur tracteur (h)</label><input class="inp" type="number" id="gc" placeholder="1482"></div>
-          <div class="fld"><label>Date</label><input class="inp" type="date" id="gd"></div>
+          <div class="fld"><label>Compteur tracteur (h)</label><input class="inp" type="number" id="gzc" placeholder="1482"></div>
+          <div class="fld"><label>Date</label><input class="inp" type="date" id="gzd"></div>
         </div>
-        <button class="i2-btn" onclick="saveGz()">Enregistrer le plein</button>
-        <div class="mok" id="gmsg" style="color:var(--gd)"></div>
+        <button class="i2btn" onclick="saveGz()">Enregistrer le plein</button>
+        <div class="mok" id="gzmsg" style="color:var(--gd)"></div>
       </div>
-      <div class="card"><div class="ctag">Historique pleins</div><div id="glist"><div class="ldr">…</div></div></div>
+      <div class="card"><div class="ctag">Historique pleins</div><div id="gzlist"><div class="ldr">…</div></div></div>
     </div></div>
 
   </div>
 </div>
 
-<div class="modal-bg" id="mposte">
+<!-- MODAL POSTE -->
+<div class="mbg" id="mposte">
   <div class="modal">
-    <div class="mt"><span id="mpn">Poste</span><button class="mc" onclick="cm('mposte')">✕</button></div>
-    <div class="kg" id="mpk" style="margin-bottom:16px"></div>
-    <div class="ctag">Dépenses sur ce poste</div>
-    <div id="mpd" style="margin-bottom:16px"></div>
-    <div class="ctag">Ajouter une dépense réelle</div>
+    <div class="mtt"><span id="mpnom">Poste</span><button class="mcc" onclick="cm('mposte')">✕</button></div>
+    <div class="kg" id="mpkpis" style="margin-bottom:16px"></div>
+    <div class="ctag">Dépenses réelles</div>
+    <div id="mpdeps" style="margin-bottom:16px"></div>
+    <div class="ctag">Ajouter une dépense</div>
     <div class="f2">
       <div class="fld"><label>Libellé</label><input class="inp" id="mpl" placeholder="Ex: pneu"></div>
       <div class="fld"><label>Montant €</label><input class="inp" type="number" id="mpm" placeholder="0.00"></div>
     </div>
     <div class="fld"><label>Date</label><input class="inp" type="date" id="mpdt"></div>
-    <button class="i2-btn" onclick="saveDep()">Ajouter au poste</button>
+    <button class="i2btn" onclick="saveDep()">Ajouter au poste</button>
     <div class="mok" id="mpmsg" style="color:var(--gd)"></div>
   </div>
 </div>
 
-<div class="modal-bg" id="mbon">
+<!-- MODAL BON -->
+<div class="mbg" id="mbon">
   <div class="modal">
-    <div class="mt"><span id="mbnt">Bon de chantier</span><button class="mc" onclick="cm('mbon')">✕</button></div>
+    <div class="mtt"><span id="mbnt">Bon</span><button class="mcc" onclick="cm('mbon')">✕</button></div>
     <div id="mbnc"></div>
     <div style="display:flex;gap:8px;margin-top:12px">
-      <button class="i2-btn" style="background:#f0f0f0;color:var(--gd);border:2px solid var(--gd)" onclick="editBon()">✏️ Modifier</button>
-      <button class="i2-btn" onclick="genPDF()">📄 Générer PDF</button>
+      <button class="i2btn" style="background:#f0f0f0;color:var(--gd);border:2px solid var(--gd)" onclick="editBon()">✏️ Modifier</button>
+      <button class="i2btn" onclick="genPDF()">📄 Télécharger PNG</button>
     </div>
   </div>
 </div>
 
-<div class="modal-bg" id="msolde">
+<!-- MODAL SOLDE -->
+<div class="mbg" id="msolde">
   <div class="modal">
-    <div class="mt">Modifier le solde<button class="mc" onclick="cm('msolde')">✕</button></div>
-    <div class="fld"><label>Solde (€)</label><input class="inp" type="number" id="sinp" placeholder="0.00" step="0.01"></div>
-    <button class="i2-btn" onclick="svSolde()" style="margin-top:8px">Enregistrer</button>
+    <div class="mtt">Solde de départ<button class="mcc" onclick="cm('msolde')">✕</button></div>
+    <div class="fld"><label>Montant (€)</label><input class="inp" type="number" id="sinp" placeholder="0.00" step="0.01"></div>
+    <button class="i2btn" onclick="svSolde()" style="margin-top:8px">Enregistrer</button>
   </div>
 </div>
 
@@ -497,807 +493,594 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
 
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import{getFirestore,collection,addDoc,onSnapshot,orderBy,query,doc,updateDoc,setDoc,arrayUnion}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
+import{getFirestore,collection,addDoc,onSnapshot,orderBy,query,doc,updateDoc,setDoc,arrayUnion,deleteDoc}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 const FC={apiKey:"AIzaSyAL9eNyspMmf3JQRa0Phr_WzOMYNFruBWI",authDomain:"cout-dt-tp76.firebaseapp.com",projectId:"cout-dt-tp76",storageBucket:"cout-dt-tp76.firebasestorage.app",messagingSenderId:"742914854605",appId:"1:742914854605:web:840d46d0d2d92b0db7a384"};
 const db=getFirestore(initializeApp(FC));
-
 const PIN1="1131",PIN2="19891986";
 const CONSO=17;
-const COUTS={tracteur:{l:"Tracteur",v:11},remorque:{l:"Remorque",v:7.15},voiture:{l:"Voiture + matériel",v:2.06},bfr:{l:"BFR",v:1.38},assurance:{l:"Assurance",v:1.14},salaire:{l:"Salaire",v:0},comptable:{l:"Comptable",v:2.31},revision:{l:"Révision",v:2.5},pneus:{l:"Pneus",v:8},reparations:{l:"Petites réparations",v:3.12}};
-
+const COUTS={
+  tracteur:{l:"Tracteur",v:11,obj:17600},
+  remorque:{l:"Remorque",v:7.15,obj:11446},
+  voiture:{l:"Voiture + matériel",v:2.06,obj:3300},
+  bfr:{l:"BFR",v:1.38,obj:2200},
+  assurance:{l:"Assurance",v:1.14,obj:1830},
+  salaire:{l:"Salaire",v:0,obj:0},
+  comptable:{l:"Comptable",v:2.31,obj:3700},
+  revision:{l:"Révision",v:2.5,obj:4000},
+  pneus:{l:"Pneus",v:8,obj:10133},
+  reparations:{l:"Petites réparations",v:3.12,obj:5000}
+};
 let pv1="",pv2="";
 let bons=[],chantiers=[],encs=[],charges=[],clients=[],gazoles=[],postes={},deps=[],solde=0;
-let sigPad=null,curPoste=null,curBon=null;
+let curPoste=null,curBon=null;
 
-window.sp1=()=>{document.getElementById('pin1').style.display='flex';document.getElementById('pin2').style.display='none'};
-window.sp2=()=>{document.getElementById('pin1').style.display='none';document.getElementById('pin2').style.display='flex'};
-
-window.pp=(n,k)=>{
-  if(n===1){
-    if(pv1.length>=4)return; pv1+=k;
-    for(let i=0;i<4;i++)document.getElementById('pd1-'+i).classList.toggle('on',i<pv1.length);
-    if(pv1.length===4){
-      if(pv1===PIN1){document.getElementById('pin1').style.display='none';document.getElementById('app1').style.display='block';ia1();}
-      else{document.getElementById('pe1').textContent='Code incorrect';setTimeout(()=>{pv1='';for(let i=0;i<4;i++)document.getElementById('pd1-'+i).classList.remove('on');document.getElementById('pe1').textContent=''},800);}
-    }
-  }else{
-    if(pv2.length>=8)return; pv2+=k;
-    for(let i=0;i<8;i++)document.getElementById('pd2-'+i).classList.toggle('on',i<pv2.length);
-    if(pv2.length===8){
-      if(pv2===PIN2){document.getElementById('pin2').style.display='none';document.getElementById('app2').style.display='block';ia2();}
-      else{document.getElementById('pe2').textContent='Code incorrect';setTimeout(()=>{pv2='';for(let i=0;i<8;i++)document.getElementById('pd2-'+i).classList.remove('on');document.getElementById('pe2').textContent=''},800);}
-    }
-  }
-};
-window.pd=n=>{
-  if(n===1){pv1=pv1.slice(0,-1);for(let i=0;i<4;i++)document.getElementById('pd1-'+i).classList.toggle('on',i<pv1.length);}
-  else{pv2=pv2.slice(0,-1);for(let i=0;i<8;i++)document.getElementById('pd2-'+i).classList.toggle('on',i<pv2.length);}
-};
-
-function pH(s){s=(s||'').trim();if(s.includes(':')){const[h,m]=s.split(':').map(Number);return h+(m||0)/60;}if(s.includes('h')){const p=s.split('h');return parseFloat(p[0])+(parseFloat(p[1])||0)/60;}return parseFloat(s)||0;}
-function eu(n){return Number(n).toFixed(2)+' €';}
-function fd(d){if(!d)return'—';if(typeof d==='string')d=new Date(d);if(d&&d.toDate)d=d.toDate();return d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'});}
-function dP(ds,del){if(!ds)return null;const d=new Date(ds);if(del==='comptant')return d;if(del==='30fm'){d.setDate(d.getDate()+30);return new Date(d.getFullYear(),d.getMonth()+1,0);}if(del==='45fm'){d.setDate(d.getDate()+45);return new Date(d.getFullYear(),d.getMonth()+1,0);}if(del==='60'){d.setDate(d.getDate()+60);return d;}return d;}
+// UTILS
+function pH(s){s=(s||"").trim();if(s.includes(":")){const[h,m]=s.split(":").map(Number);return h+(m||0)/60;}return parseFloat(s)||0;}
+function eu(n){return Number(n).toFixed(2)+" €";}
+function fd(d){if(!d)return"—";if(typeof d==="string")d=new Date(d);return d.toLocaleDateString("fr-FR",{day:"2-digit",month:"2-digit",year:"numeric"});}
+function dP(ds,del){if(!ds)return null;const d=new Date(ds);if(del==="comptant")return d;if(del==="30fm"){d.setDate(d.getDate()+30);return new Date(d.getFullYear(),d.getMonth()+1,0);}if(del==="45fm"){d.setDate(d.getDate()+45);return new Date(d.getFullYear(),d.getMonth()+1,0);}if(del==="60"){d.setDate(d.getDate()+60);}return d;}
 function dj(d){if(!d)return null;const t=new Date();t.setHours(0,0,0,0);return Math.round((d-t)/86400000);}
 function calc(x){
   const hp=pH(x.hprod),ht=pH(x.htransf),hto=hp+ht;
   const pe=(x.prix||85)*(1-(x.reduc||0)/100);
-  const cHT=(x.carbu||2.25)/1.20,tGL=(x.carbu||2.25)-cHT,tGR=tGL*.80;
-  const cch=CONSO*cHT,cfh=Object.values(COUTS).reduce((s,c)=>s+c.v,0),crh=cfh+cch,ct=crh*hto;
+  const cHT=(x.carbu||2.25)/1.20;
+  const tGR=((x.carbu||2.25)-cHT)*0.80;
+  const cch=CONSO*cHT,cfh=Object.values(COUTS).reduce((s,c)=>s+c.v,0);
+  const crh=cfh+cch,ct=crh*hto;
   const caHT=pe*hto,tvP=x.tva||20,tvC=caHT*tvP/100,caTTC=caHT+tvC;
   const marge=caHT-ct,mP=caHT>0?marge/caHT*100:0,tGD=CONSO*hto*tGR;
   return{hp,ht,hto,pe,cch,crh,ct,caHT,tvC,tvP,caTTC,marge,mP,tGD,cHT};
 }
-function tst(m){const t=document.getElementById('tst');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+function tst(m){const t=document.getElementById("tst");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2500);}
+function cm(id){document.getElementById(id).classList.remove("open");}
+function gid(id){return document.getElementById(id);}
+document.querySelectorAll(".mbg").forEach(el=>el.addEventListener("click",e=>{if(e.target===el)el.classList.remove("open");}));
+
+// PIN
+window.sp1=()=>{gid("p1").style.display="flex";gid("p2").style.display="none";};
+window.sp2=()=>{gid("p1").style.display="none";gid("p2").style.display="flex";};
+window.pp=(n,k)=>{
+  if(n===1){
+    if(pv1.length>=4)return;pv1+=k;
+    for(let i=0;i<4;i++)gid("pd1-"+i).classList.toggle("on",i<pv1.length);
+    if(pv1.length===4){
+      if(pv1===PIN1){gid("p1").style.display="none";gid("app1").style.display="block";ia1();}
+      else{gid("pe1").textContent="Code incorrect";setTimeout(()=>{pv1="";for(let i=0;i<4;i++)gid("pd1-"+i).classList.remove("on");gid("pe1").textContent="";},800);}
+    }
+  }else{
+    if(pv2.length>=8)return;pv2+=k;
+    for(let i=0;i<8;i++)gid("pd2-"+i).classList.toggle("on",i<pv2.length);
+    if(pv2.length===8){
+      if(pv2===PIN2){gid("p2").style.display="none";gid("app2").style.display="block";ia2();}
+      else{gid("pe2").textContent="Code incorrect";setTimeout(()=>{pv2="";for(let i=0;i<8;i++)gid("pd2-"+i).classList.remove("on");gid("pe2").textContent="";},800);}
+    }
+  }
+};
+window.ppd=(n)=>{
+  if(n===1){pv1=pv1.slice(0,-1);for(let i=0;i<4;i++)gid("pd1-"+i).classList.toggle("on",i<pv1.length);}
+  else{pv2=pv2.slice(0,-1);for(let i=0;i<8;i++)gid("pd2-"+i).classList.toggle("on",i<pv2.length);}
+};
 
 // APP1
+let sigCtx=null,sigDrawing=false,sigLX=0,sigLY=0;
 function ia1(){
-  document.getElementById('i1d').textContent=new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
-  document.getElementById('bdate').value=new Date().toISOString().split('T')[0];
-  const c=document.getElementById('sig-c');
-  c.width=c.offsetWidth||320;c.height=110;
-  // Fond blanc FORCE
-  c.style.background='#ffffff';
-  const ctx=c.getContext('2d');
-  ctx.fillStyle='#ffffff';ctx.fillRect(0,0,c.width,c.height);
-  // Dessin tactile maison — trait noir opaque garanti
-  let drawing=false,lastX=0,lastY=0;
-  function getPos(e,el){
-    const r=el.getBoundingClientRect();
-    const src=e.touches?e.touches[0]:e;
-    return{x:src.clientX-r.left,y:src.clientY-r.top};
-  }
-  function startDraw(e){e.preventDefault();drawing=true;const p=getPos(e,c);lastX=p.x;lastY=p.y;window._sigModified=true;}
-  function draw(e){
-    if(!drawing)return;e.preventDefault();
-    const p=getPos(e,c);
-    ctx.beginPath();ctx.moveTo(lastX,lastY);ctx.lineTo(p.x,p.y);
-    ctx.strokeStyle='#000000';ctx.lineWidth=3;ctx.lineCap='round';ctx.lineJoin='round';
-    ctx.globalAlpha=1;ctx.stroke();
-    lastX=p.x;lastY=p.y;
-  }
-  function stopDraw(){drawing=false;}
-  c.addEventListener('mousedown',startDraw);c.addEventListener('mousemove',draw);c.addEventListener('mouseup',stopDraw);
-  c.addEventListener('touchstart',startDraw,{passive:false});c.addEventListener('touchmove',draw,{passive:false});c.addEventListener('touchend',stopDraw);
-  // Effacer
-  window._clearSigCanvas=()=>{ctx.fillStyle='#ffffff';ctx.fillRect(0,0,c.width,c.height);}
-  window._isSigEmpty=()=>{
-    const d=ctx.getImageData(0,0,c.width,c.height).data;
-    for(let i=0;i<d.length;i+=4){if(d[i]<250)return false;}return true;
-  };
-  onSnapshot(query(collection(db,'bons'),orderBy('date','desc')),s=>{bons=s.docs.map(d=>({id:d.id,...d.data()}));rBons();});
+  gid("i1dt").textContent=new Date().toLocaleDateString("fr-FR",{day:"numeric",month:"long",year:"numeric"});
+  gid("bdate").value=new Date().toISOString().split("T")[0];
+  const c=gid("sigc");c.width=c.offsetWidth||320;c.height=110;
+  sigCtx=c.getContext("2d");
+  sigCtx.fillStyle="#ffffff";sigCtx.fillRect(0,0,c.width,c.height);
+  function gPos(e){const r=c.getBoundingClientRect();const s=e.touches?e.touches[0]:e;return{x:s.clientX-r.left,y:s.clientY-r.top};}
+  c.addEventListener("mousedown",e=>{sigDrawing=true;window._sigMod=true;const p=gPos(e);sigLX=p.x;sigLY=p.y;});
+  c.addEventListener("mousemove",e=>{if(!sigDrawing)return;const p=gPos(e);sigCtx.beginPath();sigCtx.moveTo(sigLX,sigLY);sigCtx.lineTo(p.x,p.y);sigCtx.strokeStyle="#000000";sigCtx.lineWidth=3;sigCtx.lineCap="round";sigCtx.lineJoin="round";sigCtx.globalAlpha=1;sigCtx.stroke();sigLX=p.x;sigLY=p.y;});
+  c.addEventListener("mouseup",()=>sigDrawing=false);
+  c.addEventListener("touchstart",e=>{e.preventDefault();sigDrawing=true;window._sigMod=true;const p=gPos(e);sigLX=p.x;sigLY=p.y;},{passive:false});
+  c.addEventListener("touchmove",e=>{e.preventDefault();if(!sigDrawing)return;const p=gPos(e);sigCtx.beginPath();sigCtx.moveTo(sigLX,sigLY);sigCtx.lineTo(p.x,p.y);sigCtx.strokeStyle="#000000";sigCtx.lineWidth=3;sigCtx.lineCap="round";sigCtx.lineJoin="round";sigCtx.globalAlpha=1;sigCtx.stroke();sigLX=p.x;sigLY=p.y;},{passive:false});
+  c.addEventListener("touchend",()=>sigDrawing=false);
+  onSnapshot(query(collection(db,"bons"),orderBy("date","desc")),s=>{bons=s.docs.map(d=>({id:d.id,...d.data()}));rBons();});
 }
-
-window.clrSig=()=>{if(window._clearSigCanvas){window._clearSigCanvas();ctx.fillStyle='#ffffff';ctx.fillRect(0,0,c.width,c.height);}};
-window.t1=(b,t)=>{document.querySelectorAll('.i1-nb').forEach(x=>x.classList.remove('on'));b.classList.add('on');document.getElementById('i1-bon').classList.toggle('on',t==='bon');document.getElementById('i1-bons').classList.toggle('on',t==='bons');};
+function sigEmpty(){const d=sigCtx.getImageData(0,0,gid("sigc").width,gid("sigc").height).data;for(let i=0;i<d.length;i+=4)if(d[i]<250)return false;return true;}
+window.clrSig=()=>{if(sigCtx){sigCtx.fillStyle="#ffffff";sigCtx.fillRect(0,0,gid("sigc").width,gid("sigc").height);window._sigMod=false;}};
+window.t1=(b,t)=>{document.querySelectorAll(".i1nb").forEach(x=>x.classList.remove("on"));b.classList.add("on");gid("i1bon").classList.toggle("on",t==="bon");gid("i1bons").classList.toggle("on",t==="bons");};
 
 window.saveBon=async()=>{
-  const cl=document.getElementById('bc').value;
-  const ch=document.getElementById('bch').value;
-  if(!cl){tst('⚠ Renseigne le client');return;}
-  if(!ch){tst('⚠ Renseigne le chef de chantier');return;}
-  const isEditMode=!!document.getElementById('bon-edit-id').value;
-  if(!isEditMode&&window._isSigEmpty&&window._isSigEmpty()){tst('⚠ Signature manquante');return;}
-  document.getElementById('bm').textContent='Enregistrement…';
+  const cl=gid("bc").value,ch=gid("bch").value;
+  const eid=gid("bon-eid").value;
+  if(!cl){tst("⚠ Renseigne le client");return;}
+  if(!ch){tst("⚠ Renseigne le chef de chantier");return;}
+  if(!eid&&sigEmpty()){tst("⚠ Signature manquante");return;}
+  gid("bmsg").textContent="Enregistrement…";gid("bmsg").style.color="var(--g)";
+  const origBon=eid?bons.find(x=>x.id===eid):null;
+  let sigData="";
+  if(eid&&origBon&&origBon.sig&&!window._sigMod){sigData=origBon.sig;}
+  else{
+    const sc=gid("sigc"),tmp=document.createElement("canvas");
+    tmp.width=sc.width;tmp.height=sc.height;
+    const tx=tmp.getContext("2d");tx.fillStyle="#ffffff";tx.fillRect(0,0,tmp.width,tmp.height);tx.drawImage(sc,0,0);
+    const pd=tx.getImageData(0,0,tmp.width,tmp.height);
+    for(let i=0;i<pd.data.length;i+=4){const lum=pd.data[i]*0.299+pd.data[i+1]*0.587+pd.data[i+2]*0.114;if(lum<240){pd.data[i]=0;pd.data[i+1]=0;pd.data[i+2]=0;pd.data[i+3]=255;}else{pd.data[i]=255;pd.data[i+1]=255;pd.data[i+2]=255;pd.data[i+3]=255;}}
+    tx.putImageData(pd,0,0);sigData=tmp.toDataURL("image/png");
+  }
+  const bd={client:cl,adresse:gid("ba").value,ldv:gid("bl").value,chef:ch,desc:gid("bdesc").value,sig:sigData,hn:gid("bhn").value,ht:gid("bht").value,hs:gid("bhs").value,hn2:gid("bhn2").value,hw:gid("bhw").value,date:gid("bdate").value||new Date().toISOString().split("T")[0]};
   try{
-    // Récupérer la signature — si mode modif et pas re-signée, garder l'originale
-    const sigCanvas=document.getElementById('sig-c');
-    const bonEditIdCheck=document.getElementById('bon-edit-id').value;
-    const bonOriginal=bonEditIdCheck?bons.find(x=>x.id===bonEditIdCheck):null;
-    let sigData='';
-    if(bonOriginal&&bonOriginal.sig&&!window._sigModified){
-      // Garder la signature originale
-      sigData=bonOriginal.sig;
-    } else {
-      // Forcer noir pur sur le canvas
-      const tmpC=document.createElement('canvas');
-      tmpC.width=sigCanvas.width;tmpC.height=sigCanvas.height;
-      const tmpX=tmpC.getContext('2d');
-      tmpX.fillStyle='#ffffff';tmpX.fillRect(0,0,tmpC.width,tmpC.height);
-      tmpX.drawImage(sigCanvas,0,0);
-      const pxData=tmpX.getImageData(0,0,tmpC.width,tmpC.height);
-      for(let i=0;i<pxData.data.length;i+=4){
-        const lum=pxData.data[i]*0.299+pxData.data[i+1]*0.587+pxData.data[i+2]*0.114;
-        if(lum<240){pxData.data[i]=0;pxData.data[i+1]=0;pxData.data[i+2]=0;pxData.data[i+3]=255;}
-        else{pxData.data[i]=255;pxData.data[i+1]=255;pxData.data[i+2]=255;pxData.data[i+3]=255;}
-      }
-      tmpX.putImageData(pxData,0,0);
-      sigData=tmpC.toDataURL('image/png');
+    if(eid){await updateDoc(doc(db,"bons",eid),bd);}
+    else{
+      await addDoc(collection(db,"bons"),{...bd,createdAt:new Date().toISOString()});
+      await addDoc(collection(db,"chantiers"),{client:cl,date:bd.date,hprod:bd.hn,htransf:bd.ht,prix:85,carbu:2.25,tva:20,reduc:0,delai:"30fm",aCompleter:true,createdAt:new Date().toISOString()});
     }
-    window._sigModified=false;
-    const bonEditId=document.getElementById('bon-edit-id').value;
-    const bonData={client:cl,adresse:document.getElementById('ba').value,ldv:document.getElementById('bl').value,chef:ch,desc:document.getElementById('bdesc').value,sig:sigData,hn:document.getElementById('bhn').value,ht:document.getElementById('bht').value,hs:document.getElementById('bhs').value,hn2:document.getElementById('bhn2').value,hw:document.getElementById('bhw').value,date:document.getElementById('bdate').value||new Date().toISOString().split('T')[0]};
-    if(bonEditId){
-      await updateDoc(doc(db,'bons',bonEditId),bonData);
-      document.getElementById('bon-edit-id').value='';
-    } else {
-      await addDoc(collection(db,'bons'),{...bonData,createdAt:new Date().toISOString()});
-    }
-    document.getElementById('bm').textContent='✓ Bon enregistré !';
-    // Créer automatiquement un chantier pré-rempli dans l'interface 2
-    if(!bonEditId){
-      try{
-        await addDoc(collection(db,'chantiers'),{
-          client:cl,
-          date:bonData.date,
-          hprod:bonData.hn,
-          htransf:bonData.ht,
-          // Valeurs par défaut à compléter par Sam
-          prix:85,
-          carbu:2.25,
-          tva:20,
-          reduc:0,
-          delai:'30fm',
-          // Marqué comme "à compléter"
-          aCompleter:true,
-          bonRef:bonData.ldv||'',
-          createdAt:new Date().toISOString()
-        });
-      }catch(e){console.log('Chantier auto non créé:',e);}
-    }
-    ['bc','ba','bl','bch','bhn','bht','bhs','bhn2','bhw','bdesc'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('bdate').value=new Date().toISOString().split('T')[0];
-    window._sigModified=false;
-    if(sigPad)sigPad.clear();
-    setTimeout(()=>{document.getElementById('bm').textContent='';t1(document.querySelectorAll('.i1-nb')[1],'bons');},1500);
-  }catch(e){document.getElementById('bm').textContent='Erreur: '+e.message;}
+    gid("bmsg").textContent="✓ Bon enregistré !";gid("bon-eid").value="";window._sigMod=false;
+    ["bc","ba","bl","bch","bdesc","bhn","bht","bhs","bhn2","bhw"].forEach(id=>gid(id).value="");
+    gid("bdate").value=new Date().toISOString().split("T")[0];
+    window.clrSig();
+    setTimeout(()=>{gid("bmsg").textContent="";t1(document.querySelectorAll(".i1nb")[1],"bons");},1500);
+  }catch(e){gid("bmsg").textContent="Erreur: "+e.message;}
 };
 
 function rBons(){
-  const el=document.getElementById('bons-list');
+  const el=gid("bons-list");
   if(!bons.length){el.innerHTML='<div class="ldr">Aucun bon</div>';return;}
-  const td=new Date().toISOString().split('T')[0];
+  const td=new Date().toISOString().split("T")[0];
   const auj=bons.filter(b=>b.date===td),rec=bons.filter(b=>b.date!==td);
-  let h='';
-  if(auj.length)h+=`<div class="i1-card"><div class="i1-tag">Aujourd'hui</div>${auj.map(bI).join('')}</div>`;
-  if(rec.length)h+=`<div class="i1-card"><div class="i1-tag">Bons récents</div>${rec.slice(0,15).map(bI).join('')}</div>`;
+  let h="";
+  if(auj.length)h+='<div class="i1c"><div class="i1t">Aujourd\'hui</div>'+auj.map(bItem).join("")+"</div>";
+  if(rec.length)h+='<div class="i1c"><div class="i1t">Bons récents</div>'+rec.slice(0,20).map(bItem).join("")+"</div>";
   el.innerHTML=h;
 }
-function bI(b){return`<div class="bon-item">
-  <div class="bon-top"><div class="bon-name">${b.client||'—'}</div><span style="color:var(--green);font-weight:700;font-size:12px">Signé ✓</span></div>
-  <div class="bon-sub">${fd(b.date)} · ${b.hn||'—'} norm · ${b.ht||'—'} transf · LDV: ${b.ldv||'—'}</div>
-  <div class="bon-act">
-    <button class="btn-voir" onclick="vBon('${b.id}')">👁 Voir</button>
-    <button class="btn-pdf" onclick="vBon('${b.id}',true)">📄 PDF</button>
-  </div>
-  <div class="bon-act" style="margin-top:6px">
-    <button class="btn-voir" style="color:#e65100;border-color:#e65100" onclick="editBonDirect('${b.id}')">✏️ Modifier</button>
-    <button class="btn-del" onclick="delBon('${b.id}')">🗑</button>
-  </div>
-</div>`;}
-
-window.delBon=(id)=>{
-  const pin=prompt('Code PIN pour supprimer ce bon :');
-  if(pin!=='1131'){tst('⚠ Code incorrect');return;}
-  if(!confirm('Supprimer ce bon définitivement ?'))return;
-  import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js').then(({deleteDoc,doc:fdoc})=>{
-    deleteDoc(fdoc(db,'bons',id)).then(()=>tst('✓ Bon supprimé')).catch(()=>tst('Erreur suppression'));
-  });
+function bItem(b){
+  let h='<div class="bi">';
+  h+='<div class="bitop"><div class="biname">'+(b.client||"—")+'</div><span style="color:var(--g);font-weight:700;font-size:12px">Signé ✓</span></div>';
+  h+='<div class="bisub">'+fd(b.date)+" · "+(b.hn||"—")+" norm · "+(b.ht||"—")+" transf · LDV: "+(b.ldv||"—")+"</div>";
+  h+='<div class="biact"><button class="bvr" data-id="'+b.id+'" onclick="vBon(this)">👁 Voir</button><button class="bpdf" data-id="'+b.id+'" onclick="vBonPDF(this)">📄 PNG</button></div>';
+  h+='<div class="biact" style="margin-top:6px"><button class="bedt" data-id="'+b.id+'" onclick="editBonD(this)">✏️ Modifier</button><button class="bdel" data-id="'+b.id+'" onclick="delBon(this)">🗑</button></div>';
+  h+="</div>";return h;
+}
+window.vBon=(btn)=>{
+  const b=bons.find(x=>x.id===btn.getAttribute("data-id"));if(!b)return;curBon=b;
+  gid("mbnt").textContent="Bon — "+(b.client||"—");
+  let h='<div style="font-size:13px;line-height:2.2">';
+  h+="<div><strong>Client :</strong> "+(b.client||"—")+"</div>";
+  h+="<div><strong>Date :</strong> "+fd(b.date)+"</div>";
+  h+="<div><strong>Adresse :</strong> "+(b.adresse||"—")+"</div>";
+  h+="<div><strong>N° LDV :</strong> "+(b.ldv||"—")+"</div>";
+  h+="<div><strong>H. normales :</strong> "+(b.hn||"0:00")+"</div>";
+  h+="<div><strong>H. transfert :</strong> "+(b.ht||"0:00")+"</div>";
+  h+="<div><strong>H. supp. :</strong> "+(b.hs||"0:00")+"</div>";
+  h+="<div><strong>H. nuit :</strong> "+(b.hn2||"0:00")+"</div>";
+  h+="<div><strong>H. week-end :</strong> "+(b.hw||"0:00")+"</div>";
+  h+="<div><strong>Chef :</strong> "+(b.chef||"—")+"</div>";
+  if(b.desc)h+="<div><strong>Descriptif :</strong> "+b.desc+"</div>";
+  h+="</div>";
+  if(b.sig)h+='<div style="margin-top:10px;border:1px solid #e0e0e0;border-radius:8px;overflow:hidden;background:#f9f9f9"><div style="font-size:11px;color:#999;padding:6px 10px">Signature</div><img src="'+b.sig+'" style="width:100%;display:block;max-height:80px;object-fit:contain"></div>';
+  gid("mbnc").innerHTML=h;
+  gid("mbon").classList.add("open");
 };
-window.editBonDirect=(id)=>{
-  const b=bons.find(x=>x.id===id);if(!b)return;
-  curBon=b;
-  editBon();
-};
+window.vBonPDF=(btn)=>{const b=bons.find(x=>x.id===btn.getAttribute("data-id"));if(!b)return;curBon=b;genPDF();};
+window.editBonD=(btn)=>{const b=bons.find(x=>x.id===btn.getAttribute("data-id"));if(!b)return;curBon=b;editBon();};
 window.editBon=()=>{
-  const b=curBon;if(!b)return;
-  cm('mbon');
-  document.getElementById('bc').value=b.client||'';
-  document.getElementById('ba').value=b.adresse||'';
-  document.getElementById('bl').value=b.ldv||'';
-  document.getElementById('bdate').value=b.date||'';
-  document.getElementById('bhn').value=b.hn||'';
-  document.getElementById('bht').value=b.ht||'';
-  document.getElementById('bhs').value=b.hs||'';
-  document.getElementById('bhn2').value=b.hn2||'';
-  document.getElementById('bhw').value=b.hw||'';
-  document.getElementById('bch').value=b.chef||'';
-  document.getElementById('bdesc').value=b.desc||'';
-  document.getElementById('bon-edit-id').value=b.id;
-  document.getElementById('bm').textContent='Mode modification — la signature existante est conservée';
-  document.getElementById('bm').style.color='#e65100';
-  t1(document.querySelectorAll('.i1-nb')[0],'bon');
-  // Recharger la signature existante dans le canvas
-  if(b.sig){
-    const c=document.getElementById('sig-c');
-    const ctx=c.getContext('2d');
-    ctx.fillStyle='#ffffff';ctx.fillRect(0,0,c.width,c.height);
-    const img=new Image();
-    img.onload=()=>ctx.drawImage(img,0,0,c.width,c.height);
-    img.src=b.sig;
-  }
+  const b=curBon;if(!b)return;cm("mbon");
+  gid("bc").value=b.client||"";gid("ba").value=b.adresse||"";gid("bl").value=b.ldv||"";
+  gid("bdate").value=b.date||"";gid("bhn").value=b.hn||"";gid("bht").value=b.ht||"";
+  gid("bhs").value=b.hs||"";gid("bhn2").value=b.hn2||"";gid("bhw").value=b.hw||"";
+  gid("bch").value=b.chef||"";gid("bdesc").value=b.desc||"";gid("bon-eid").value=b.id;
+  gid("bmsg").textContent="Mode modification — signature conservée";gid("bmsg").style.color="#e65100";
+  if(b.sig&&sigCtx){sigCtx.fillStyle="#ffffff";sigCtx.fillRect(0,0,gid("sigc").width,gid("sigc").height);const img=new Image();img.onload=()=>sigCtx.drawImage(img,0,0,gid("sigc").width,gid("sigc").height);img.src=b.sig;}
+  t1(document.querySelectorAll(".i1nb")[0],"bon");
 };
-window.vBon=(id,pdf=false)=>{
-  const b=bons.find(x=>x.id===id);if(!b)return;
-  curBon=b;
-  document.getElementById('mbnt').textContent=`Bon — ${b.client||'—'}`;
-  document.getElementById('mbnc').innerHTML=`<div style="font-size:13px;line-height:2.2"><div><strong>Client :</strong> ${b.client||'—'}</div><div><strong>Adresse :</strong> ${b.adresse||'—'}</div><div><strong>N° LDV :</strong> ${b.ldv||'—'}</div><div><strong>Date :</strong> ${fd(b.date)}</div><div><strong>H. normales :</strong> ${b.hn||'0:00'}</div><div><strong>H. transfert :</strong> ${b.ht||'0:00'}</div><div><strong>H. supp. :</strong> ${b.hs||'0:00'}</div><div><strong>H. nuit :</strong> ${b.hn2||'0:00'}</div><div><strong>H. week-end :</strong> ${b.hw||'0:00'}</div><div><strong>Chef de chantier :</strong> ${b.chef||'—'}</div>${b.desc?`<div><strong>Descriptif :</strong> ${b.desc}</div>`:''}</div>${b.sig?`<div style="margin-top:12px;border:1px solid #e0e0e0;border-radius:8px;overflow:hidden;background:#f9f9f9"><div style="font-size:11px;color:#999;padding:6px 10px">Signature</div><img src="${b.sig}" style="width:100%;display:block;max-height:100px;object-fit:contain"></div>`:''}`;
-  document.getElementById('mbon').classList.add('open');
-  if(pdf)setTimeout(genPDF,200);
+window.delBon=async(btn)=>{
+  const id=btn.getAttribute("data-id");
+  if(prompt("Code PIN pour supprimer :")!==PIN1){tst("⚠ Code incorrect");return;}
+  if(!confirm("Supprimer ce bon ?"))return;
+  try{await deleteDoc(doc(db,"bons",id));tst("✓ Bon supprimé");}catch(e){tst("Erreur");}
 };
-
 window.genPDF=()=>{
   const b=curBon;if(!b)return;
-  tst('⏳ Génération du PDF…');
-
-  // Canvas A4 à 96dpi = 794x1123px
   const W=794,H=1123,mg=50;
-  const cv=document.createElement('canvas');
-  cv.width=W;cv.height=H;
-  const cx=cv.getContext('2d');
-
-  // Fond blanc
-  cx.fillStyle='#ffffff';
-  cx.fillRect(0,0,W,H);
-
-  // Barre verte en-tête
-  cx.fillStyle='#3B6D11';
-  cx.fillRect(mg,mg,W-mg*2,4);
-
-  // Nom entreprise
-  cx.fillStyle='#3B6D11';
-  cx.font='bold 28px Arial';
-  cx.fillText('DT-TP76',mg,mg+40);
-
-  cx.fillStyle='#555555';
-  cx.font='14px Arial';
-  cx.fillText('Divers Transport — Travaux Publics 76',mg,mg+60);
-
-  // Titre bon
-  cx.fillStyle='#0e0e0e';
-  cx.font='bold 20px Arial';
-  cx.textAlign='right';
-  cx.fillText('Bon de chantier',W-mg,mg+40);
-  cx.fillStyle='#888888';
-  cx.font='13px Arial';
-  cx.fillText(fd(b.date),W-mg,mg+58);
-  cx.textAlign='left';
-
-  // Ligne séparatrice
-  cx.strokeStyle='#3B6D11';
-  cx.lineWidth=2;
-  cx.beginPath();cx.moveTo(mg,mg+72);cx.lineTo(W-mg,mg+72);cx.stroke();
-
+  const cv=document.createElement("canvas");cv.width=W;cv.height=H;
+  const cx=cv.getContext("2d");cx.fillStyle="#ffffff";cx.fillRect(0,0,W,H);
+  cx.fillStyle="#3B6D11";cx.fillRect(mg,mg,W-mg*2,4);
+  cx.font="bold 28px Arial";cx.fillStyle="#3B6D11";cx.fillText("DT-TP76",mg,mg+40);
+  cx.font="14px Arial";cx.fillStyle="#555";cx.fillText("Divers Transport — Travaux Publics 76",mg,mg+60);
+  cx.font="bold 20px Arial";cx.fillStyle="#0e0e0e";cx.textAlign="right";cx.fillText("Bon de chantier",W-mg,mg+40);
+  cx.font="13px Arial";cx.fillStyle="#888";cx.fillText(fd(b.date),W-mg,mg+58);cx.textAlign="left";
+  cx.strokeStyle="#3B6D11";cx.lineWidth=2;cx.beginPath();cx.moveTo(mg,mg+72);cx.lineTo(W-mg,mg+72);cx.stroke();
   let y=mg+95;
-
-  // Fonction section
-  const sect=(titre)=>{
-    cx.fillStyle='#3B6D11';
-    cx.fillRect(mg,y,4,20);
-    cx.font='bold 11px Arial';
-    cx.fillStyle='#3B6D11';
-    cx.fillText(titre.toUpperCase(),mg+12,y+14);
-    y+=30;
+  const sect=(t)=>{y+=3;cx.fillStyle="#3B6D11";cx.fillRect(mg,y,4,20);cx.font="bold 11px Arial";cx.fillStyle="#3B6D11";cx.fillText(t.toUpperCase(),mg+12,y+14);y+=30;};
+  const row=(k,v)=>{cx.fillStyle="#f8f9f8";cx.fillRect(mg,y-2,W-mg*2,26);cx.font="14px Arial";cx.fillStyle="#666";cx.fillText(k,mg+8,y+16);cx.font="bold 14px Arial";cx.fillStyle="#0e0e0e";cx.textAlign="right";cx.fillText(String(v||"—"),W-mg-8,y+16);cx.textAlign="left";cx.strokeStyle="#eee";cx.lineWidth=0.5;cx.beginPath();cx.moveTo(mg,y+24);cx.lineTo(W-mg,y+24);cx.stroke();y+=28;};
+  sect("Informations chantier");row("Client",b.client);row("Adresse",b.adresse);row("N° Lettre de voiture",b.ldv);
+  if(b.desc)row("Descriptif",b.desc);
+  sect("Heures effectuées");row("Normales",b.hn||"0:00");row("Transfert",b.ht||"0:00");row("Supplémentaires",b.hs||"0:00");row("Nuit",b.hn2||"0:00");row("Week-end",b.hw||"0:00");
+  sect("Bon pour accord");row("Chef de chantier",b.chef);
+  y+=4;cx.strokeStyle="#000";cx.lineWidth=1.5;
+  if(cx.roundRect)cx.roundRect(mg,y,W-mg*2,35,2,2);else{cx.rect(mg,y,W-mg*2,35);}cx.stroke();
+  cx.font="bold 11px Arial";cx.fillStyle="#444";cx.fillText("Signature — "+(b.chef||"—"),mg+4,y+6);
+  const dl=()=>{
+    cx.strokeStyle="#ddd";cx.lineWidth=1;cx.beginPath();cx.moveTo(mg,H-40);cx.lineTo(W-mg,H-40);cx.stroke();
+    cx.font="11px Arial";cx.fillStyle="#aaa";cx.textAlign="center";cx.fillText("DT-TP76 · Buchy, Seine-Maritime · "+fd(b.date),W/2,H-20);cx.textAlign="left";
+    const lk=document.createElement("a");lk.download="bon-"+(b.client||"client").replace(/\s+/g,"-")+"-"+fd(b.date).replace(/\//g,"-")+".png";
+    lk.href=cv.toDataURL("image/png",1.0);document.body.appendChild(lk);lk.click();document.body.removeChild(lk);tst("✓ PNG téléchargé !");
   };
-
-  // Fonction ligne
-  const row=(k,v)=>{
-    cx.fillStyle='#f8f9f8';
-    cx.fillRect(mg,y-2,W-mg*2,26);
-    cx.font='14px Arial';
-    cx.fillStyle='#666666';
-    cx.fillText(k,mg+8,y+16);
-    cx.font='bold 14px Arial';
-    cx.fillStyle='#0e0e0e';
-    cx.textAlign='right';
-    cx.fillText(String(v||'—'),W-mg-8,y+16);
-    cx.textAlign='left';
-    cx.strokeStyle='#eeeeee';
-    cx.lineWidth=0.5;
-    cx.beginPath();cx.moveTo(mg,y+24);cx.lineTo(W-mg,y+24);cx.stroke();
-    y+=28;
-  };
-
-  sect('Informations chantier');
-  row('Client',b.client);
-  row('Adresse du chantier',b.adresse);
-  row('N° Lettre de voiture',b.ldv);
-  y+=8;
-
-  sect('Heures effectuées');
-  row('Heures normales',b.hn||'0:00');
-  row('Heures transfert',b.ht||'0:00');
-  row('Heures supplémentaires',b.hs||'0:00');
-  row('Heures nuit',b.hn2||'0:00');
-  row('Heures week-end',b.hw||'0:00');
-  y+=8;
-
-  sect('Bon pour accord');
-  row('Chef de chantier',b.chef);
-  if(b.desc){row('Descriptif',b.desc);}
-  y+=8;
-
-  // Cadre signature
-  cx.strokeStyle='#0e0e0e';
-  cx.lineWidth=1.5;
-  cx.beginPath();cx.roundRect(mg,y,W-mg*2,110,6);cx.stroke();
-  cx.font='bold 11px Arial';
-  cx.fillStyle='#444444';
-  cx.fillText('Signature — '+(b.chef||'—'),mg+10,y+18);
-
-  const finalize=()=>{
-    // Pied de page
-    cx.strokeStyle='#dddddd';
-    cx.lineWidth=1;
-    cx.beginPath();cx.moveTo(mg,H-40);cx.lineTo(W-mg,H-40);cx.stroke();
-    cx.font='11px Arial';
-    cx.fillStyle='#aaaaaa';
-    cx.textAlign='center';
-    cx.fillText('DT-TP76 · Buchy, Seine-Maritime · Bon généré le '+fd(b.date),W/2,H-20);
-    cx.textAlign='left';
-
-    // Télécharger comme image PNG (fonctionne parfaitement sur Android)
-    const link=document.createElement('a');
-    const nom='bon-'+(b.client||'chantier').replace(/\s+/g,'-')+'-'+fd(b.date).replace(/\//g,'-');
-    link.download=nom+'.png';
-    link.href=cv.toDataURL('image/png',1.0);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    tst('✓ Bon téléchargé !');
-  };
-
-  if(b.sig){
-    // Fond blanc zone signature
-    cx.fillStyle='#ffffff';
-    cx.fillRect(mg+2,y+22,W-mg*2-4,86);
-    if(b.sig){
-      const img=new Image();
-      img.onload=()=>{
-        // Dessiner l'image — elle est déjà noir sur blanc
-        cx.drawImage(img,mg+8,y+24,W-mg*2-16,80);
-        finalize();
-      };
-      img.onerror=finalize;
-      img.src=b.sig;
-    } else { finalize(); }
-  } else {
-    cx.font='12px Arial';
-    cx.fillStyle='#cccccc';
-    cx.textAlign='center';
-    cx.fillText('Aucune signature',W/2,y+65);
-    cx.textAlign='left';
-    finalize();
-  }
-};;
-
-// APP2
-const PGS=['menu','dash','couts','histo','postes','enc','treso','clients','gazole'];
-const PTIT={menu:'Menu principal',dash:'Tableau de bord',couts:'Coûts chantier',histo:'Historique',postes:'Postes de coût',enc:'Encaissements',treso:'Trésorerie',clients:'Clients',gazole:'Gazole'};
-
-function ia2(){
-  const d=new Date();
-  document.getElementById('mdate').textContent=d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  ['cd','edt','gd','fd2','mpdt'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=d.toISOString().split('T')[0];});
-  document.getElementById('cd').addEventListener('change',updPP);
-  document.getElementById('cdel').addEventListener('change',updPP);
-  updPP();
-  onSnapshot(query(collection(db,'chantiers'),orderBy('date','desc')),s=>{chantiers=s.docs.map(d=>({id:d.id,...d.data()}));rDash();rHisto();rPostes();});
-  onSnapshot(query(collection(db,'encaissements'),orderBy('date','asc')),s=>{encs=s.docs.map(d=>({id:d.id,...d.data()}));rEnc();rDash();});
-  onSnapshot(query(collection(db,'charges'),orderBy('jour','asc')),s=>{charges=s.docs.map(d=>({id:d.id,...d.data()}));rCh();});
-  onSnapshot(query(collection(db,'clients'),orderBy('nom','asc')),s=>{clients=s.docs.map(d=>({id:d.id,...d.data()}));rCl();});
-  onSnapshot(query(collection(db,'gazoles'),orderBy('date','desc')),s=>{gazoles=s.docs.map(d=>({id:d.id,...d.data()}));rGz();});
-  onSnapshot(collection(db,'postes'),s=>{postes={};s.docs.forEach(d=>{postes[d.id]={id:d.id,...d.data()};});rPostes();});
-  onSnapshot(query(collection(db,'depenses'),orderBy('date','desc')),s=>{deps=s.docs.map(d=>({id:d.id,...d.data()}));rDash();rPostes();rFacs();});
-  onSnapshot(doc(db,'config','solde'),s=>{if(s.exists()){solde=s.data().val||0;}else{solde=0;}rDash();rFacs();});
-}
-
-window.gp=p=>{PGS.forEach(t=>document.getElementById('i2-'+t).classList.toggle('on',t===p));document.getElementById('bkbtn').classList.toggle('show',p!=='menu');document.getElementById('lg2').style.display=p==='menu'?'block':'none';document.getElementById('i2pt').textContent=PTIT[p]||'';if(p==='dash')rDash();};
-window.goMenu=()=>gp('menu');
-
-window.updPP=()=>{
-  const dp=dP(document.getElementById('cd').value,document.getElementById('cdel').value);
-  const el=document.getElementById('ppv');
-  if(!dp){el.textContent='';return;}
-  const diff=dj(dp);
-  el.textContent=`→ Paiement prévu le ${fd(dp)} (${diff>0?'dans '+diff+'j':diff===0?"aujourd'hui":'dépassé de '+(-diff)+'j'})`;
+  if(b.sig){const img=new Image();img.onload=()=>{cx.fillStyle="#ffffff";cx.fillRect(mg+2,y+8,W-mg*2-4,25);cx.drawImage(img,mg+8,y+8,W-mg*2-16,25);dl();};img.onerror=dl;img.src=b.sig;}else dl();
 };
 
+// APP2
+const PGS=["menu","dash","couts","histo","postes","enc","treso","clients","gazole"];
+const PTIT={menu:"Menu",dash:"Tableau de bord",couts:"Coûts chantier",histo:"Historique",postes:"Postes de coût",enc:"Encaissements",treso:"Trésorerie",clients:"Clients",gazole:"Gazole"};
+function ia2(){
+  const today=new Date().toISOString().split("T")[0];
+  gid("mdate").textContent=new Date().toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+  ["cd","edt","gzd","fdat","mpdt"].forEach(id=>{const el=gid(id);if(el)el.value=today;});
+  gid("cd").addEventListener("change",updPP);gid("cdel").addEventListener("change",updPP);updPP();
+  onSnapshot(query(collection(db,"chantiers"),orderBy("date","desc")),s=>{chantiers=s.docs.map(d=>({id:d.id,...d.data()}));rDash();rHisto();rPostes();});
+  onSnapshot(query(collection(db,"encaissements"),orderBy("date","asc")),s=>{encs=s.docs.map(d=>({id:d.id,...d.data()}));rEnc();rDash();});
+  onSnapshot(query(collection(db,"charges"),orderBy("jour","asc")),s=>{charges=s.docs.map(d=>({id:d.id,...d.data()}));rCh();rDash();});
+  onSnapshot(query(collection(db,"clients"),orderBy("nom","asc")),s=>{clients=s.docs.map(d=>({id:d.id,...d.data()}));rCl();});
+  onSnapshot(query(collection(db,"gazoles"),orderBy("date","desc")),s=>{gazoles=s.docs.map(d=>({id:d.id,...d.data()}));rGz();});
+  onSnapshot(collection(db,"postes"),s=>{postes={};s.docs.forEach(d=>{postes[d.id]={id:d.id,...d.data()};});rPostes();});
+  onSnapshot(query(collection(db,"depenses"),orderBy("date","desc")),s=>{deps=s.docs.map(d=>({id:d.id,...d.data()}));rDash();rFacs();rPostes();});
+  onSnapshot(doc(db,"config","solde"),s=>{solde=s.exists()?s.data().val||0:0;rDash();});
+}
+window.gp=(p)=>{PGS.forEach(t=>gid("i2-"+t).classList.toggle("on",t===p));gid("bkbtn").classList.toggle("show",p!=="menu");gid("lg2").style.display=p==="menu"?"block":"none";gid("i2pt").textContent=PTIT[p]||"";};
+window.goMenu=()=>gp("menu");
+window.updPP=()=>{
+  const dp=dP(gid("cd").value,gid("cdel").value);const el=gid("ppv");if(!dp){el.textContent="";return;}
+  const diff=dj(dp);el.textContent="→ Paiement prévu le "+fd(dp)+" ("+(diff>0?"dans "+diff+"j":diff===0?"aujourd'hui":"dépassé de "+(-diff)+"j")+")";
+};
+
+// DASHBOARD
 function rDash(){
   const mk=new Date().toISOString().slice(0,7);
   const mc=chantiers.filter(c=>c.date&&c.date.slice(0,7)===mk);
-  const tCA=chantiers.reduce((s,c)=>s+calc(c).caHT,0);
   const tM=chantiers.reduce((s,c)=>s+calc(c).marge,0);
-  const tD=deps.filter(d=>!d.type||d.type==='depense').reduce((s,d)=>s+(d.montant||0),0);
-  const tE=deps.filter(d=>d.type==='entree').reduce((s,d)=>s+(d.montant||0),0);
-  // Bénéfice = marge brute des chantiers - dépenses diverses hors exploitation + entrées diverses
+  const tD=deps.filter(d=>!d.type||d.type==="depense").reduce((s,d)=>s+(d.montant||0),0);
+  const tE=deps.filter(d=>d.type==="entree").reduce((s,d)=>s+(d.montant||0),0);
+  const tCh=charges.reduce((s,c)=>s+(c.montant||0),0);
+  const tEnc=encs.filter(e=>e.paid).reduce((s,e)=>s+(e.montant||0),0);
+  const soldeReel=solde-tD-tCh+tEnc+tE;
   const bn=tM-tD+tE;
+  // TVA mois courant
   const tvC=mc.reduce((s,c)=>s+calc(c).tvC,0);
   const tvG=mc.reduce((s,c)=>s+calc(c).tGD,0);
-  // TVA déductible sur factures du mois (achats avec TVA)
-  const tvFacDed=mc.length>0?deps.filter(d=>d.date&&d.date.slice(0,7)===mk&&d.tva&&(!d.type||d.type==='depense')).reduce((s,d)=>s+(d.montant||0)*((d.tva||0)/100),0):0;
-  const tvN=tvC-tvG-tvFacDed;
-  // Mois précédent
-  const mkPrev=new Date(new Date().getFullYear(),new Date().getMonth()-1,1).toISOString().slice(0,7);
-  const mcPrev=chantiers.filter(c=>c.date&&c.date.slice(0,7)===mkPrev);
-  const tvCPrev=mcPrev.reduce((s,c)=>s+calc(c).tvC,0);
-  const tvGPrev=mcPrev.reduce((s,c)=>s+calc(c).tGD,0);
-  const tvFacPrev=deps.filter(d=>d.date&&d.date.slice(0,7)===mkPrev&&d.tva&&(!d.type||d.type==='depense')).reduce((s,d)=>s+(d.montant||0)*((d.tva||0)/100),0);
-  const tvNPrev=tvCPrev-tvGPrev-tvFacPrev;
+  const tvFD=deps.filter(d=>d.date&&d.date.slice(0,7)===mk&&d.tva>0&&(!d.type||d.type==="depense")).reduce((s,d)=>s+(d.montant||0)*((d.tva||0)/100),0);
+  const tvChD=charges.filter(c=>c.tva>0).reduce((s,c)=>s+(c.montant||0)*((c.tva||0)/100),0);
+  const tvN=tvC-tvG-tvFD-tvChD;
+  // TVA mois précédent
+  const mkP=new Date(new Date().getFullYear(),new Date().getMonth()-1,1).toISOString().slice(0,7);
+  const mcP=chantiers.filter(c=>c.date&&c.date.slice(0,7)===mkP);
+  const tvCP=mcP.reduce((s,c)=>s+calc(c).tvC,0);
+  const tvGP=mcP.reduce((s,c)=>s+calc(c).tGD,0);
+  const tvFP=deps.filter(d=>d.date&&d.date.slice(0,7)===mkP&&d.tva>0&&(!d.type||d.type==="depense")).reduce((s,d)=>s+(d.montant||0)*((d.tva||0)/100),0);
+  const tvNP=tvCP-tvGP-tvFP-tvChD;
+  // Retards
   const now=new Date();now.setHours(0,0,0,0);
   const ret=encs.filter(e=>!e.paid&&e.date&&new Date(e.date)<now);
-
-  // Calcul solde réel = solde de base - dépenses - charges prélevées ce mois + encaissements reçus
-  const moisCourant=new Date().getMonth()+1;
-  const totalDeps=deps.filter(d=>!d.type||d.type==='depense').reduce((s,d)=>s+(d.montant||0),0);
-  const totalEntrees=deps.filter(d=>d.type==='entree').reduce((s,d)=>s+(d.montant||0),0);
-  const totalCharges=charges.reduce((s,c)=>s+(c.montant||0),0);
-  const totalEncsRecus=encs.filter(e=>e.paid).reduce((s,e)=>s+(e.montant||0),0);
-  const soldeReel=solde-totalDeps-totalCharges+totalEncsRecus+totalEntrees;
-
-  // Mettre à jour l'affichage solde dans trésorerie
-  const sEl=document.getElementById('sval');
-  if(sEl) sEl.textContent=eu(soldeReel);
-  // Détail calcul
-  const sdB=document.getElementById('sd-base');if(sdB)sdB.textContent=eu(solde);
-  const sdC=document.getElementById('sd-charges');if(sdC)sdC.textContent='−'+eu(totalCharges);
-  const sdD=document.getElementById('sd-deps');if(sdD)sdD.textContent='−'+eu(totalDeps);
-  const sdE=document.getElementById('sd-encs');if(sdE)sdE.textContent='+'+eu(totalEncsRecus);
-  const sdEnt=document.getElementById('sd-entrees');if(sdEnt)sdEnt.textContent='+'+eu(totalEntrees);
-  const sdT=document.getElementById('sd-total');if(sdT){sdT.textContent=eu(soldeReel);sdT.style.color=soldeReel>=0?'var(--gd)':'#c0392b';}
-
-  document.getElementById('dkpis').innerHTML=`<div class="kp ${soldeReel>=0?'g':'r'}"><div class="kl">Solde compte</div><div class="kv">${eu(soldeReel)}</div><div class="ks">Mis à jour auto</div></div><div class="kp ${bn>=0?'g':'r'}"><div class="kl">Bénéfice net</div><div class="kv">${eu(bn)}</div><div class="ks">Marge − dépenses</div></div><div class="kp o"><div class="kl">TVA à reverser</div><div class="kv">${eu(tvN)}</div><div class="ks">Ce mois</div></div><div class="kp ${ret.length>0?'r':'g'}"><div class="kl">Retards paiement</div><div class="kv">${ret.length}</div></div>`;
-  const mn=new Date().toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
-  const mnPrev=new Date(new Date().getFullYear(),new Date().getMonth()-1,1).toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
-  document.getElementById('dtvatit').textContent=`TVA à déclarer`;
-  document.getElementById('dtvabox').innerHTML=`
-    <div style="font-size:11px;font-weight:700;color:#e65100;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">📅 Mois en cours — ${mn}</div>
-    <div class="tr"><span>TVA collectée (clients)</span><span style="color:#c0392b;font-weight:600">+${eu(tvC)}</span></div>
-    <div class="tr"><span>TVA déductible gazole (80%)</span><span style="color:var(--gd);font-weight:600">−${eu(tvG)}</span></div>
-    <div class="tr"><span>TVA déductible factures</span><span style="color:var(--gd);font-weight:600">−${eu(tvFacDed)}</span></div>
-    <div style="display:flex;justify-content:space-between;padding:10px 0;font-weight:700;font-size:15px;border-top:2px solid #e0e0e0;margin-top:6px">
-      <span>${tvN>=0?'À reverser':'À récupérer'}</span>
-      <span style="color:${tvN>=0?'#c0392b':'var(--gd)'};">${eu(Math.abs(tvN))}</span>
-    </div>
-    <div style="border-top:2px solid #f0f0f0;margin:8px 0 10px"></div>
-    <div style="font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">📅 Mois précédent — ${mnPrev}</div>
-    <div class="tr"><span>TVA collectée (clients)</span><span style="color:#c0392b;font-weight:600">+${eu(tvCPrev)}</span></div>
-    <div class="tr"><span>TVA déductible gazole (80%)</span><span style="color:var(--gd);font-weight:600">−${eu(tvGPrev)}</span></div>
-    <div class="tr"><span>TVA déductible factures</span><span style="color:var(--gd);font-weight:600">−${eu(tvFacPrev)}</span></div>
-    <div style="display:flex;justify-content:space-between;padding:10px 0;font-weight:700;font-size:15px;border-top:2px solid #e0e0e0;margin-top:6px">
-      <span>${tvNPrev>=0?'À reverser':'À récupérer'}</span>
-      <span style="color:${tvNPrev>=0?'#c0392b':'var(--gd)'};">${eu(Math.abs(tvNPrev))}</span>
-    </div>
-  `;
-  // Alertes chantiers à compléter
-  const aCompleter=chantiers.filter(c=>c.aCompleter);
-  const dashRetEl=document.getElementById('dret');
-  let alerteHtml='';
-  if(aCompleter.length){
-    alerteHtml=`<div style="background:#fff3e0;border:1px solid #ffe0b2;border-radius:8px;padding:10px;margin-bottom:10px;font-size:13px">
-      <div style="font-weight:700;color:#e65100;margin-bottom:6px">⚠ ${aCompleter.length} chantier(s) à compléter</div>
-      ${aCompleter.map(c=>`<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #ffe0b2">
-        <span>${c.client||'—'} · ${fd(c.date)}</span>
-        <button onclick="goPage('couts');prefillCout('${c.id}')" style="background:#e65100;color:#fff;border:none;border-radius:6px;padding:3px 10px;font-size:11px;cursor:pointer;font-weight:600;font-family:'Montserrat',sans-serif">Compléter →</button>
-      </div>`).join('')}
-    </div>`;
+  const mn=new Date().toLocaleDateString("fr-FR",{month:"long",year:"numeric"});
+  const mnP=new Date(new Date().getFullYear(),new Date().getMonth()-1,1).toLocaleDateString("fr-FR",{month:"long",year:"numeric"});
+  // Mise à jour solde trésorerie
+  const sv=gid("sval");if(sv)sv.textContent=eu(soldeReel);
+  const sdMap={"sd-base":eu(solde),"sd-ch":"-"+eu(tCh),"sd-dep":"-"+eu(tD),"sd-ent":"+"+eu(tE),"sd-enc":"+"+eu(tEnc),"sd-tot":eu(soldeReel)};
+  Object.entries(sdMap).forEach(([k,v])=>{const el=gid(k);if(el){el.textContent=v;if(k==="sd-tot")el.style.color=soldeReel>=0?"var(--gd)":"#c0392b";}});
+  // KPIs
+  gid("dkpis").innerHTML=
+    '<div class="kp '+(soldeReel>=0?"g":"r")+'"><div class="kl">Solde compte</div><div class="kv">'+eu(soldeReel)+'</div><div class="ks">Auto</div></div>'+
+    '<div class="kp '+(bn>=0?"g":"r")+'"><div class="kl">Bénéfice net</div><div class="kv">'+eu(bn)+'</div><div class="ks">Marge − dépenses</div></div>'+
+    '<div class="kp o"><div class="kl">TVA ce mois</div><div class="kv">'+eu(Math.abs(tvN))+'</div><div class="ks">'+(tvN>=0?"À reverser":"À récupérer")+'</div></div>'+
+    '<div class="kp '+(ret.length>0?"r":"g")+'"><div class="kl">Retards</div><div class="kv">'+ret.length+'</div></div>';
+  // TVA
+  let tvaH='<div style="font-size:11px;font-weight:700;color:#e65100;margin-bottom:8px">'+mn+'</div>';
+  tvaH+='<div class="tr"><span>TVA collectée (clients)</span><span style="color:#c0392b;font-weight:600">+'+eu(tvC)+'</span></div>';
+  tvaH+='<div class="tr"><span>TVA déductible gazole (80%)</span><span style="color:var(--gd);font-weight:600">-'+eu(tvG)+'</span></div>';
+  tvaH+='<div class="tr"><span>TVA déductible factures/dépenses</span><span style="color:var(--gd);font-weight:600">-'+eu(tvFD)+'</span></div>';
+  tvaH+='<div class="tr"><span>TVA déductible charges mensuelles</span><span style="color:var(--gd);font-weight:600">-'+eu(tvChD)+'</span></div>';
+  tvaH+='<div style="display:flex;justify-content:space-between;padding:10px 0;font-weight:700;font-size:15px;border-top:2px solid #e0e0e0;margin-top:6px"><span>'+(tvN>=0?"À reverser":"À récupérer")+'</span><span style="color:'+(tvN>=0?"#c0392b":"var(--gd)")+'">'+eu(Math.abs(tvN))+'</span></div>';
+  tvaH+='<div style="border-top:2px solid #f0f0f0;margin:8px 0 10px"></div>';
+  tvaH+='<div style="font-size:11px;font-weight:700;color:#888;margin-bottom:8px">'+mnP+' (déclaration en cours)</div>';
+  tvaH+='<div class="tr"><span>TVA collectée (clients)</span><span style="color:#c0392b;font-weight:600">+'+eu(tvCP)+'</span></div>';
+  tvaH+='<div class="tr"><span>TVA déductible gazole (80%)</span><span style="color:var(--gd);font-weight:600">-'+eu(tvGP)+'</span></div>';
+  tvaH+='<div class="tr"><span>TVA déductible factures/dépenses</span><span style="color:var(--gd);font-weight:600">-'+eu(tvFP)+'</span></div>';
+  tvaH+='<div class="tr"><span>TVA déductible charges mensuelles</span><span style="color:var(--gd);font-weight:600">-'+eu(tvChD)+'</span></div>';
+  tvaH+='<div style="display:flex;justify-content:space-between;padding:10px 0;font-weight:700;font-size:15px;border-top:2px solid #e0e0e0;margin-top:6px"><span>'+(tvNP>=0?"À reverser":"À récupérer")+'</span><span style="color:'+(tvNP>=0?"#c0392b":"var(--gd)")+'">'+eu(Math.abs(tvNP))+'</span></div>';
+  gid("dtvabox").innerHTML=tvaH;
+  // Alertes
+  const ac=chantiers.filter(c=>c.aCompleter===true);
+  let dretH="";
+  if(ac.length){
+    dretH='<div style="background:#fff3e0;border:1px solid #ffe0b2;border-radius:8px;padding:10px;margin-bottom:10px">';
+    dretH+='<div style="font-weight:700;color:#e65100;margin-bottom:6px;font-size:13px">⚠ '+ac.length+' chantier(s) à compléter dans Coûts</div>';
+    ac.forEach(function(c){
+      dretH+='<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-top:1px solid #ffe0b2">';
+      dretH+='<span style="font-size:13px">'+(c.client||"—")+" · "+fd(c.date)+"</span>";
+      dretH+='<button data-id="'+c.id+'" onclick="completerC(this)" style="background:#e65100;color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;font-weight:700;font-family:Montserrat,sans-serif">Compléter</button>';
+      dretH+="</div>";
+    });
+    dretH+="</div>";
   }
-  document.getElementById('dret').innerHTML=ret.length?alerteHtml+ret.map(e=>{const diff=-dj(new Date(e.date));return`<div class="er"><div><div style="font-weight:600">${e.client||'—'}</div><div style="font-size:11px;color:#999">Éch. ${fd(e.date)} — +${diff}j</div></div><div><span class="bdg br">+${diff}j</span><div style="font-weight:700;color:#c0392b;margin-top:2px">${eu(e.montant)}</div></div></div>`;}).join(''):'<div style="font-size:13px;color:#999;padding:8px 0">Aucun retard 🎉</div>';
+  if(ret.length){
+    ret.forEach(function(e){const diff=-dj(new Date(e.date));dretH+='<div class="er"><div><div style="font-weight:600">'+(e.client||"—")+'</div><div style="font-size:11px;color:#999">Éch. '+fd(e.date)+" — +"+diff+"j</div></div><div><span class='bdg br'>+"+diff+"j</span><div style='font-weight:700;color:#c0392b;margin-top:2px'>"+eu(e.montant)+"</div></div></div>";});
+  }else{dretH+='<div style="font-size:13px;color:#999;padding:8px 0">Aucun retard 🎉</div>';}
+  gid("dret").innerHTML=dretH;
 }
+window.completerC=(btn)=>{gp("couts");prefillCout(btn.getAttribute("data-id"));};
 
-window.delChantier=async(id)=>{
-  const pin=prompt('Code PIN pour supprimer :');
-  if(pin!=='19891986'){tst('⚠ Code incorrect');return;}
-  if(!confirm('Supprimer ce chantier définitivement ?'))return;
-  try{
-    const{deleteDoc,doc:fd2}=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
-    await deleteDoc(fd2(db,'chantiers',id));
-    tst('✓ Chantier supprimé');
-  }catch(e){tst('Erreur suppression');}
-};
-window.prefillCout=(id)=>{
-  const c=chantiers.find(x=>x.id===id);if(!c)return;
-  document.getElementById('cc').value=c.client||'';
-  document.getElementById('cd').value=c.date||'';
-  document.getElementById('chp').value=c.hprod||'';
-  document.getElementById('cht').value=c.htransf||'';
-  document.getElementById('cpx').value=c.prix||85;
-  document.getElementById('cgz').value=c.carbu||2.25;
-  document.getElementById('ctv').value=c.tva||20;
-  document.getElementById('crd').value=c.reduc||0;
-  document.getElementById('cdel').value=c.delai||'30fm';
-  document.getElementById('cout-edit-id').value=id;
-  document.getElementById('cmsg').textContent=c.aCompleter?'⚠ Chantier à compléter — remplis le prix, gazole, TVA et délai':'✏️ Mode modification — modifie et enregistre';
-  document.getElementById('cmsg').style.color=c.aCompleter?'#e65100':'#3B6D11';
-  document.getElementById('cprev').style.display='none';
-  updPP();
-  // Scroll vers le haut du formulaire
-  document.getElementById('cc').scrollIntoView({behavior:'smooth',block:'start'});
-};
-window.prevC=()=>{
-  const x={hprod:document.getElementById('chp').value,htransf:document.getElementById('cht').value,prix:parseFloat(document.getElementById('cpx').value)||85,carbu:parseFloat(document.getElementById('cgz').value)||2.25,tva:parseFloat(document.getElementById('ctv').value)||20,reduc:parseFloat(document.getElementById('crd').value)||0};
-  const r=calc(x);
-  document.getElementById('cprev').style.display='block';
-  document.getElementById('cstat').innerHTML=`<div class="pss"><div class="pl">CA HT</div><div class="pv">${eu(r.caHT)}</div></div><div class="pss"><div class="pl">CA TTC</div><div class="pv">${eu(r.caTTC)}</div></div><div class="pss"><div class="pl">Coût revient</div><div class="pv">${eu(r.ct)}</div></div><div class="pss ${r.marge>=0?'g':'r'}"><div class="pl">Marge HT</div><div class="pv">${eu(r.marge)}</div></div>`;
-  let rows=Object.values(COUTS).map(c=>`<div class="pr"><span>${c.l}</span><span style="color:#999">${c.v.toFixed(2)} €/h</span><span style="font-weight:600">${eu(c.v*r.hto)}</span></div>`).join('');
-  rows+=`<div class="pr"><span>Gazole (${CONSO}L × ${r.cHT.toFixed(3)} HT)</span><span style="color:#999">${r.cch.toFixed(2)} €/h</span><span style="font-weight:600">${eu(r.cch*r.hto)}</span></div>`;
-  rows+=`<div class="totr"><span>Total</span><span>${eu(r.crh)}/h</span><span style="color:#c0392b">${eu(r.ct)}</span></div>`;
-  rows+=`<div style="background:#f0f7e8;border-radius:8px;padding:8px 10px;margin-top:8px;font-size:12px;color:var(--gd);display:flex;justify-content:space-between"><span>TVA gazole déductible 80%</span><span style="font-weight:600">+${eu(r.tGD)}</span></div>`;
-  document.getElementById('cdet').innerHTML=rows;
-};
-
-window.saveC=async()=>{
-  const cl=document.getElementById('cc').value;
-  const dt=document.getElementById('cd').value;
-  if(!cl){tst('⚠ Renseigne le client');return;}
-  if(!dt){tst('⚠ Renseigne la date');return;}
-  document.getElementById('cmsg').textContent='Enregistrement…';
-  const coutEditId=document.getElementById('cout-edit-id').value;
-  const cData={client:cl,date:dt,delai:document.getElementById('cdel').value,hprod:document.getElementById('chp').value,htransf:document.getElementById('cht').value,prix:parseFloat(document.getElementById('cpx').value)||85,carbu:parseFloat(document.getElementById('cgz').value)||2.25,tva:parseFloat(document.getElementById('ctv').value)||20,reduc:parseFloat(document.getElementById('crd').value)||0,aCompleter:false};
-  try{
-    if(coutEditId){
-      await updateDoc(doc(db,'chantiers',coutEditId),cData);
-      document.getElementById('cout-edit-id').value='';
-    } else {
-      await addDoc(collection(db,'chantiers'),{...cData,createdAt:new Date().toISOString()});
-    }
-    document.getElementById('cmsg').textContent='✓ Enregistré !';
-    ['cc','chp','cht'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('cprev').style.display='none';
-    document.getElementById('cout-edit-id').value='';
-    setTimeout(()=>{document.getElementById('cmsg').textContent='';document.getElementById('cmsg').style.color='var(--gd)';gp('histo');},1500);
-  }catch(e){document.getElementById('cmsg').textContent='Erreur: '+e.message;}
-};
-
+// HISTORIQUE
 function rHisto(){
-  if(!chantiers.length){document.getElementById('histo-cards').innerHTML='<div class="ldr">Aucun chantier</div>';return;}
-  let tCA=0,tM=0;
-  document.getElementById('hbody').innerHTML=chantiers.map(c=>{
-    const r=calc(c);const dp=dP(c.date,c.delai);const diff=dj(dp);
+  const el=gid("histo-cards");
+  if(!chantiers.length){el.innerHTML='<div class="ldr">Aucun chantier</div>';gid("htot").innerHTML="";return;}
+  let tCA=0,tM=0,html="";
+  chantiers.forEach(function(ch){
+    const r=calc(ch);const dp=dP(ch.date,ch.delai);const diff=dj(dp);
     tCA+=r.caHT;tM+=r.marge;
-    const mc=r.mP>=30?'bg':r.mP>=15?'bo':'br';
-    const ds=diff!==null?(diff>0?`J-${diff}`:diff===0?'Auj.':`<span style="color:#c0392b">+${-diff}j</span>`):'';
-    return`<tr><td>${fd(c.date)}</td><td style="font-weight:600">${c.client||'—'}</td><td>${r.hp.toFixed(1)}+${r.ht.toFixed(1)}</td><td>${eu(r.caHT)}</td><td style="color:${r.marge>=0?'var(--gd)':'#c0392b'};font-weight:600">${eu(r.marge)}</td><td><span class="bdg ${mc}">${r.mP.toFixed(0)}%</span></td><td><span style="font-size:11px;color:var(--gd)">${fd(dp)}</span><br><span style="font-size:10px;color:#999">${ds}</span></td></tr>`;
-  }).join('');
-  document.getElementById('htot').innerHTML=`<div class="kp g"><div class="kl">CA HT total</div><div class="kv">${eu(tCA)}</div></div><div class="kp ${tM>=0?'g':'r'}"><div class="kl">Marge totale</div><div class="kv">${eu(tM)}</div></div>`;
+    const ds=diff!==null?(diff>0?"J-"+diff:diff===0?"Aujourd'hui":"+"+(-diff)+"j retard"):"";
+    const ac=ch.aCompleter?" ac":"";
+    html+='<div class="hcard'+ac+'">';
+    html+='<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">';
+    html+='<div><div style="font-weight:700;font-size:15px">'+(ch.client||"—")+"</div>";
+    html+='<div style="font-size:12px;color:#999;margin-top:2px">'+fd(ch.date)+" · "+r.hp.toFixed(1)+"h + "+r.ht.toFixed(1)+"h transf</div></div>";
+    if(ch.aCompleter)html+='<span class="bdg bo">À compléter</span>';
+    html+="</div>";
+    html+='<div style="display:flex;gap:8px;margin-bottom:10px">';
+    html+='<div style="flex:1;background:#f8f9f8;border-radius:8px;padding:8px;text-align:center"><div style="font-size:10px;color:#999;margin-bottom:2px">CA HT</div><div style="font-weight:700;font-size:14px">'+eu(r.caHT)+"</div></div>";
+    html+='<div style="flex:1;background:#f8f9f8;border-radius:8px;padding:8px;text-align:center"><div style="font-size:10px;color:#999;margin-bottom:2px">Marge</div><div style="font-weight:700;font-size:14px;color:'+(r.marge>=0?"var(--gd)":"#c0392b")+'">'+eu(r.marge)+"</div></div>";
+    html+='<div style="flex:1;background:#f8f9f8;border-radius:8px;padding:8px;text-align:center"><div style="font-size:10px;color:#999;margin-bottom:2px">Paiement</div><div style="font-weight:600;font-size:11px;color:var(--gd)">'+fd(dp)+'</div><div style="font-size:10px;color:#999">'+ds+"</div></div>";
+    html+="</div>";
+    html+='<div style="display:flex;gap:8px">';
+    html+='<button data-id="'+ch.id+'" onclick="editC(this)" style="flex:1;height:38px;background:var(--gd);border:none;border-radius:8px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:Montserrat,sans-serif">✏️ Modifier</button>';
+    html+='<button data-id="'+ch.id+'" onclick="delC(this)" style="width:38px;height:38px;background:#fff;border:1px solid #c0392b;border-radius:8px;color:#c0392b;font-size:16px;cursor:pointer">🗑</button>';
+    html+="</div></div>";
+  });
+  el.innerHTML=html;
+  gid("htot").innerHTML='<div class="kp g"><div class="kl">CA HT total</div><div class="kv">'+eu(tCA)+'</div></div><div class="kp '+(tM>=0?"g":"r")+'"><div class="kl">Marge totale</div><div class="kv">'+eu(tM)+"</div></div>";
 }
 
+window.editC=(btn)=>{gp("couts");prefillCout(btn.getAttribute("data-id"));};
+window.delC=async(btn)=>{
+  const id=btn.getAttribute("data-id");
+  if(prompt("Code PIN :")!==PIN2){tst("⚠ Code incorrect");return;}
+  if(!confirm("Supprimer ce chantier ?"))return;
+  try{await deleteDoc(doc(db,"chantiers",id));tst("✓ Supprimé");}catch(e){tst("Erreur");}
+};
+
+// POSTES
 function rPostes(){
   const tH=chantiers.reduce((s,c)=>s+calc(c).hto,0);
-  document.getElementById('plist').innerHTML=Object.entries(COUTS).map(([k,p])=>{
-    const pv=p.v*tH;const pd=postes[k]||{depenses:[]};
-    const dt=(pd.depenses||[]).reduce((s,d)=>s+(d.montant||0),0);
-    const ec=pv-dt;
-    return`<div class="pc" onclick="opP('${k}')"><div style="display:flex;justify-content:space-between;align-items:center"><div style="font-size:14px;font-weight:600">${p.l}</div><div style="font-size:11px;color:#999">${p.v.toFixed(2)} €/h</div></div><div class="pb"><div class="pbi"><div class="pbi-l">Provision</div><div class="pbi-v" style="color:#1565c0">${eu(pv)}</div></div><div class="pbi"><div class="pbi-l">Dépensé</div><div class="pbi-v" style="color:#c0392b">${eu(dt)}</div></div><div class="pbi"><div class="pbi-l">Écart</div><div class="pbi-v" style="color:${ec>=0?'var(--gd)':'#c0392b'}">${ec>=0?'+':''}${eu(ec)}</div></div></div></div>`;
-  }).join('');
-  const tD=deps.filter(d=>!d.type||d.type==='depense').reduce((s,d)=>s+(d.montant||0),0);
-  if(tD>0){const el=document.getElementById('dhp');el.style.display='flex';document.getElementById('dhpv').textContent='−'+eu(tD);}
-  // Total provisions
-  const totProv=Object.values(COUTS).reduce((s,p)=>s+p.v*tH,0);
-  const totDep=Object.keys(COUTS).reduce((s,k)=>{const pd=postes[k]||{depenses:[]};return s+(pd.depenses||[]).reduce((ss,d)=>ss+(d.montant||0),0);},0);
-  const ecartProv=totProv-totDep;
-  const ptEl=document.getElementById('postes-total');if(ptEl)ptEl.style.display='block';
-  const ptP=document.getElementById('pt-prov');if(ptP)ptP.textContent=eu(totProv);
-  const ptD=document.getElementById('pt-dep');if(ptD)ptD.textContent='−'+eu(totDep);
-  const ptE=document.getElementById('pt-ecart');if(ptE){ptE.textContent=(ecartProv>=0?'+':'')+eu(ecartProv);ptE.style.color=ecartProv>=0?'var(--gd)':'#c0392b';}
+  let html="",totObj=0,totCag=0,totDep=0;
+  Object.entries(COUTS).forEach(function(entry){
+    const k=entry[0],p=entry[1];
+    const objAnnuel=p.obj||0;
+    const pd2=postes[k]||{depenses:[]};
+    const depenses=pd2.depenses||[];
+    const totalDep=depenses.reduce((s,d)=>s+(d.montant||0),0);
+    let cagnotte=0;
+    if(depenses.length>0){
+      const lastDep=depenses.reduce((a,b)=>new Date(a.date)>new Date(b.date)?a:b);
+      const hApres=chantiers.filter(c=>new Date(c.date)>new Date(lastDep.date)).reduce((s,c)=>s+calc(c).hto,0);
+      cagnotte=p.v*hApres;
+    }else{cagnotte=p.v*tH;}
+    const pct=objAnnuel>0?Math.min(100,cagnotte/objAnnuel*100):0;
+    const surplus=Math.max(0,cagnotte-objAnnuel);
+    const manque=Math.max(0,objAnnuel-cagnotte);
+    const barColor=pct>=100?"#2d5a0e":pct>=50?"var(--gd)":"#e65100";
+    totObj+=objAnnuel;totCag+=cagnotte;totDep+=totalDep;
+    html+='<div class="pc" data-key="'+k+'" onclick="opP(this)">';
+    html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">';
+    html+='<div style="font-size:14px;font-weight:600">'+p.l+'</div>';
+    html+='<div style="font-size:11px;color:#999">'+p.v.toFixed(2)+' €/h · objectif '+eu(objAnnuel)+'</div></div>';
+    html+='<div class="progbar"><div class="progfill" style="background:'+barColor+';width:'+pct.toFixed(1)+'%"></div></div>';
+    html+='<div class="pb">';
+    html+='<div class="pbi"><div class="pbi-l">Mis de côté</div><div class="pbi-v" style="color:#1565c0">'+eu(cagnotte)+'</div></div>';
+    html+='<div class="pbi"><div class="pbi-l">Total dépensé</div><div class="pbi-v" style="color:#c0392b">'+eu(totalDep)+'</div></div>';
+    if(pct>=100){html+='<div class="pbi" style="background:#e8f5e0"><div class="pbi-l" style="color:var(--gd)">✓ Objectif atteint</div><div class="pbi-v" style="color:var(--gd)">+'+eu(surplus)+'</div></div>';}
+    else{html+='<div class="pbi"><div class="pbi-l">Manque</div><div class="pbi-v" style="color:#e65100">'+eu(manque)+'</div></div>';}
+    html+='</div><div style="font-size:11px;color:#999;margin-top:6px;text-align:right">'+pct.toFixed(0)+"% de l'objectif</div></div>";
+  });
+  gid("plist").innerHTML=html;
+  const tDeps=deps.filter(d=>!d.type||d.type==="depense").reduce((s,d)=>s+(d.montant||0),0);
+  if(tDeps>0){const el=gid("dhp");el.style.display="flex";gid("dhpv").textContent="-"+eu(tDeps);}
+  const rec=gid("postes-recap");if(rec)rec.style.display="block";
+  const rpc=gid("rp-cag");if(rpc)rpc.textContent=eu(totCag);
+  const rpd=gid("rp-dep");if(rpd)rpd.textContent="-"+eu(totDep);
+  const rpo=gid("rp-obj");if(rpo)rpo.textContent=eu(totObj);
 }
-
-window.opP=k=>{
-  curPoste=k;const p=COUTS[k];const tH=chantiers.reduce((s,c)=>s+calc(c).hto,0);
-  const pv=p.v*tH;const pd=postes[k]||{depenses:[]};const ds=pd.depenses||[];
-  const dt=ds.reduce((s,d)=>s+(d.montant||0),0);const ec=pv-dt;
-  document.getElementById('mpn').textContent=p.l;
-  document.getElementById('mpl').value='';document.getElementById('mpm').value='';document.getElementById('mpmsg').textContent='';
-  document.getElementById('mpk').innerHTML=`<div class="kp"><div class="kl">Provision</div><div class="kv" style="color:#1565c0;font-size:15px">${eu(pv)}</div><div class="ks">${p.v.toFixed(2)} €/h · ${tH.toFixed(1)}h</div></div><div class="kp r"><div class="kl">Dépensé</div><div class="kv" style="font-size:15px">${eu(dt)}</div></div><div class="kp ${ec>=0?'g':'r'}"><div class="kl">Écart</div><div class="kv" style="font-size:15px;color:${ec>=0?'var(--gd)':'#c0392b'}">${ec>=0?'+':''}${eu(ec)}</div></div>`;
-  document.getElementById('mpd').innerHTML=ds.length?ds.map(d=>`<div class="cr"><div><div style="font-weight:600">${d.label||'—'}</div><div style="font-size:11px;color:#999">${fd(d.date)}</div></div><div style="font-weight:700;color:#c0392b">−${eu(d.montant)}</div></div>`).join(''):'<div style="font-size:13px;color:#999;padding:8px 0">Aucune dépense saisie</div>';
-  document.getElementById('mposte').classList.add('open');
+window.opP=(el)=>{
+  const k=el.getAttribute("data-key");const p=COUTS[k];if(!p)return;curPoste=k;
+  const tH=chantiers.reduce((s,c)=>s+calc(c).hto,0);
+  const objAnnuel=p.obj||0;
+  const pd2=postes[k]||{depenses:[]};const depenses=pd2.depenses||[];
+  const totalDep=depenses.reduce((s,d)=>s+(d.montant||0),0);
+  let cagnotte=0;
+  if(depenses.length>0){const lastDep=depenses.reduce((a,b)=>new Date(a.date)>new Date(b.date)?a:b);const hA=chantiers.filter(c=>new Date(c.date)>new Date(lastDep.date)).reduce((s,c)=>s+calc(c).hto,0);cagnotte=p.v*hA;}
+  else{cagnotte=p.v*tH;}
+  const pct=objAnnuel>0?Math.min(100,cagnotte/objAnnuel*100):0;
+  gid("mpnom").textContent=p.l;
+  gid("mpl").value="";gid("mpm").value="";gid("mpmsg").textContent="";
+  gid("mpkpis").innerHTML='<div class="kp"><div class="kl">Objectif annuel</div><div class="kv" style="color:#1565c0;font-size:15px">'+eu(objAnnuel)+'</div></div><div class="kp"><div class="kl">Mis de côté</div><div class="kv" style="color:var(--gd);font-size:15px">'+eu(cagnotte)+'</div></div><div class="kp r"><div class="kl">Total dépensé</div><div class="kv" style="font-size:15px">'+eu(totalDep)+'</div></div><div class="kp '+(pct>=100?"g":"o")+'"><div class="kl">Progression</div><div class="kv" style="font-size:15px">'+pct.toFixed(0)+'%</div></div>';
+  gid("mpdeps").innerHTML=depenses.length?depenses.map(d=>'<div class="cr"><div><div style="font-weight:600">'+(d.label||"—")+'</div><div style="font-size:11px;color:#999">'+fd(d.date)+'</div></div><div style="font-weight:700;color:#c0392b">-'+eu(d.montant)+"</div></div>").join(""):'<div style="font-size:13px;color:#999;padding:8px 0">Aucune dépense saisie</div>';
+  gid("mposte").classList.add("open");
 };
-
 window.saveDep=async()=>{
-  const l=document.getElementById('mpl').value,m=parseFloat(document.getElementById('mpm').value),dt=document.getElementById('mpdt').value;
-  if(!l||!m||!dt){document.getElementById('mpmsg').textContent='⚠ Remplis tous les champs';return;}
-  document.getElementById('mpmsg').textContent='Enregistrement…';
+  const l=gid("mpl").value,m=parseFloat(gid("mpm").value),dt=gid("mpdt").value;
+  if(!l||!m||!dt){gid("mpmsg").textContent="⚠ Remplis tous les champs";return;}
+  gid("mpmsg").textContent="Enregistrement…";
   try{
-    const ref=doc(db,'postes',curPoste);
+    const ref=doc(db,"postes",curPoste);
     if(postes[curPoste])await updateDoc(ref,{depenses:arrayUnion({label:l,montant:m,date:dt})});
     else await setDoc(ref,{depenses:[{label:l,montant:m,date:dt}]});
-    document.getElementById('mpmsg').textContent='✓ Ajouté !';
-    document.getElementById('mpl').value='';document.getElementById('mpm').value='';
-    setTimeout(()=>{cm('mposte');rPostes();},800);
-  }catch(e){document.getElementById('mpmsg').textContent='Erreur';}
+    gid("mpmsg").textContent="✓ Ajouté !";gid("mpl").value="";gid("mpm").value="";
+    setTimeout(()=>{cm("mposte");rPostes();},800);
+  }catch(e){gid("mpmsg").textContent="Erreur";}
 };
 
-window.saveEnc=async()=>{
-  const cl=document.getElementById('ecl').value,mt=parseFloat(document.getElementById('emt').value),dt=document.getElementById('edt').value;
-  if(!cl||!mt||!dt){tst('⚠ Remplis tous les champs');return;}
+// COUTS CHANTIER
+window.prefillCout=(id)=>{
+  const c=chantiers.find(x=>x.id===id);if(!c)return;
+  gid("cc").value=c.client||"";gid("cd").value=c.date||"";gid("chp").value=c.hprod||"";gid("cht").value=c.htransf||"";
+  gid("cpx").value=c.prix||85;gid("cgz").value=c.carbu||2.25;gid("ctv").value=c.tva||20;
+  gid("crd").value=c.reduc||0;gid("cdel").value=c.delai||"30fm";gid("cout-eid").value=id;
+  gid("cmsg").textContent=c.aCompleter?"⚠ À compléter — remplis prix, gazole, TVA":"✏️ Mode modification";
+  gid("cmsg").style.color=c.aCompleter?"#e65100":"var(--gd)";
+  gid("cprev").style.display="none";updPP();
+  gid("cc").scrollIntoView({behavior:"smooth",block:"start"});
+};
+window.prevC=()=>{
+  const x={hprod:gid("chp").value,htransf:gid("cht").value,prix:parseFloat(gid("cpx").value)||85,carbu:parseFloat(gid("cgz").value)||2.25,tva:parseFloat(gid("ctv").value)||20,reduc:parseFloat(gid("crd").value)||0};
+  const r=calc(x);gid("cprev").style.display="block";
+  gid("cstat").innerHTML='<div class="pss"><div class="pl">CA HT</div><div class="pv">'+eu(r.caHT)+'</div></div><div class="pss"><div class="pl">CA TTC</div><div class="pv">'+eu(r.caTTC)+'</div></div><div class="pss"><div class="pl">Coût revient</div><div class="pv">'+eu(r.ct)+'</div></div><div class="pss '+(r.marge>=0?"g":"r")+'"><div class="pl">Marge HT</div><div class="pv">'+eu(r.marge)+"</div></div>";
+  let rows=Object.values(COUTS).map(c=>'<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f5f5f5;font-size:13px"><span>'+c.l+'</span><span style="color:#999">'+c.v.toFixed(2)+' €/h</span><span style="font-weight:600">'+eu(c.v*r.hto)+"</span></div>").join("");
+  rows+='<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f5f5f5;font-size:13px"><span>Gazole '+CONSO+'L × '+r.cHT.toFixed(3)+' €</span><span style="color:#999">'+r.cch.toFixed(2)+' €/h</span><span style="font-weight:600">'+eu(r.cch*r.hto)+"</span></div>";
+  rows+='<div style="display:flex;justify-content:space-between;padding:10px 0;font-size:14px;font-weight:700;border-top:2px solid #e0e0e0;margin-top:4px"><span>Total</span><span>'+eu(r.crh)+'/h</span><span style="color:#c0392b">'+eu(r.ct)+"</span></div>";
+  rows+='<div style="background:#f0f7e8;border-radius:8px;padding:8px 10px;margin-top:8px;font-size:12px;color:var(--gd);display:flex;justify-content:space-between"><span>TVA gazole déductible 80%</span><span style="font-weight:600">+'+eu(r.tGD)+"</span></div>";
+  gid("cdet").innerHTML=rows;
+};
+window.saveC=async()=>{
+  const cl=gid("cc").value,dt=gid("cd").value;
+  if(!cl){tst("⚠ Renseigne le client");return;}if(!dt){tst("⚠ Renseigne la date");return;}
+  const eid=gid("cout-eid").value;
+  const cData={client:cl,date:dt,delai:gid("cdel").value,hprod:gid("chp").value,htransf:gid("cht").value,prix:parseFloat(gid("cpx").value)||85,carbu:parseFloat(gid("cgz").value)||2.25,tva:parseFloat(gid("ctv").value)||20,reduc:parseFloat(gid("crd").value)||0,aCompleter:false};
+  gid("cmsg").textContent="Enregistrement…";
   try{
-    await addDoc(collection(db,'encaissements'),{client:cl,montant:mt,date:dt,ref:document.getElementById('erf').value,paid:false,createdAt:new Date().toISOString()});
-    document.getElementById('emsg').textContent='✓ Ajouté !';
-    document.getElementById('ecl').value='';document.getElementById('emt').value='';
-    setTimeout(()=>document.getElementById('emsg').textContent='',2000);
-  }catch(e){tst('Erreur');}
+    if(eid){await updateDoc(doc(db,"chantiers",eid),cData);gid("cout-eid").value="";}
+    else{await addDoc(collection(db,"chantiers"),{...cData,createdAt:new Date().toISOString()});}
+    gid("cmsg").textContent="✓ Enregistré !";gid("cmsg").style.color="var(--gd)";
+    ["cc","chp","cht"].forEach(id=>gid(id).value="");gid("cprev").style.display="none";
+    setTimeout(()=>{gid("cmsg").textContent="";gp("histo");},1500);
+  }catch(e){gid("cmsg").textContent="Erreur: "+e.message;}
 };
 
+// ENCAISSEMENTS
 function rEnc(){
   const now=new Date();now.setHours(0,0,0,0);
   const att=encs.filter(e=>!e.paid),pay=encs.filter(e=>e.paid);
-  document.getElementById('eat').innerHTML=att.length?att.map(e=>{
+  gid("eat").innerHTML=att.length?att.map(e=>{
     const dp=new Date(e.date),diff=dj(dp);
-    const cl=diff<0?'br':diff<=7?'bo':'bg';
-    const lb=diff<0?`+${-diff}j retard`:diff===0?'Auj.':`J-${diff}`;
-    return`<div class="er"><div><div style="font-weight:600">${e.client||'—'}</div><div style="font-size:11px;color:#999">Éch. ${fd(e.date)}${e.ref?' · '+e.ref:''}</div></div><div style="display:flex;align-items:center;gap:6px"><div style="text-align:right"><div style="font-weight:700">${eu(e.montant)}</div><span class="bdg ${cl}">${lb}</span></div><button class="ck" onclick="payE('${e.id}')">✓</button></div></div>`;
-  }).join(''):'<div style="font-size:13px;color:#999;padding:8px 0">Aucun encaissement en attente</div>';
-  document.getElementById('epd').innerHTML=pay.length?pay.slice(0,10).map(e=>`<div class="er"><div><div style="font-weight:600">${e.client||'—'}</div><div style="font-size:11px;color:#999">${eu(e.montant)}</div></div><span class="bdg bg">Payé ✓</span></div>`).join(''):'<div style="font-size:13px;color:#999;padding:8px 0">Aucun paiement reçu</div>';
+    const cl=diff<0?"br":diff<=7?"bo":"bg";
+    const lb=diff<0?"+"+(-diff)+"j retard":diff===0?"Auj.":"J-"+diff;
+    return'<div class="er"><div><div style="font-weight:600">'+(e.client||"—")+'</div><div style="font-size:11px;color:#999">Éch. '+fd(e.date)+(e.ref?" · "+e.ref:"")+'</div></div><div style="display:flex;align-items:center;gap:6px"><div style="text-align:right"><div style="font-weight:700">'+eu(e.montant)+'</div><span class="bdg '+cl+'">'+lb+'</span></div><button class="ck" data-id="'+e.id+'" onclick="payE(this)">✓</button></div></div>';
+  }).join(""):'<div style="font-size:13px;color:#999;padding:8px 0">Aucun en attente</div>';
+  gid("epd").innerHTML=pay.length?pay.slice(0,10).map(e=>'<div class="er"><div><div style="font-weight:600">'+(e.client||"—")+'</div><div style="font-size:11px;color:#999">'+eu(e.montant)+'</div></div><span class="bdg bg">Payé ✓</span></div>').join(""):'<div style="font-size:13px;color:#999;padding:8px 0">Aucun</div>';
 }
-window.payE=async id=>{try{await updateDoc(doc(db,'encaissements',id),{paid:true});tst('✓ Paiement validé !');}catch(e){tst('Erreur');}};
-
-function rFacs(){
-  const el=document.getElementById('fac-list');if(!el)return;
-  if(!deps.length){el.innerHTML='<div style="font-size:13px;color:#999">Aucune opération saisie</div>';return;}
-  const totalD=deps.filter(d=>!d.type||d.type==='depense').reduce((s,d)=>s+(d.montant||0),0);
-  const totalE=deps.filter(d=>d.type==='entree').reduce((s,d)=>s+(d.montant||0),0);
-  el.innerHTML=deps.map(d=>{
-    const isEntree=d.type==='entree';
-    return`<div class="cr">
-      <div><div style="font-weight:600">${d.label||'—'}</div><div style="font-size:11px;color:#999">${fd(d.date)} · ${d.cat||'divers'} · <span style="font-weight:600;color:${isEntree?'var(--gd)':'#e65100'}">${isEntree?'Entrée':'Dépense'}</span></div></div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <span style="font-weight:700;color:${isEntree?'var(--gd)':'#c0392b'}">${isEntree?'+':'−'}${eu(d.montant)}</span>
-        <button onclick="editFac('${d.id}')" style="background:none;border:1px solid #3B6D11;border-radius:6px;color:#3B6D11;font-size:11px;padding:3px 8px;cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:600">✏️</button>
-        <button onclick="delFac('${d.id}')" style="background:none;border:1px solid #c0392b;border-radius:6px;color:#c0392b;font-size:11px;padding:3px 8px;cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:600">🗑</button>
-      </div>
-    </div>`;
-  }).join('')
-  +`<div style="border-top:2px solid #e0e0e0;padding-top:10px;margin-top:4px">
-    <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>Total dépenses</span><span style="color:#c0392b;font-weight:600">−${eu(totalD)}</span></div>
-    <div style="display:flex;justify-content:space-between;font-size:13px"><span>Total entrées</span><span style="color:var(--gd);font-weight:600">+${eu(totalE)}</span></div>
-  </div>`;
-}
-function rCh(){
-  if(!charges.length){document.getElementById('chlist').innerHTML='<div style="font-size:13px;color:#999">Aucune charge</div>';document.getElementById('chtot').style.display='none';return;}
-  let tot=0;
-  document.getElementById('chlist').innerHTML=charges.map(c=>{tot+=c.montant||0;return`
-    <div class="cr" id="ch-${c.id}">
-      <div><div style="font-weight:600">${c.label||'—'}</div><div style="font-size:11px;color:#999">Le ${c.jour||'?'} · ${c.freq||'mensuel'}</div></div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <span style="font-weight:700;color:#c0392b">−${eu(c.montant)}</span>
-        <button onclick="editCh('${c.id}')" style="background:none;border:1px solid #3B6D11;border-radius:6px;color:#3B6D11;font-size:11px;padding:3px 8px;cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:600">✏️</button>
-        <button onclick="delCh('${c.id}')" style="background:none;border:1px solid #c0392b;border-radius:6px;color:#c0392b;font-size:11px;padding:3px 8px;cursor:pointer;font-family:'Montserrat',sans-serif;font-weight:600">🗑</button>
-      </div>
-    </div>`;}).join('');
-  const el=document.getElementById('chtot');el.style.display='flex';document.getElementById('chtotv').textContent='−'+eu(tot);
-}
-window.delCh=async(id)=>{
-  const pin=prompt('Code PIN pour supprimer :');
-  if(pin!=='19891986'){tst('⚠ Code incorrect');return;}
-  if(!confirm('Supprimer cette charge ?'))return;
-  try{
-    const{deleteDoc,doc:fd}=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
-    await deleteDoc(fd(db,'charges',id));
-    tst('✓ Charge supprimée');
-  }catch(e){tst('Erreur suppression');}
+window.saveEnc=async()=>{
+  const cl=gid("ecl").value,mt=parseFloat(gid("emt").value),dt=gid("edt").value;
+  if(!cl||!mt||!dt){tst("⚠ Remplis tous les champs");return;}
+  try{await addDoc(collection(db,"encaissements"),{client:cl,montant:mt,date:dt,ref:gid("erf").value,paid:false,createdAt:new Date().toISOString()});gid("emsg").textContent="✓ Ajouté !";gid("ecl").value="";gid("emt").value="";setTimeout(()=>gid("emsg").textContent="",2000);}catch(e){tst("Erreur");}
 };
-window.editCh=(id)=>{
-  const c=charges.find(x=>x.id===id);if(!c)return;
-  document.getElementById('chl').value=c.label||'';
-  document.getElementById('chm').value=c.montant||'';
-  document.getElementById('chj').value=c.jour||'';
-  document.getElementById('chf').value=c.freq||'mensuel';
-  document.getElementById('ch-edit-id').value=id;
-  document.getElementById('chmsg').textContent='Mode modification — appuie sur Enregistrer pour valider';
-  document.getElementById('chmsg').style.color='#e65100';
-  // Scroll vers le formulaire
-  document.getElementById('chl').scrollIntoView({behavior:'smooth',block:'center'});
+window.payE=async(btn)=>{try{await updateDoc(doc(db,"encaissements",btn.getAttribute("data-id")),{paid:true});tst("✓ Paiement validé !");}catch(e){tst("Erreur");}};
+
+// CHARGES
+function rCh(){
+  if(!charges.length){gid("chlist").innerHTML='<div style="font-size:13px;color:#999">Aucune charge</div>';gid("chtot").style.display="none";return;}
+  let tot=0,html="";
+  charges.forEach(function(c){
+    tot+=c.montant||0;
+    html+='<div class="cr"><div><div style="font-weight:600">'+(c.label||"—")+'</div><div style="font-size:11px;color:#999">Le '+(c.jour||"?")+" · "+(c.freq||"mensuel")+(c.tva>0?" · TVA "+c.tva+"%":"")+'</div></div>';
+    html+='<div class="btnrow"><span style="font-weight:700;color:#c0392b">-'+eu(c.montant)+'</span><button class="btnv" data-id="'+c.id+'" onclick="editCh(this)">✏️</button><button class="btnr" data-id="'+c.id+'" onclick="delCh(this)">🗑</button></div></div>';
+  });
+  gid("chlist").innerHTML=html;
+  const el=gid("chtot");el.style.display="flex";gid("chtotv").textContent="-"+eu(tot);
+}
+window.editCh=(btn)=>{
+  const id=btn.getAttribute("data-id");const c=charges.find(x=>x.id===id);if(!c)return;
+  gid("chl").value=c.label||"";gid("chm").value=c.montant||"";gid("chj").value=c.jour||"";
+  gid("chf").value=c.freq||"mensuel";gid("chtva").value=c.tva||"0";gid("ch-eid").value=id;
+  gid("chmsg").textContent="Mode modification";gid("chmsg").style.color="#e65100";
+  gid("chl").scrollIntoView({behavior:"smooth",block:"center"});
+};
+window.delCh=async(btn)=>{
+  const id=btn.getAttribute("data-id");
+  if(prompt("Code PIN :")!==PIN2){tst("⚠ Code incorrect");return;}
+  if(!confirm("Supprimer cette charge ?"))return;
+  try{await deleteDoc(doc(db,"charges",id));tst("✓ Supprimée");}catch(e){tst("Erreur");}
 };
 window.saveCh=async()=>{
-  const l=document.getElementById('chl').value,m=parseFloat(document.getElementById('chm').value),j=parseInt(document.getElementById('chj').value)||1,f=document.getElementById('chf').value;
-  const editId=document.getElementById('ch-edit-id').value;
-  if(!l||!m){tst('⚠ Remplis tous les champs');return;}
+  const l=gid("chl").value,m=parseFloat(gid("chm").value),j=parseInt(gid("chj").value)||1,f=gid("chf").value,tv=Number(gid("chtva").value||0);
+  const eid=gid("ch-eid").value;
+  if(!l||!m){tst("⚠ Remplis tous les champs");return;}
   try{
-    if(editId){
-      await updateDoc(doc(db,'charges',editId),{label:l,montant:m,jour:j,freq:f});
-      document.getElementById('chmsg').textContent='✓ Charge modifiée !';
-      document.getElementById('chmsg').style.color='var(--gd)';
-      document.getElementById('ch-edit-id').value='';
-    } else {
-      await addDoc(collection(db,'charges'),{label:l,montant:m,jour:j,freq:f,createdAt:new Date().toISOString()});
-      document.getElementById('chmsg').textContent='✓ Charge ajoutée !';
-    }
-    document.getElementById('chl').value='';document.getElementById('chm').value='';
-    setTimeout(()=>document.getElementById('chmsg').textContent='',2000);
-  }catch(e){tst('Erreur');}
+    if(eid){await updateDoc(doc(db,"charges",eid),{label:l,montant:m,jour:j,freq:f,tva:tv});gid("ch-eid").value="";}
+    else{await addDoc(collection(db,"charges"),{label:l,montant:m,jour:j,freq:f,tva:tv,createdAt:new Date().toISOString()});}
+    gid("chmsg").textContent="✓ Enregistrée !";gid("chmsg").style.color="var(--gd)";
+    gid("chl").value="";gid("chm").value="";
+    setTimeout(()=>gid("chmsg").textContent="",2000);
+  }catch(e){tst("Erreur");}
 };
-window.delFac=async(id)=>{
-  const pin=prompt('Code PIN pour supprimer :');
-  if(pin!=='19891986'){tst('⚠ Code incorrect');return;}
-  if(!confirm('Supprimer cette opération ?'))return;
-  try{
-    const{deleteDoc,doc:fd2}=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
-    await deleteDoc(fd2(db,'depenses',id));
-    tst('✓ Supprimé');
-  }catch(e){tst('Erreur');}
+
+// FACTURES
+function rFacs(){
+  const el=gid("fac-list");if(!el)return;
+  if(!deps.length){el.innerHTML='<div style="font-size:13px;color:#999">Aucune opération</div>';return;}
+  const tD=deps.filter(d=>!d.type||d.type==="depense").reduce((s,d)=>s+(d.montant||0),0);
+  const tE=deps.filter(d=>d.type==="entree").reduce((s,d)=>s+(d.montant||0),0);
+  let html="";
+  deps.forEach(function(d){
+    const isE=d.type==="entree";
+    html+='<div class="cr"><div><div style="font-weight:600">'+(d.label||"—")+'</div>';
+    html+='<div style="font-size:11px;color:#999">'+fd(d.date)+" · "+(d.cat||"divers")+" · ";
+    html+='<span style="font-weight:600;color:'+(isE?"var(--gd)":"#e65100")+'">'+(isE?"Entrée":"Dépense")+"</span></div></div>";
+    html+='<div class="btnrow"><span style="font-weight:700;color:'+(isE?"var(--gd)":"#c0392b")+'">'+(isE?"+":"-")+eu(d.montant)+'</span>';
+    html+='<button class="btnv" data-id="'+d.id+'" onclick="editFac(this)">✏️</button>';
+    html+='<button class="btnr" data-id="'+d.id+'" onclick="delFac(this)">🗑</button></div></div>';
+  });
+  html+='<div style="border-top:2px solid #e0e0e0;padding-top:10px;margin-top:4px">';
+  html+='<div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>Total dépenses</span><span style="color:#c0392b;font-weight:600">-'+eu(tD)+"</span></div>";
+  html+='<div style="display:flex;justify-content:space-between;font-size:13px"><span>Total entrées</span><span style="color:var(--gd);font-weight:600">+'+eu(tE)+"</span></div></div>";
+  el.innerHTML=html;
+}
+window.editFac=(btn)=>{
+  const id=btn.getAttribute("data-id");const d=deps.find(x=>x.id===id);if(!d)return;
+  gid("fl").value=d.label||"";gid("fm").value=d.montant||"";gid("fdat").value=d.date||"";
+  gid("fcat").value=d.cat||"";gid("ftype").value=d.type||"depense";gid("ftva").value=d.tva||"0";
+  gid("fac-eid").value=id;gid("fmsg").textContent="Mode modification";gid("fmsg").style.color="#e65100";
+  gid("fl").scrollIntoView({behavior:"smooth",block:"center"});
 };
-window.editFac=(id)=>{
-  const d=deps.find(x=>x.id===id);if(!d)return;
-  document.getElementById('fl').value=d.label||'';
-  document.getElementById('fm').value=d.montant||'';
-  document.getElementById('fd2').value=d.date||'';
-  document.getElementById('fc').value=d.cat||'';
-  document.getElementById('ftype').value=d.type||'depense';
-  document.getElementById('ftva').value=d.tva||'0';
-  document.getElementById('fac-edit-id').value=id;
-  document.getElementById('fmsg').textContent='Mode modification — appuie sur Enregistrer pour valider';
-  document.getElementById('fmsg').style.color='#e65100';
-  document.getElementById('fl').scrollIntoView({behavior:'smooth',block:'center'});
+window.delFac=async(btn)=>{
+  const id=btn.getAttribute("data-id");
+  if(prompt("Code PIN :")!==PIN2){tst("⚠ Code incorrect");return;}
+  if(!confirm("Supprimer ?"))return;
+  try{await deleteDoc(doc(db,"depenses",id));tst("✓ Supprimé");}catch(e){tst("Erreur");}
 };
 window.saveFac=async()=>{
-  const l=document.getElementById('fl').value;
-  const m=parseFloat(document.getElementById('fm').value);
-  const d=document.getElementById('fd2').value;
-  const c=document.getElementById('fc').value||'divers';
-  const ftype=document.getElementById('ftype').value||'depense';
-  const feditId=document.getElementById('fac-edit-id').value;
-  if(!l||!m||!d){tst('⚠ Remplis tous les champs');return;}
+  const l=gid("fl").value,m=parseFloat(gid("fm").value),d=gid("fdat").value,c=gid("fcat").value||"divers";
+  const ftype=String(gid("ftype").value||"depense"),ftva=Number(gid("ftva").value||0);
+  const eid=gid("fac-eid").value;
+  if(!l||!m||!d){tst("⚠ Remplis tous les champs");return;}
   try{
-    if(feditId){
-      await updateDoc(doc(db,'depenses',feditId),{label:String(l),montant:Number(m),date:String(d),cat:String(c),type:String(ftype),tva:Number(ftva)});
-      document.getElementById('fmsg').textContent='✓ Modifiée !';
-      document.getElementById('fmsg').style.color='var(--gd)';
-      document.getElementById('fac-edit-id').value='';
-    } else {
-      await addDoc(collection(db,'depenses'),{label:String(l),montant:Number(m),date:String(d),cat:String(c),type:String(ftype),tva:Number(ftva),createdAt:new Date().toISOString()});
-      document.getElementById('fmsg').textContent='✓ Enregistrée !';
-    }
-    document.getElementById('fl').value='';
-    document.getElementById('fm').value='';
-    document.getElementById('fc').value='';
-    document.getElementById('ftype').value='depense';
-    document.getElementById('ftva').value='0';
-    setTimeout(()=>{document.getElementById('fmsg').textContent='';document.getElementById('fmsg').style.color='var(--gd)';},2000);
-  }catch(e){tst('Erreur: '+e.message);}
+    if(eid){await updateDoc(doc(db,"depenses",eid),{label:String(l),montant:Number(m),date:String(d),cat:String(c),type:ftype,tva:ftva});gid("fac-eid").value="";}
+    else{await addDoc(collection(db,"depenses"),{label:String(l),montant:Number(m),date:String(d),cat:String(c),type:ftype,tva:ftva,createdAt:new Date().toISOString()});}
+    gid("fmsg").textContent="✓ Enregistrée !";gid("fmsg").style.color="var(--gd)";
+    gid("fl").value="";gid("fm").value="";gid("fcat").value="";gid("ftype").value="depense";gid("ftva").value="0";
+    setTimeout(()=>gid("fmsg").textContent="",2000);
+  }catch(e){tst("Erreur: "+e.message);}
 };
-window.editSolde=()=>{document.getElementById('sinp').value=solde||'';document.getElementById('msolde').classList.add('open');};
-window.svSolde=async()=>{const v=parseFloat(document.getElementById('sinp').value)||0;try{await setDoc(doc(db,'config','solde'),{val:v});tst('✓ Solde mis à jour');cm('msolde');}catch(e){tst('Erreur');}};
 
+// SOLDE
+window.editSolde=()=>{gid("sinp").value=solde||"";gid("msolde").classList.add("open");};
+window.svSolde=async()=>{const v=parseFloat(gid("sinp").value)||0;try{await setDoc(doc(db,"config","solde"),{val:v});tst("✓ Solde mis à jour");cm("msolde");}catch(e){tst("Erreur");}};
+
+// CLIENTS
 function rCl(){
-  document.getElementById('cllist').innerHTML=clients.length?clients.map(c=>{
-    const sc=c.statut==='client'?'bg':c.statut==='prospect'?'bo':'';
-    return`<div class="lr"><div><div style="font-weight:600">${c.prenom||''} ${c.nom||''} ${c.entreprise?'· '+c.entreprise:''}</div><div style="font-size:11px;color:#999">${c.tel||''} ${c.email?'· '+c.email:''}</div></div><span class="bdg ${sc}">${c.statut||'—'}</span></div>`;
-  }).join(''):'<div style="font-size:13px;color:#999">Aucun client</div>';
+  gid("cllist").innerHTML=clients.length?clients.map(c=>{
+    const sc=c.statut==="client"?"bg":c.statut==="prospect"?"bo":"";
+    return'<div class="lr"><div><div style="font-weight:600">'+(c.prenom||"")+" "+(c.nom||"")+(c.entreprise?" · "+c.entreprise:"")+'</div><div style="font-size:11px;color:#999">'+(c.tel||"")+(c.email?" · "+c.email:"")+'</div></div><span class="bdg '+sc+'">'+(c.statut||"—")+"</span></div>";
+  }).join(""):'<div style="font-size:13px;color:#999">Aucun client</div>';
 }
 window.saveCl=async()=>{
-  const n=document.getElementById('cln').value;if(!n){tst('⚠ Renseigne le nom');return;}
-  try{await addDoc(collection(db,'clients'),{prenom:document.getElementById('clp').value,nom:n,entreprise:document.getElementById('cle').value,tel:document.getElementById('clt').value,email:document.getElementById('clm').value,statut:document.getElementById('cls').value,prix:parseFloat(document.getElementById('clx').value)||85,createdAt:new Date().toISOString()});document.getElementById('clmsg').textContent='✓ Enregistré !';['clp','cln','cle','clt','clm','clx'].forEach(id=>document.getElementById(id).value='');setTimeout(()=>document.getElementById('clmsg').textContent='',2000);}catch(e){tst('Erreur');}
+  const n=gid("cln").value;if(!n){tst("⚠ Renseigne le nom");return;}
+  try{await addDoc(collection(db,"clients"),{prenom:gid("clp").value,nom:n,entreprise:gid("cle").value,tel:gid("clt").value,email:gid("clm").value,statut:gid("cls").value,prix:parseFloat(gid("clx").value)||85,createdAt:new Date().toISOString()});gid("clmsg").textContent="✓ Enregistré !";["clp","cln","cle","clt","clm","clx"].forEach(id=>gid(id).value="");setTimeout(()=>gid("clmsg").textContent="",2000);}catch(e){tst("Erreur");}
 };
 
+// GAZOLE
 function rGz(){
-  if(!gazoles.length){document.getElementById('cval').textContent='—';document.getElementById('csub').textContent='Aucune donnée';document.getElementById('glist').innerHTML='<div style="font-size:13px;color:#999">Aucun plein saisi</div>';return;}
+  if(!gazoles.length){gid("gzcval").textContent="—";gid("gzcsub").textContent="Aucune donnée";gid("gzlist").innerHTML='<div style="font-size:13px;color:#999">Aucun plein saisi</div>';return;}
   const sorted=[...gazoles].sort((a,b)=>new Date(a.date)-new Date(b.date));
   let tL=0,tH=0;
   for(let i=1;i<sorted.length;i++){const dH=sorted[i].compteur-sorted[i-1].compteur;if(dH>0){tL+=sorted[i].litres||0;tH+=dH;}}
-  const co=tH>0?(tL/tH):0;
-  document.getElementById('cval').textContent=co>0?co.toFixed(1):'—';
-  document.getElementById('csub').textContent=`Calculée sur ${tH.toFixed(0)}h · ${tL.toFixed(0)}L total`;
-  document.getElementById('glist').innerHTML=gazoles.slice(0,10).map(g=>`<div class="cr"><div><div style="font-weight:600">${(g.litres||0).toFixed(2)}L — ${(g.prix||0).toFixed(3)} €/L</div><div style="font-size:11px;color:#999">${fd(g.date)} · ${g.compteur||'?'}h</div></div><div style="font-weight:600;color:#c0392b">${eu((g.litres||0)*(g.prix||0))}</div></div>`).join('');
+  const co=tH>0?tL/tH:0;
+  gid("gzcval").textContent=co>0?co.toFixed(1):"—";
+  gid("gzcsub").textContent="Calculée sur "+tH.toFixed(0)+"h · "+tL.toFixed(0)+"L total";
+  gid("gzlist").innerHTML=gazoles.slice(0,10).map(g=>'<div class="cr"><div><div style="font-weight:600">'+(g.litres||0).toFixed(2)+"L — "+(g.prix||0).toFixed(3)+' €/L</div><div style="font-size:11px;color:#999">'+fd(g.date)+" · "+(g.compteur||"?")+'h</div></div><div style="font-weight:600;color:#c0392b">-'+eu((g.litres||0)*(g.prix||0))+"</div></div>").join("");
 }
 window.saveGz=async()=>{
-  const l=parseFloat(document.getElementById('gl').value),p=parseFloat(document.getElementById('gp').value),c=parseFloat(document.getElementById('gc').value),d=document.getElementById('gd').value;
-  if(!l||!p||!c||!d){tst('⚠ Remplis tous les champs');return;}
-  try{await addDoc(collection(db,'gazoles'),{litres:l,prix:p,compteur:c,date:d,createdAt:new Date().toISOString()});document.getElementById('gmsg').textContent='✓ Plein enregistré !';document.getElementById('gl').value='';document.getElementById('gp').value='';document.getElementById('gc').value='';setTimeout(()=>document.getElementById('gmsg').textContent='',2000);}catch(e){tst('Erreur');}
+  const l=parseFloat(gid("gzl").value),p=parseFloat(gid("gzp").value),c=parseFloat(gid("gzc").value),d=gid("gzd").value;
+  if(!l||!p||!c||!d){tst("⚠ Remplis tous les champs");return;}
+  try{await addDoc(collection(db,"gazoles"),{litres:l,prix:p,compteur:c,date:d,createdAt:new Date().toISOString()});gid("gzmsg").textContent="✓ Plein enregistré !";gid("gzl").value="";gid("gzp").value="";gid("gzc").value="";setTimeout(()=>gid("gzmsg").textContent="",2000);}catch(e){tst("Erreur");}
 };
-
-window.cm=id=>document.getElementById(id).classList.remove('open');
-document.querySelectorAll('.modal-bg').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('open');}));
 </script>
 </body>
 </html>
