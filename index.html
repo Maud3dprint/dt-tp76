@@ -606,7 +606,7 @@ function rBons(){
   const td=new Date().toISOString().split("T")[0];
   const auj=bons.filter(b=>b.date===td), rec=bons.filter(b=>b.date!==td);
   let h="";
-  if(auj.length) h+='<div class="i1c"><div class="i1t">Aujourd'hui</div>'+auj.map(bItem).join("")+'</div>';
+  if(auj.length) h+='<div class="i1c"><div class="i1t">Auj.</div>'+auj.map(bItem).join("")+'</div>';
   if(rec.length) h+='<div class="i1c"><div class="i1t">Bons recents</div>'+rec.slice(0,20).map(bItem).join("")+'</div>';
   el.innerHTML=h;
 }
@@ -773,10 +773,10 @@ function rHisto(){
   chantiers.forEach(ch=>{
     const r=calc(ch); tCA+=r.caHT; tM+=r.marge;
     const dp=dP(ch.date,ch.delai); const diff=dj(dp);
-    const ds=diff!==null?(diff>0?"J-"+diff:diff===0?"Aujourd'hui":"+"+(-diff)+"j retard"):"";
+    const ds=diff!==null?(diff>0?"J-"+diff:diff===0?"Auj.":"+"+(-diff)+"j retard"):"";
     html+='<div class="hcard'+(ch.aCompleter?" ac":"")+'"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">';
     html+='<div><div style="font-weight:700;font-size:15px">'+(ch.client||"--")+'</div>';
-    html+='<div style="font-size:12px;color:#999;margin-top:2px">'+fd(ch.date)+" - "+r.hp.toFixed(1)+"h + "+r.ht.toFixed(1)+"h transf</div></div>';
+    html+='<div style="font-size:12px;color:#999;margin-top:2px">'+fd(ch.date)+' - '+r.hp.toFixed(1)+'h + '+r.ht.toFixed(1)+'h transf</div></div>';
     if(ch.aCompleter) html+='<span class="bdg bo">A completer</span>';
     html+='</div><div style="display:flex;gap:8px;margin-bottom:10px">';
     html+='<div style="flex:1;background:#f8f9f8;border-radius:8px;padding:8px;text-align:center"><div style="font-size:10px;color:#999;margin-bottom:2px">CA HT</div><div style="font-weight:700;font-size:14px">'+eu(r.caHT)+'</div></div>';
