@@ -117,19 +117,18 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
 .btnr{background:none;border:1px solid #c0392b;border-radius:6px;color:#c0392b;font-size:11px;padding:4px 10px;cursor:pointer;font-weight:600;font-family:'Montserrat',sans-serif}
 .progbar{background:#f0f0f0;border-radius:6px;height:8px;margin-bottom:10px;overflow:hidden}
 .progfill{height:100%;border-radius:6px;transition:width .3s}
-/* Bandeau mois TVA */
-.tva-month-tab{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;margin-bottom:10px}
-.tva-cur{background:#fff3e0;color:#e65100}
-.tva-prev{background:#f5f5f5;color:#888;margin-left:6px}
+.tvabadge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;margin-bottom:10px}
+.tvacur{background:#fff3e0;color:#e65100}
+.tvaprev{background:#f5f5f5;color:#888}
 </style>
 </head>
 <body>
 
-<!-- PIN 1 MANU -->
+<!-- PIN MANU -->
 <div class="pin-sc" id="p1">
   <div class="pld">DT-TP76</div>
   <div class="ptd">Bon de chantier</div>
-  <div class="psb">Code Manu — 4 chiffres</div>
+  <div class="psb">Code Manu - 4 chiffres</div>
   <div class="pdots" id="pd1">
     <div class="pd-d" id="pd1-0"></div><div class="pd-d" id="pd1-1"></div>
     <div class="pd-d" id="pd1-2"></div><div class="pd-d" id="pd1-3"></div>
@@ -140,17 +139,17 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
     <div class="pk-d" onclick="pp(1,'7')">7</div><div class="pk-d" onclick="pp(1,'8')">8</div><div class="pk-d" onclick="pp(1,'9')">9</div>
     <div style="visibility:hidden" class="pk-d"></div>
     <div class="pk-d" onclick="pp(1,'0')">0</div>
-    <div class="pk-d" style="font-size:16px;color:#888" onclick="ppd(1)">⌫</div>
+    <div class="pk-d" style="font-size:16px;color:#888" onclick="ppd(1)">&#9003;</div>
   </div>
   <div class="perr" id="pe1"></div>
-  <div class="psw" onclick="sp2()">Accès gestion →</div>
+  <div class="psw" onclick="sp2()">Acces gestion &rarr;</div>
 </div>
 
-<!-- PIN 2 SAM -->
+<!-- PIN SAM -->
 <div class="pin-sc" id="p2">
   <div class="pll">DT-TP76</div>
   <div class="ptl">Gestion</div>
-  <div class="psb">Code direction — 8 chiffres</div>
+  <div class="psb">Code direction - 8 chiffres</div>
   <div class="pdots" id="pd2">
     <div class="pd-l" id="pd2-0"></div><div class="pd-l" id="pd2-1"></div>
     <div class="pd-l" id="pd2-2"></div><div class="pd-l" id="pd2-3"></div>
@@ -163,13 +162,13 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
     <div class="pk-l" onclick="pp(2,'7')">7</div><div class="pk-l" onclick="pp(2,'8')">8</div><div class="pk-l" onclick="pp(2,'9')">9</div>
     <div style="visibility:hidden" class="pk-l"></div>
     <div class="pk-l" onclick="pp(2,'0')">0</div>
-    <div class="pk-l" style="font-size:16px;color:#888" onclick="ppd(2)">⌫</div>
+    <div class="pk-l" style="font-size:16px;color:#888" onclick="ppd(2)">&#9003;</div>
   </div>
   <div class="perr" id="pe2"></div>
-  <div class="psw" onclick="sp1()">← Code Manu</div>
+  <div class="psw" onclick="sp1()">&larr; Code Manu</div>
 </div>
 
-<!-- APP 1 MANU -->
+<!-- APP MANU -->
 <div id="app1">
   <div class="i1top">
     <div class="i1logo">DT-TP76</div>
@@ -185,12 +184,12 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
         <div class="i1t">Informations chantier</div>
         <div class="i1f"><label>Client / Entreprise</label><input class="i1i" id="bc" placeholder="Ex: Via France"></div>
         <div class="i1f"><label>Date du chantier</label><input class="i1i" type="date" id="bdate"></div>
-        <div class="i1f"><label>Adresse du chantier</label><input class="i1i" id="ba" placeholder="Adresse complète"></div>
-        <div class="i1f"><label>N° Lettre de voiture</label><input class="i1i" id="bl" placeholder="LDV-2025-001"></div>
-        <div class="i1f"><label>Descriptif / Remarques</label><textarea class="i1i" id="bdesc" placeholder="Type de travaux, remarques…" style="height:70px;padding:10px 12px;resize:none"></textarea></div>
+        <div class="i1f"><label>Adresse du chantier</label><input class="i1i" id="ba" placeholder="Adresse complete"></div>
+        <div class="i1f"><label>N Lettre de voiture</label><input class="i1i" id="bl" placeholder="LDV-2025-001"></div>
+        <div class="i1f"><label>Descriptif / Remarques</label><textarea class="i1i" id="bdesc" placeholder="Type de travaux, remarques" style="height:70px;padding:10px 12px;resize:none"></textarea></div>
       </div>
       <div class="i1c">
-        <div class="i1t">Heures effectuées</div>
+        <div class="i1t">Heures effectuees</div>
         <div class="g3">
           <div class="i1f"><label>Normales</label><input class="i1i" id="bhn" placeholder="6:30"></div>
           <div class="i1f"><label>Transfert</label><input class="i1i" id="bht" placeholder="1:00"></div>
@@ -203,63 +202,56 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
       </div>
       <div class="i1c">
         <div class="i1t">Bon pour accord client</div>
-        <div class="i1f"><label>Nom du chef de chantier</label><input class="i1i" id="bch" placeholder="Prénom Nom"></div>
+        <div class="i1f"><label>Nom du chef de chantier</label><input class="i1i" id="bch" placeholder="Prenom Nom"></div>
         <div class="sigwrap"><canvas id="sigc"></canvas></div>
-        <button class="sigclr" onclick="clrSig()">✕ Effacer la signature</button>
+        <button class="sigclr" onclick="clrSig()">Effacer la signature</button>
         <input type="hidden" id="bon-eid" value="">
-        <button class="btnreg" onclick="saveBon()">✓ Enregistrer le bon</button>
+        <button class="btnreg" onclick="saveBon()">Enregistrer le bon</button>
         <div class="mok" id="bmsg"></div>
       </div>
     </div>
     <div class="i1pg" id="i1bons">
-      <div id="bons-list"><div class="ldr">Chargement…</div></div>
+      <div id="bons-list"><div class="ldr">Chargement...</div></div>
     </div>
   </div>
 </div>
 
-<!-- APP 2 SAM -->
+<!-- APP SAM -->
 <div id="app2">
   <div class="i2top">
     <div style="display:flex;align-items:center;gap:10px">
-      <button class="bk" id="bkbtn" onclick="goMenu()">← Retour</button>
+      <button class="bk" id="bkbtn" onclick="goMenu()">&larr; Retour</button>
       <div id="lg2"><div class="i2logo">DT-TP76</div></div>
     </div>
     <div class="i2pt" id="i2pt">Menu</div>
   </div>
   <div class="i2body">
-
-    <!-- MENU -->
     <div class="i2pg on" id="i2-menu">
       <div class="mhdr" id="mdate"></div>
       <div class="mgrid">
-        <div class="mcard" onclick="gp('dash')"><div class="micon" style="background:#e8f5e0">📊</div><div class="mtitle">Tableau de bord</div><div class="msub">Solde, TVA, alertes</div></div>
-        <div class="mcard" onclick="gp('couts')"><div class="micon" style="background:#e3f2fd">🧮</div><div class="mtitle">Coûts chantier</div><div class="msub">Saisie et calcul</div></div>
-        <div class="mcard" onclick="gp('histo')"><div class="micon" style="background:#f3e5f5">📋</div><div class="mtitle">Historique</div><div class="msub">Tous les chantiers</div></div>
-        <div class="mcard" onclick="gp('postes')"><div class="micon" style="background:#fff3e0">⚙️</div><div class="mtitle">Postes de coût</div><div class="msub">Cagnottes & objectifs</div></div>
-        <div class="mcard" onclick="gp('enc')"><div class="micon" style="background:#fce4ec">💰</div><div class="mtitle">Encaissements</div><div class="msub">Suivi paiements</div></div>
-        <div class="mcard" onclick="gp('treso')"><div class="micon" style="background:#e8f5e0">🏦</div><div class="mtitle">Trésorerie</div><div class="msub">Solde et opérations</div></div>
-        <div class="mcard" onclick="gp('clients')"><div class="micon" style="background:#e3f2fd">👥</div><div class="mtitle">Clients</div><div class="msub">Base de données</div></div>
-        <div class="mcard" onclick="gp('gazole')"><div class="micon" style="background:#fff8e1">⛽</div><div class="mtitle">Gazole</div><div class="msub">Conso & pleins</div></div>
+        <div class="mcard" onclick="gp('dash')"><div class="micon" style="background:#e8f5e0">&#128202;</div><div class="mtitle">Tableau de bord</div><div class="msub">Solde, TVA, alertes</div></div>
+        <div class="mcard" onclick="gp('couts')"><div class="micon" style="background:#e3f2fd">&#129518;</div><div class="mtitle">Couts chantier</div><div class="msub">Saisie et calcul</div></div>
+        <div class="mcard" onclick="gp('histo')"><div class="micon" style="background:#f3e5f5">&#128203;</div><div class="mtitle">Historique</div><div class="msub">Tous les chantiers</div></div>
+        <div class="mcard" onclick="gp('postes')"><div class="micon" style="background:#fff3e0">&#9881;</div><div class="mtitle">Postes de cout</div><div class="msub">Cagnottes et objectifs</div></div>
+        <div class="mcard" onclick="gp('enc')"><div class="micon" style="background:#fce4ec">&#128176;</div><div class="mtitle">Encaissements</div><div class="msub">Suivi paiements</div></div>
+        <div class="mcard" onclick="gp('treso')"><div class="micon" style="background:#e8f5e0">&#127974;</div><div class="mtitle">Tresorerie</div><div class="msub">Solde et operations</div></div>
+        <div class="mcard" onclick="gp('clients')"><div class="micon" style="background:#e3f2fd">&#128101;</div><div class="mtitle">Clients</div><div class="msub">Base de donnees</div></div>
+        <div class="mcard" onclick="gp('gazole')"><div class="micon" style="background:#fff8e1">&#9981;</div><div class="mtitle">Gazole</div><div class="msub">Conso et pleins</div></div>
       </div>
     </div>
 
     <!-- DASHBOARD -->
     <div class="i2pg" id="i2-dash"><div class="inn">
-      <!-- KPIs globaux -->
-      <div class="kg" id="dkpis"><div class="ldr" style="grid-column:span 2">Chargement…</div></div>
-      <!-- TVA par mois -->
+      <div class="kg" id="dkpis"><div class="ldr" style="grid-column:span 2">Chargement...</div></div>
       <div class="card">
-        <div class="ctag">TVA à déclarer</div>
-        <!-- Mois courant -->
-        <div class="tva-month-tab tva-cur" id="dtva-cur-label">—</div>
-        <div id="dtvabox-cur"><div class="ldr">…</div></div>
-        <!-- Mois précédent -->
+        <div class="ctag">TVA a declarer</div>
+        <div class="tvabadge tvacur" id="dtva-cur-lbl"></div>
+        <div id="dtvabox-cur"><div class="ldr">...</div></div>
         <div style="border-top:1px solid #f0f0f0;margin:12px 0 10px"></div>
-        <div class="tva-month-tab tva-prev" id="dtva-prev-label">—</div>
-        <div id="dtvabox-prev"><div class="ldr">…</div></div>
+        <div class="tvabadge tvaprev" id="dtva-prev-lbl"></div>
+        <div id="dtvabox-prev"><div class="ldr">...</div></div>
       </div>
-      <!-- Alertes -->
-      <div class="card"><div class="ctag">Alertes &amp; retards</div><div id="dret"><div class="ldr">…</div></div></div>
+      <div class="card"><div class="ctag">Alertes et retards</div><div id="dret"><div class="ldr">...</div></div></div>
     </div></div>
 
     <!-- COUTS -->
@@ -269,7 +261,7 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
           <div class="fld"><label>Client</label><input class="inp" id="cc" placeholder="Nom client"></div>
           <div class="fld"><label>Date</label><input class="inp" type="date" id="cd"></div>
         </div>
-        <div class="fld"><label>Délai de facturation</label>
+        <div class="fld"><label>Delai de facturation</label>
           <select class="inp" id="cdel" onchange="updPP()">
             <option value="30fm">30 jours fin de mois</option>
             <option value="45fm">45 jours fin de mois</option>
@@ -281,50 +273,47 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
         <div class="f3">
           <div class="fld"><label>H. productives</label><input class="inp" id="chp" placeholder="6:30"></div>
           <div class="fld"><label>H. transfert</label><input class="inp" id="cht" placeholder="1:00"></div>
-          <div class="fld"><label>Prix HT €/h</label><input class="inp" type="number" id="cpx" value="85"></div>
+          <div class="fld"><label>Prix HT/h</label><input class="inp" type="number" id="cpx" value="85"></div>
         </div>
         <div class="f3">
-          <div class="fld"><label>Gazole TTC €/L</label><input class="inp" type="number" id="cgz" value="2.25" step="0.01"></div>
+          <div class="fld"><label>Gazole TTC/L</label><input class="inp" type="number" id="cgz" value="2.25" step="0.01"></div>
           <div class="fld"><label>TVA client</label>
             <select class="inp" id="ctv">
               <option value="20">Standard 20%</option>
-              <option value="10">Bâtiment 10%</option>
+              <option value="10">Batiment 10%</option>
               <option value="5.5">Agri 5,5%</option>
-              <option value="0">Exonéré 0%</option>
+              <option value="0">Exonere 0%</option>
             </select>
           </div>
-          <div class="fld"><label>Réduction %</label><input class="inp" type="number" id="crd" value="0"></div>
+          <div class="fld"><label>Reduction %</label><input class="inp" type="number" id="crd" value="0"></div>
         </div>
       </div>
       <div class="card" id="cprev" style="display:none">
-        <div class="ctag">Aperçu calcul</div>
+        <div class="ctag">Apercu calcul</div>
         <div class="psg" id="cstat"></div>
-        <div class="ctag" style="margin-top:4px">Détail postes</div>
+        <div class="ctag" style="margin-top:4px">Detail postes</div>
         <div id="cdet"></div>
       </div>
       <input type="hidden" id="cout-eid" value="">
-      <button class="i2btn" style="background:#f0f0f0;color:var(--gd);border:2px solid var(--gd);margin-bottom:8px" onclick="prevC()">Prévisualiser</button>
-      <button class="i2btn" onclick="saveC()">✓ Enregistrer le chantier</button>
+      <button class="i2btn" style="background:#f0f0f0;color:var(--gd);border:2px solid var(--gd);margin-bottom:8px" onclick="prevC()">Previsualiser</button>
+      <button class="i2btn" onclick="saveC()">Enregistrer le chantier</button>
       <div class="mok" id="cmsg" style="color:var(--gd)"></div>
     </div></div>
 
     <!-- HISTORIQUE -->
     <div class="i2pg" id="i2-histo"><div class="inn">
-      <div id="histo-cards"><div class="ldr">Chargement…</div></div>
+      <div id="histo-cards"><div class="ldr">Chargement...</div></div>
       <div class="kg" style="margin-top:4px" id="htot"></div>
     </div></div>
 
     <!-- POSTES -->
     <div class="i2pg" id="i2-postes"><div class="inn">
-      <div style="font-size:12px;color:#999;margin-bottom:12px">Cliquez sur un poste pour saisir une dépense réelle</div>
-      <div id="plist"><div class="ldr">Chargement…</div></div>
-      <div id="dhp" style="display:none;background:#f0f7e8;border:1px solid #c5e0a0;border-radius:10px;padding:12px;font-size:13px;color:var(--gd);justify-content:space-between;font-weight:600;margin-top:4px">
-        <span>Dépenses hors postes</span><span id="dhpv">0 €</span>
-      </div>
+      <div style="font-size:12px;color:#999;margin-bottom:12px">Cliquez sur un poste pour saisir une depense reelle</div>
+      <div id="plist"><div class="ldr">Chargement...</div></div>
       <div id="postes-recap" style="display:none;background:#e3f2fd;border:1px solid #90caf9;border-radius:10px;padding:12px;margin-top:8px">
-        <div style="font-size:11px;font-weight:700;color:#1565c0;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Récapitulatif annuel</div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>Total mis de côté (depuis dernière dép.)</span><span id="rp-cag" style="font-weight:700;color:#1565c0"></span></div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>Total dépensé sur postes</span><span id="rp-dep" style="font-weight:700;color:#c0392b"></span></div>
+        <div style="font-size:11px;font-weight:700;color:#1565c0;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Recapitulatif annuel</div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>Total mis de cote</span><span id="rp-cag" style="font-weight:700;color:#1565c0"></span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>Total depense sur postes</span><span id="rp-dep" style="font-weight:700;color:#c0392b"></span></div>
         <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;border-top:1px solid #90caf9;padding-top:8px;margin-top:4px"><span>Objectif annuel total</span><span id="rp-obj" style="color:#1565c0"></span></div>
       </div>
     </div></div>
@@ -335,51 +324,51 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
         <div class="ctag">Ajouter un encaissement</div>
         <div class="f2">
           <div class="fld"><label>Client</label><input class="inp" id="ecl" placeholder="Nom client"></div>
-          <div class="fld"><label>Montant TTC €</label><input class="inp" type="number" id="emt" placeholder="0.00"></div>
+          <div class="fld"><label>Montant TTC</label><input class="inp" type="number" id="emt" placeholder="0.00"></div>
         </div>
         <div class="f2">
-          <div class="fld"><label>Date échéance</label><input class="inp" type="date" id="edt"></div>
-          <div class="fld"><label>Réf.</label><input class="inp" id="erf" placeholder="Optionnel"></div>
+          <div class="fld"><label>Date echeance</label><input class="inp" type="date" id="edt"></div>
+          <div class="fld"><label>Ref.</label><input class="inp" id="erf" placeholder="Optionnel"></div>
         </div>
         <button class="i2btn" onclick="saveEnc()">Ajouter</button>
         <div class="mok" id="emsg" style="color:var(--gd)"></div>
       </div>
-      <div class="card"><div class="ctag">En attente</div><div id="eat"><div class="ldr">…</div></div></div>
-      <div class="card"><div class="ctag">Payés</div><div id="epd"><div class="ldr">…</div></div></div>
+      <div class="card"><div class="ctag">En attente</div><div id="eat"><div class="ldr">...</div></div></div>
+      <div class="card"><div class="ctag">Payes</div><div id="epd"><div class="ldr">...</div></div></div>
     </div></div>
 
-    <!-- TRESORERIE — charges automatiques supprimées, tout manuel -->
+    <!-- TRESORERIE -->
     <div class="i2pg" id="i2-treso"><div class="inn">
       <div class="soldc">
-        <div style="font-size:12px;opacity:.8;margin-bottom:4px">Solde calculé automatiquement</div>
-        <div style="font-size:30px;font-weight:800" id="sval">—</div>
-        <button onclick="editSolde()" style="margin-top:10px;background:rgba(255,255,255,.2);border:none;border-radius:8px;padding:6px 14px;color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:'Montserrat',sans-serif">Modifier le solde de départ</button>
+        <div style="font-size:12px;opacity:.8;margin-bottom:4px">Solde calcule automatiquement</div>
+        <div style="font-size:30px;font-weight:800" id="sval">--</div>
+        <button onclick="editSolde()" style="margin-top:10px;background:rgba(255,255,255,.2);border:none;border-radius:8px;padding:6px 14px;color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:'Montserrat',sans-serif">Modifier le solde de depart</button>
       </div>
       <div class="card">
-        <div class="ctag">Détail du calcul</div>
-        <div class="cr"><span>Solde de départ</span><span id="sd-base" style="font-weight:700;color:var(--gd)">—</span></div>
-        <div class="cr"><span>− Dépenses saisies</span><span id="sd-dep" style="font-weight:700;color:#c0392b">—</span></div>
-        <div class="cr"><span>+ Entrées diverses</span><span id="sd-ent" style="font-weight:700;color:var(--gd)">—</span></div>
-        <div class="cr"><span>+ Encaissements clients reçus</span><span id="sd-enc" style="font-weight:700;color:var(--gd)">—</span></div>
-        <div style="border-top:2px solid #e0e0e0;padding-top:10px;margin-top:4px;display:flex;justify-content:space-between;font-weight:700;font-size:14px"><span>Solde actuel</span><span id="sd-tot">—</span></div>
+        <div class="ctag">Detail du calcul</div>
+        <div class="cr"><span>Solde de depart</span><span id="sd-base" style="font-weight:700;color:var(--gd)">--</span></div>
+        <div class="cr"><span>- Depenses saisies</span><span id="sd-dep" style="font-weight:700;color:#c0392b">--</span></div>
+        <div class="cr"><span>+ Entrees diverses</span><span id="sd-ent" style="font-weight:700;color:var(--gd)">--</span></div>
+        <div class="cr"><span>+ Encaissements clients recus</span><span id="sd-enc" style="font-weight:700;color:var(--gd)">--</span></div>
+        <div style="border-top:2px solid #e0e0e0;padding-top:10px;margin-top:4px;display:flex;justify-content:space-between;font-weight:700;font-size:14px"><span>Solde actuel</span><span id="sd-tot">--</span></div>
       </div>
       <div class="card">
-        <div class="ctag">Historique dépenses / entrées</div>
-        <div id="fac-list"><div class="ldr">…</div></div>
+        <div class="ctag">Historique depenses / entrees</div>
+        <div id="fac-list"><div class="ldr">...</div></div>
       </div>
       <div class="card">
-        <div class="ctag">Saisir une opération</div>
+        <div class="ctag">Saisir une operation</div>
         <div class="f2">
-          <div class="fld"><label>Libellé</label><input class="inp" id="fl" placeholder="Ex: gazole station, assurance…"></div>
-          <div class="fld"><label>Montant €</label><input class="inp" type="number" id="fm" placeholder="0.00"></div>
+          <div class="fld"><label>Libelle</label><input class="inp" id="fl" placeholder="Ex: gazole, assurance..."></div>
+          <div class="fld"><label>Montant</label><input class="inp" type="number" id="fm" placeholder="0.00"></div>
         </div>
         <div class="f2">
           <div class="fld"><label>Date</label><input class="inp" type="date" id="fdat"></div>
-          <div class="fld"><label>Catégorie</label><input class="inp" id="fcat" placeholder="Ex: gazole, repas, assurance…"></div>
+          <div class="fld"><label>Categorie</label><input class="inp" id="fcat" placeholder="Ex: gazole, repas..."></div>
         </div>
         <div class="f2">
           <div class="fld"><label>Type</label>
-            <select class="inp" id="ftype"><option value="depense">Dépense (−)</option><option value="entree">Entrée (+)</option></select>
+            <select class="inp" id="ftype"><option value="depense">Depense (-)</option><option value="entree">Entree (+)</option></select>
           </div>
           <div class="fld"><label>TVA</label>
             <select class="inp" id="ftva"><option value="0">Sans TVA</option><option value="20">20%</option><option value="10">10%</option><option value="5.5">5,5%</option></select>
@@ -396,35 +385,35 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
       <div class="card">
         <div class="ctag">Ajouter client / prospect</div>
         <div class="f2">
-          <div class="fld"><label>Prénom</label><input class="inp" id="clp" placeholder="Prénom"></div>
+          <div class="fld"><label>Prenom</label><input class="inp" id="clp" placeholder="Prenom"></div>
           <div class="fld"><label>Nom</label><input class="inp" id="cln" placeholder="Nom"></div>
         </div>
         <div class="fld"><label>Entreprise</label><input class="inp" id="cle" placeholder="Nom entreprise"></div>
         <div class="f2">
-          <div class="fld"><label>Téléphone</label><input class="inp" id="clt" placeholder="06..."></div>
+          <div class="fld"><label>Telephone</label><input class="inp" id="clt" placeholder="06..."></div>
           <div class="fld"><label>Email</label><input class="inp" id="clm" placeholder="email@..."></div>
         </div>
         <div class="f2">
           <div class="fld"><label>Statut</label>
             <select class="inp" id="cls"><option value="client">Client actif</option><option value="prospect">Prospect</option><option value="inactif">Inactif</option></select>
           </div>
-          <div class="fld"><label>Prix horaire HT €</label><input class="inp" type="number" id="clx" placeholder="85"></div>
+          <div class="fld"><label>Prix HT/h</label><input class="inp" type="number" id="clx" placeholder="85"></div>
         </div>
         <button class="i2btn" onclick="saveCl()">Enregistrer</button>
         <div class="mok" id="clmsg" style="color:var(--gd)"></div>
       </div>
-      <div class="card"><div class="ctag">Base clients</div><div id="cllist"><div class="ldr">…</div></div></div>
+      <div class="card"><div class="ctag">Base clients</div><div id="cllist"><div class="ldr">...</div></div></div>
     </div></div>
 
     <!-- GAZOLE -->
     <div class="i2pg" id="i2-gazole"><div class="inn">
-      <div class="crd"><div class="cv" id="gzcval">—</div><div class="cu">L / heure</div></div>
-      <div style="font-size:11px;color:#888;text-align:center;margin-bottom:16px" id="gzcsub">Aucune donnée</div>
+      <div class="crd"><div class="cv" id="gzcval">--</div><div class="cu">L / heure</div></div>
+      <div style="font-size:11px;color:#888;text-align:center;margin-bottom:16px" id="gzcsub">Aucune donnee</div>
       <div class="card">
         <div class="ctag">Nouvelle saisie gazole</div>
         <div class="f2">
           <div class="fld"><label>Litres</label><input class="inp" type="number" id="gzl" placeholder="101.81" step="0.01"></div>
-          <div class="fld"><label>Prix TTC €/L</label><input class="inp" type="number" id="gzp" placeholder="2.25" step="0.01"></div>
+          <div class="fld"><label>Prix TTC/L</label><input class="inp" type="number" id="gzp" placeholder="2.25" step="0.01"></div>
         </div>
         <div class="f2">
           <div class="fld"><label>Compteur tracteur (h)</label><input class="inp" type="number" id="gzc" placeholder="1482"></div>
@@ -433,23 +422,22 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
         <button class="i2btn" onclick="saveGz()">Enregistrer le plein</button>
         <div class="mok" id="gzmsg" style="color:var(--gd)"></div>
       </div>
-      <div class="card"><div class="ctag">Historique pleins</div><div id="gzlist"><div class="ldr">…</div></div></div>
+      <div class="card"><div class="ctag">Historique pleins</div><div id="gzlist"><div class="ldr">...</div></div></div>
     </div></div>
-
   </div>
 </div>
 
 <!-- MODAL POSTE -->
 <div class="mbg" id="mposte">
   <div class="modal">
-    <div class="mtt"><span id="mpnom">Poste</span><button class="mcc" onclick="cm('mposte')">✕</button></div>
+    <div class="mtt"><span id="mpnom">Poste</span><button class="mcc" onclick="cm('mposte')">&#10005;</button></div>
     <div class="kg" id="mpkpis" style="margin-bottom:16px"></div>
-    <div class="ctag">Dépenses réelles</div>
+    <div class="ctag">Depenses reelles</div>
     <div id="mpdeps" style="margin-bottom:16px"></div>
-    <div class="ctag">Ajouter une dépense</div>
+    <div class="ctag">Ajouter une depense</div>
     <div class="f2">
-      <div class="fld"><label>Libellé</label><input class="inp" id="mpl" placeholder="Ex: pneu"></div>
-      <div class="fld"><label>Montant €</label><input class="inp" type="number" id="mpm" placeholder="0.00"></div>
+      <div class="fld"><label>Libelle</label><input class="inp" id="mpl" placeholder="Ex: pneu"></div>
+      <div class="fld"><label>Montant</label><input class="inp" type="number" id="mpm" placeholder="0.00"></div>
     </div>
     <div class="fld"><label>Date</label><input class="inp" type="date" id="mpdt"></div>
     <button class="i2btn" onclick="saveDep()">Ajouter au poste</button>
@@ -460,11 +448,11 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
 <!-- MODAL BON -->
 <div class="mbg" id="mbon">
   <div class="modal">
-    <div class="mtt"><span id="mbnt">Bon</span><button class="mcc" onclick="cm('mbon')">✕</button></div>
+    <div class="mtt"><span id="mbnt">Bon</span><button class="mcc" onclick="cm('mbon')">&#10005;</button></div>
     <div id="mbnc"></div>
     <div style="display:flex;gap:8px;margin-top:12px">
-      <button class="i2btn" style="background:#f0f0f0;color:var(--gd);border:2px solid var(--gd)" onclick="editBon()">✏️ Modifier</button>
-      <button class="i2btn" onclick="genPDF()">📄 Télécharger PNG</button>
+      <button class="i2btn" style="background:#f0f0f0;color:var(--gd);border:2px solid var(--gd)" onclick="editBon()">Modifier</button>
+      <button class="i2btn" onclick="genPDF()">Telecharger PNG</button>
     </div>
   </div>
 </div>
@@ -472,8 +460,8 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
 <!-- MODAL SOLDE -->
 <div class="mbg" id="msolde">
   <div class="modal">
-    <div class="mtt">Solde de départ<button class="mcc" onclick="cm('msolde')">✕</button></div>
-    <div class="fld"><label>Montant (€)</label><input class="inp" type="number" id="sinp" placeholder="0.00" step="0.01"></div>
+    <div class="mtt">Solde de depart<button class="mcc" onclick="cm('msolde')">&#10005;</button></div>
+    <div class="fld"><label>Montant (euro)</label><input class="inp" type="number" id="sinp" placeholder="0.00" step="0.01"></div>
     <button class="i2btn" onclick="svSolde()" style="margin-top:8px">Enregistrer</button>
   </div>
 </div>
@@ -481,53 +469,51 @@ body{font-family:'Montserrat',sans-serif;background:#f5f5f5;color:#0e0e0e;min-he
 <div class="toast" id="tst"></div>
 
 <script type="module">
-import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import{getFirestore,collection,addDoc,onSnapshot,orderBy,query,doc,updateDoc,setDoc,arrayUnion,deleteDoc}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, onSnapshot, orderBy, query, doc, updateDoc, setDoc, arrayUnion, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const FC={apiKey:"AIzaSyAL9eNyspMmf3JQRa0Phr_WzOMYNFruBWI",authDomain:"cout-dt-tp76.firebaseapp.com",projectId:"cout-dt-tp76",storageBucket:"cout-dt-tp76.firebasestorage.app",messagingSenderId:"742914854605",appId:"1:742914854605:web:840d46d0d2d92b0db7a384"};
-const db=getFirestore(initializeApp(FC));
-const PIN1="1131",PIN2="19891986";
-const CONSO=17;
-const COUTS={
-  tracteur:{l:"Tracteur",v:11,obj:17600},
-  remorque:{l:"Remorque",v:7.15,obj:11446},
-  voiture:{l:"Voiture + matériel",v:2.06,obj:3300},
-  bfr:{l:"BFR",v:1.38,obj:2200},
-  assurance:{l:"Assurance",v:1.14,obj:1830},
-  salaire:{l:"Salaire",v:0,obj:0},
-  comptable:{l:"Comptable",v:2.31,obj:3700},
-  revision:{l:"Révision",v:2.5,obj:4000},
-  pneus:{l:"Pneus",v:8,obj:10133},
-  reparations:{l:"Petites réparations",v:3.12,obj:5000}
+const FC = { apiKey:"AIzaSyAL9eNyspMmf3JQRa0Phr_WzOMYNFruBWI", authDomain:"cout-dt-tp76.firebaseapp.com", projectId:"cout-dt-tp76", storageBucket:"cout-dt-tp76.firebasestorage.app", messagingSenderId:"742914854605", appId:"1:742914854605:web:840d46d0d2d92b0db7a384" };
+const db = getFirestore(initializeApp(FC));
+const PIN1 = "1131", PIN2 = "19891986";
+const CONSO = 17;
+const COUTS = {
+  tracteur:    { l:"Tracteur",            v:11,   obj:17600 },
+  remorque:    { l:"Remorque",            v:7.15, obj:11446 },
+  voiture:     { l:"Voiture + materiel",  v:2.06, obj:3300  },
+  bfr:         { l:"BFR",                 v:1.38, obj:2200  },
+  assurance:   { l:"Assurance",           v:1.14, obj:1830  },
+  salaire:     { l:"Salaire",             v:0,    obj:0     },
+  comptable:   { l:"Comptable",           v:2.31, obj:3700  },
+  revision:    { l:"Revision",            v:2.5,  obj:4000  },
+  pneus:       { l:"Pneus",              v:8,    obj:10133 },
+  reparations: { l:"Petites reparations", v:3.12, obj:5000  }
 };
 
-let pv1="",pv2="";
-let bons=[],chantiers=[],encs=[],clients=[],gazoles=[],postes={},deps=[],solde=0;
-let curPoste=null,curBon=null;
+let pv1="", pv2="";
+let bons=[], chantiers=[], encs=[], clients=[], gazoles=[], postes={}, deps=[], solde=0;
+let curPoste=null, curBon=null;
 
-// ─── UTILS ────────────────────────────────────────────────
-function pH(s){s=(s||"").trim();if(s.includes(":")){const[h,m]=s.split(":").map(Number);return h+(m||0)/60;}return parseFloat(s)||0;}
-function eu(n){return Number(n).toFixed(2)+" €";}
-function fd(d){if(!d)return"—";if(typeof d==="string")d=new Date(d+"T00:00:00");return d.toLocaleDateString("fr-FR",{day:"2-digit",month:"2-digit",year:"numeric"});}
-function dP(ds,del){if(!ds)return null;const d=new Date(ds+"T00:00:00");if(del==="comptant")return d;if(del==="30fm"){d.setDate(d.getDate()+30);return new Date(d.getFullYear(),d.getMonth()+1,0);}if(del==="45fm"){d.setDate(d.getDate()+45);return new Date(d.getFullYear(),d.getMonth()+1,0);}if(del==="60"){d.setDate(d.getDate()+60);}return d;}
-function dj(d){if(!d)return null;const t=new Date();t.setHours(0,0,0,0);return Math.round((d-t)/86400000);}
+function pH(s){ s=(s||"").trim(); if(s.includes(":")){ const[h,m]=s.split(":").map(Number); return h+(m||0)/60; } return parseFloat(s)||0; }
+function eu(n){ return Number(n).toFixed(2)+" euro"; }
+function fd(d){ if(!d) return "--"; if(typeof d==="string") d=new Date(d+"T00:00:00"); return d.toLocaleDateString("fr-FR",{day:"2-digit",month:"2-digit",year:"numeric"}); }
+function dP(ds,del){ if(!ds) return null; const d=new Date(ds+"T00:00:00"); if(del==="comptant") return d; if(del==="30fm"){d.setDate(d.getDate()+30);return new Date(d.getFullYear(),d.getMonth()+1,0);} if(del==="45fm"){d.setDate(d.getDate()+45);return new Date(d.getFullYear(),d.getMonth()+1,0);} if(del==="60") d.setDate(d.getDate()+60); return d; }
+function dj(d){ if(!d) return null; const t=new Date(); t.setHours(0,0,0,0); return Math.round((d-t)/86400000); }
 function calc(x){
-  const hp=pH(x.hprod),ht=pH(x.htransf),hto=hp+ht;
+  const hp=pH(x.hprod), ht=pH(x.htransf), hto=hp+ht;
   const pe=(x.prix||85)*(1-(x.reduc||0)/100);
   const cHT=(x.carbu||2.25)/1.20;
   const tGR=((x.carbu||2.25)-cHT)*0.80;
-  const cch=CONSO*cHT,cfh=Object.values(COUTS).reduce((s,c)=>s+c.v,0);
-  const crh=cfh+cch,ct=crh*hto;
-  const caHT=pe*hto,tvP=x.tva||20,tvC=caHT*tvP/100,caTTC=caHT+tvC;
-  const marge=caHT-ct,mP=caHT>0?marge/caHT*100:0,tGD=CONSO*hto*tGR;
-  return{hp,ht,hto,pe,cch,crh,ct,caHT,tvC,tvP,caTTC,marge,mP,tGD,cHT};
+  const cch=CONSO*cHT, cfh=Object.values(COUTS).reduce((s,c)=>s+c.v,0);
+  const crh=cfh+cch, ct=crh*hto;
+  const caHT=pe*hto, tvP=x.tva||20, tvC=caHT*tvP/100, caTTC=caHT+tvC;
+  const marge=caHT-ct, tGD=CONSO*hto*tGR;
+  return {hp,ht,hto,pe,cch,crh,ct,caHT,tvC,tvP,caTTC,marge,tGD,cHT};
 }
-function tst(m){const t=document.getElementById("tst");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2500);}
-function cm(id){document.getElementById(id).classList.remove("open");}
-function gid(id){return document.getElementById(id);}
-document.querySelectorAll(".mbg").forEach(el=>el.addEventListener("click",e=>{if(e.target===el)el.classList.remove("open");}));
+function tst(m){ const t=document.getElementById("tst"); t.textContent=m; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2500); }
+function cm(id){ document.getElementById(id).classList.remove("open"); }
+function gid(id){ return document.getElementById(id); }
+document.querySelectorAll(".mbg").forEach(el=>el.addEventListener("click",e=>{ if(e.target===el) el.classList.remove("open"); }));
 
-// Helper : bloc TVA pour un mois donné (chaîne "YYYY-MM")
 function tvaBlock(mk){
   const mc=chantiers.filter(c=>c.date&&c.date.slice(0,7)===mk);
   const tvC=mc.reduce((s,c)=>s+calc(c).tvC,0);
@@ -535,505 +521,507 @@ function tvaBlock(mk){
   const tvFD=deps.filter(d=>d.date&&d.date.slice(0,7)===mk&&d.tva>0&&(!d.type||d.type==="depense")).reduce((s,d)=>s+(d.montant||0)*((d.tva||0)/100),0);
   const tvN=tvC-tvG-tvFD;
   let h="";
-  h+='<div class="tr"><span>TVA collectée clients</span><span style="color:#c0392b;font-weight:600">+'+eu(tvC)+'</span></div>';
-  h+='<div class="tr"><span>TVA déductible gazole (80%)</span><span style="color:var(--gd);font-weight:600">−'+eu(tvG)+'</span></div>';
-  h+='<div class="tr"><span>TVA déductible dépenses</span><span style="color:var(--gd);font-weight:600">−'+eu(tvFD)+'</span></div>';
-  h+='<div style="display:flex;justify-content:space-between;padding:10px 0 4px;font-weight:700;font-size:14px;border-top:2px solid #e0e0e0;margin-top:6px"><span>'+(tvN>=0?"À reverser":"À récupérer")+'</span><span style="color:'+(tvN>=0?"#c0392b":"var(--gd)")+'">'+eu(Math.abs(tvN))+'</span></div>';
+  h+='<div class="tr"><span>TVA collectee clients</span><span style="color:#c0392b;font-weight:600">+'+eu(tvC)+'</span></div>';
+  h+='<div class="tr"><span>TVA deductible gazole (80%)</span><span style="color:var(--gd);font-weight:600">-'+eu(tvG)+'</span></div>';
+  h+='<div class="tr"><span>TVA deductible depenses</span><span style="color:var(--gd);font-weight:600">-'+eu(tvFD)+'</span></div>';
+  h+='<div style="display:flex;justify-content:space-between;padding:10px 0 4px;font-weight:700;font-size:14px;border-top:2px solid #e0e0e0;margin-top:6px">';
+  h+='<span>'+(tvN>=0?"A reverser":"A recuperer")+'</span>';
+  h+='<span style="color:'+(tvN>=0?"#c0392b":"var(--gd)")+'">'+eu(Math.abs(tvN))+'</span></div>';
   return h;
 }
 
-// ─── PIN ──────────────────────────────────────────────────
-window.sp1=()=>{gid("p1").style.display="flex";gid("p2").style.display="none";};
-window.sp2=()=>{gid("p1").style.display="none";gid("p2").style.display="flex";};
+// PIN
+window.sp1=()=>{ gid("p1").style.display="flex"; gid("p2").style.display="none"; };
+window.sp2=()=>{ gid("p1").style.display="none"; gid("p2").style.display="flex"; };
 window.pp=(n,k)=>{
   if(n===1){
-    if(pv1.length>=4)return;pv1+=k;
-    for(let i=0;i<4;i++)gid("pd1-"+i).classList.toggle("on",i<pv1.length);
+    if(pv1.length>=4) return; pv1+=k;
+    for(let i=0;i<4;i++) gid("pd1-"+i).classList.toggle("on",i<pv1.length);
     if(pv1.length===4){
-      if(pv1===PIN1){gid("p1").style.display="none";gid("app1").style.display="block";ia1();}
-      else{gid("pe1").textContent="Code incorrect";setTimeout(()=>{pv1="";for(let i=0;i<4;i++)gid("pd1-"+i).classList.remove("on");gid("pe1").textContent="";},800);}
+      if(pv1===PIN1){ gid("p1").style.display="none"; gid("app1").style.display="block"; ia1(); }
+      else{ gid("pe1").textContent="Code incorrect"; setTimeout(()=>{ pv1=""; for(let i=0;i<4;i++) gid("pd1-"+i).classList.remove("on"); gid("pe1").textContent=""; },800); }
     }
-  }else{
-    if(pv2.length>=8)return;pv2+=k;
-    for(let i=0;i<8;i++)gid("pd2-"+i).classList.toggle("on",i<pv2.length);
+  } else {
+    if(pv2.length>=8) return; pv2+=k;
+    for(let i=0;i<8;i++) gid("pd2-"+i).classList.toggle("on",i<pv2.length);
     if(pv2.length===8){
-      if(pv2===PIN2){gid("p2").style.display="none";gid("app2").style.display="block";ia2();}
-      else{gid("pe2").textContent="Code incorrect";setTimeout(()=>{pv2="";for(let i=0;i<8;i++)gid("pd2-"+i).classList.remove("on");gid("pe2").textContent="";},800);}
+      if(pv2===PIN2){ gid("p2").style.display="none"; gid("app2").style.display="block"; ia2(); }
+      else{ gid("pe2").textContent="Code incorrect"; setTimeout(()=>{ pv2=""; for(let i=0;i<8;i++) gid("pd2-"+i).classList.remove("on"); gid("pe2").textContent=""; },800); }
     }
   }
 };
 window.ppd=(n)=>{
-  if(n===1){pv1=pv1.slice(0,-1);for(let i=0;i<4;i++)gid("pd1-"+i).classList.toggle("on",i<pv1.length);}
-  else{pv2=pv2.slice(0,-1);for(let i=0;i<8;i++)gid("pd2-"+i).classList.toggle("on",i<pv2.length);}
+  if(n===1){ pv1=pv1.slice(0,-1); for(let i=0;i<4;i++) gid("pd1-"+i).classList.toggle("on",i<pv1.length); }
+  else     { pv2=pv2.slice(0,-1); for(let i=0;i<8;i++) gid("pd2-"+i).classList.toggle("on",i<pv2.length); }
 };
 
-// ─── APP 1 ────────────────────────────────────────────────
-let sigCtx=null,sigDrawing=false,sigLX=0,sigLY=0;
+// APP 1
+let sigCtx=null, sigDrawing=false, sigLX=0, sigLY=0;
 function ia1(){
   gid("i1dt").textContent=new Date().toLocaleDateString("fr-FR",{day:"numeric",month:"long",year:"numeric"});
   gid("bdate").value=new Date().toISOString().split("T")[0];
-  const c=gid("sigc");c.width=c.offsetWidth||320;c.height=110;
-  sigCtx=c.getContext("2d");
-  sigCtx.fillStyle="#ffffff";sigCtx.fillRect(0,0,c.width,c.height);
-  function gPos(e){const r=c.getBoundingClientRect();const s=e.touches?e.touches[0]:e;return{x:s.clientX-r.left,y:s.clientY-r.top};}
-  c.addEventListener("mousedown",e=>{sigDrawing=true;window._sigMod=true;const p=gPos(e);sigLX=p.x;sigLY=p.y;});
-  c.addEventListener("mousemove",e=>{if(!sigDrawing)return;const p=gPos(e);sigCtx.beginPath();sigCtx.moveTo(sigLX,sigLY);sigCtx.lineTo(p.x,p.y);sigCtx.strokeStyle="#000000";sigCtx.lineWidth=3;sigCtx.lineCap="round";sigCtx.lineJoin="round";sigCtx.globalAlpha=1;sigCtx.stroke();sigLX=p.x;sigLY=p.y;});
-  c.addEventListener("mouseup",()=>sigDrawing=false);
-  c.addEventListener("touchstart",e=>{e.preventDefault();sigDrawing=true;window._sigMod=true;const p=gPos(e);sigLX=p.x;sigLY=p.y;},{passive:false});
-  c.addEventListener("touchmove",e=>{e.preventDefault();if(!sigDrawing)return;const p=gPos(e);sigCtx.beginPath();sigCtx.moveTo(sigLX,sigLY);sigCtx.lineTo(p.x,p.y);sigCtx.strokeStyle="#000000";sigCtx.lineWidth=3;sigCtx.lineCap="round";sigCtx.lineJoin="round";sigCtx.globalAlpha=1;sigCtx.stroke();sigLX=p.x;sigLY=p.y;},{passive:false});
-  c.addEventListener("touchend",()=>sigDrawing=false);
-  onSnapshot(query(collection(db,"bons"),orderBy("date","desc")),s=>{bons=s.docs.map(d=>({id:d.id,...d.data()}));rBons();});
+  const c=gid("sigc"); c.width=c.offsetWidth||320; c.height=110;
+  sigCtx=c.getContext("2d"); sigCtx.fillStyle="#fff"; sigCtx.fillRect(0,0,c.width,c.height);
+  function gPos(e){ const r=c.getBoundingClientRect(); const s=e.touches?e.touches[0]:e; return{x:s.clientX-r.left,y:s.clientY-r.top}; }
+  c.addEventListener("mousedown", e=>{ sigDrawing=true; window._sigMod=true; const p=gPos(e); sigLX=p.x; sigLY=p.y; });
+  c.addEventListener("mousemove", e=>{ if(!sigDrawing) return; const p=gPos(e); sigCtx.beginPath(); sigCtx.moveTo(sigLX,sigLY); sigCtx.lineTo(p.x,p.y); sigCtx.strokeStyle="#000"; sigCtx.lineWidth=3; sigCtx.lineCap="round"; sigCtx.lineJoin="round"; sigCtx.stroke(); sigLX=p.x; sigLY=p.y; });
+  c.addEventListener("mouseup", ()=>sigDrawing=false);
+  c.addEventListener("touchstart", e=>{ e.preventDefault(); sigDrawing=true; window._sigMod=true; const p=gPos(e); sigLX=p.x; sigLY=p.y; },{passive:false});
+  c.addEventListener("touchmove",  e=>{ e.preventDefault(); if(!sigDrawing) return; const p=gPos(e); sigCtx.beginPath(); sigCtx.moveTo(sigLX,sigLY); sigCtx.lineTo(p.x,p.y); sigCtx.strokeStyle="#000"; sigCtx.lineWidth=3; sigCtx.lineCap="round"; sigCtx.lineJoin="round"; sigCtx.stroke(); sigLX=p.x; sigLY=p.y; },{passive:false});
+  c.addEventListener("touchend", ()=>sigDrawing=false);
+  onSnapshot(query(collection(db,"bons"),orderBy("date","desc")),s=>{ bons=s.docs.map(d=>({id:d.id,...d.data()})); rBons(); });
 }
-function sigEmpty(){const d=sigCtx.getImageData(0,0,gid("sigc").width,gid("sigc").height).data;for(let i=0;i<d.length;i+=4)if(d[i]<250)return false;return true;}
-window.clrSig=()=>{if(sigCtx){sigCtx.fillStyle="#ffffff";sigCtx.fillRect(0,0,gid("sigc").width,gid("sigc").height);window._sigMod=false;}};
-window.t1=(b,t)=>{document.querySelectorAll(".i1nb").forEach(x=>x.classList.remove("on"));b.classList.add("on");gid("i1bon").classList.toggle("on",t==="bon");gid("i1bons").classList.toggle("on",t==="bons");};
-
+function sigEmpty(){ const d=sigCtx.getImageData(0,0,gid("sigc").width,gid("sigc").height).data; for(let i=0;i<d.length;i+=4) if(d[i]<250) return false; return true; }
+window.clrSig=()=>{ if(sigCtx){ sigCtx.fillStyle="#fff"; sigCtx.fillRect(0,0,gid("sigc").width,gid("sigc").height); window._sigMod=false; } };
+window.t1=(b,t)=>{ document.querySelectorAll(".i1nb").forEach(x=>x.classList.remove("on")); b.classList.add("on"); gid("i1bon").classList.toggle("on",t==="bon"); gid("i1bons").classList.toggle("on",t==="bons"); };
 window.saveBon=async()=>{
-  const cl=gid("bc").value,ch=gid("bch").value;
-  const eid=gid("bon-eid").value;
-  if(!cl){tst("⚠ Renseigne le client");return;}
-  if(!ch){tst("⚠ Renseigne le chef de chantier");return;}
-  if(!eid&&sigEmpty()){tst("⚠ Signature manquante");return;}
-  gid("bmsg").textContent="Enregistrement…";gid("bmsg").style.color="var(--g)";
+  const cl=gid("bc").value, ch=gid("bch").value, eid=gid("bon-eid").value;
+  if(!cl){ tst("Renseigne le client"); return; }
+  if(!ch){ tst("Renseigne le chef de chantier"); return; }
+  if(!eid&&sigEmpty()){ tst("Signature manquante"); return; }
+  gid("bmsg").textContent="Enregistrement..."; gid("bmsg").style.color="var(--g)";
   const origBon=eid?bons.find(x=>x.id===eid):null;
   let sigData="";
-  if(eid&&origBon&&origBon.sig&&!window._sigMod){sigData=origBon.sig;}
+  if(eid&&origBon&&origBon.sig&&!window._sigMod){ sigData=origBon.sig; }
   else{
-    const sc=gid("sigc"),tmp=document.createElement("canvas");
-    tmp.width=sc.width;tmp.height=sc.height;
-    const tx=tmp.getContext("2d");tx.fillStyle="#ffffff";tx.fillRect(0,0,tmp.width,tmp.height);tx.drawImage(sc,0,0);
+    const sc=gid("sigc"), tmp=document.createElement("canvas");
+    tmp.width=sc.width; tmp.height=sc.height;
+    const tx=tmp.getContext("2d"); tx.fillStyle="#fff"; tx.fillRect(0,0,tmp.width,tmp.height); tx.drawImage(sc,0,0);
     const pd=tx.getImageData(0,0,tmp.width,tmp.height);
-    for(let i=0;i<pd.data.length;i+=4){const lum=pd.data[i]*0.299+pd.data[i+1]*0.587+pd.data[i+2]*0.114;if(lum<240){pd.data[i]=0;pd.data[i+1]=0;pd.data[i+2]=0;pd.data[i+3]=255;}else{pd.data[i]=255;pd.data[i+1]=255;pd.data[i+2]=255;pd.data[i+3]=255;}}
-    tx.putImageData(pd,0,0);sigData=tmp.toDataURL("image/png");
+    for(let i=0;i<pd.data.length;i+=4){ const lum=pd.data[i]*0.299+pd.data[i+1]*0.587+pd.data[i+2]*0.114; if(lum<240){pd.data[i]=0;pd.data[i+1]=0;pd.data[i+2]=0;pd.data[i+3]=255;}else{pd.data[i]=255;pd.data[i+1]=255;pd.data[i+2]=255;pd.data[i+3]=255;} }
+    tx.putImageData(pd,0,0); sigData=tmp.toDataURL("image/png");
   }
   const bd={client:cl,adresse:gid("ba").value,ldv:gid("bl").value,chef:ch,desc:gid("bdesc").value,sig:sigData,hn:gid("bhn").value,ht:gid("bht").value,hs:gid("bhs").value,hn2:gid("bhn2").value,hw:gid("bhw").value,date:gid("bdate").value||new Date().toISOString().split("T")[0]};
   try{
-    if(eid){await updateDoc(doc(db,"bons",eid),bd);}
-    else{
-      await addDoc(collection(db,"bons"),{...bd,createdAt:new Date().toISOString()});
-      await addDoc(collection(db,"chantiers"),{client:cl,date:bd.date,hprod:bd.hn,htransf:bd.ht,prix:85,carbu:2.25,tva:20,reduc:0,delai:"30fm",aCompleter:true,createdAt:new Date().toISOString()});
-    }
-    gid("bmsg").textContent="✓ Bon enregistré !";gid("bon-eid").value="";window._sigMod=false;
+    if(eid){ await updateDoc(doc(db,"bons",eid),bd); }
+    else{ await addDoc(collection(db,"bons"),{...bd,createdAt:new Date().toISOString()}); await addDoc(collection(db,"chantiers"),{client:cl,date:bd.date,hprod:bd.hn,htransf:bd.ht,prix:85,carbu:2.25,tva:20,reduc:0,delai:"30fm",aCompleter:true,createdAt:new Date().toISOString()}); }
+    gid("bmsg").textContent="Bon enregistre !"; gid("bon-eid").value=""; window._sigMod=false;
     ["bc","ba","bl","bch","bdesc","bhn","bht","bhs","bhn2","bhw"].forEach(id=>gid(id).value="");
-    gid("bdate").value=new Date().toISOString().split("T")[0];
-    window.clrSig();
-    setTimeout(()=>{gid("bmsg").textContent="";t1(document.querySelectorAll(".i1nb")[1],"bons");},1500);
-  }catch(e){gid("bmsg").textContent="Erreur: "+e.message;}
+    gid("bdate").value=new Date().toISOString().split("T")[0]; window.clrSig();
+    setTimeout(()=>{ gid("bmsg").textContent=""; t1(document.querySelectorAll(".i1nb")[1],"bons"); },1500);
+  }catch(e){ gid("bmsg").textContent="Erreur: "+e.message; }
 };
-
 function rBons(){
-  const el=gid("bons-list");
-  if(!bons.length){el.innerHTML='<div class="ldr">Aucun bon</div>';return;}
+  const el=gid("bons-list"); if(!bons.length){ el.innerHTML='<div class="ldr">Aucun bon</div>'; return; }
   const td=new Date().toISOString().split("T")[0];
-  const auj=bons.filter(b=>b.date===td),rec=bons.filter(b=>b.date!==td);
+  const auj=bons.filter(b=>b.date===td), rec=bons.filter(b=>b.date!==td);
   let h="";
-  if(auj.length)h+='<div class="i1c"><div class="i1t">Aujourd\'hui</div>'+auj.map(bItem).join("")+"</div>";
-  if(rec.length)h+='<div class="i1c"><div class="i1t">Bons récents</div>'+rec.slice(0,20).map(bItem).join("")+"</div>";
+  if(auj.length) h+='<div class="i1c"><div class="i1t">Aujourd'hui</div>'+auj.map(bItem).join("")+'</div>';
+  if(rec.length) h+='<div class="i1c"><div class="i1t">Bons recents</div>'+rec.slice(0,20).map(bItem).join("")+'</div>';
   el.innerHTML=h;
 }
 function bItem(b){
-  let h='<div class="bi">';
-  h+='<div class="bitop"><div class="biname">'+(b.client||"—")+'</div><span style="color:var(--g);font-weight:700;font-size:12px">Signé ✓</span></div>';
-  h+='<div class="bisub">'+fd(b.date)+" · "+(b.hn||"—")+" norm · "+(b.ht||"—")+" transf · LDV: "+(b.ldv||"—")+"</div>";
-  h+='<div class="biact"><button class="bvr" data-id="'+b.id+'" onclick="vBon(this)">👁 Voir</button><button class="bpdf" data-id="'+b.id+'" onclick="vBonPDF(this)">📄 PNG</button></div>';
-  h+='<div class="biact" style="margin-top:6px"><button class="bedt" data-id="'+b.id+'" onclick="editBonD(this)">✏️ Modifier</button><button class="bdel" data-id="'+b.id+'" onclick="delBon(this)">🗑</button></div>';
-  h+="</div>";return h;
+  return '<div class="bi">'+
+    '<div class="bitop"><div class="biname">'+(b.client||"--")+'</div><span style="color:var(--g);font-weight:700;font-size:12px">Signe</span></div>'+
+    '<div class="bisub">'+fd(b.date)+" - "+(b.hn||"--")+" norm - "+(b.ht||"--")+" transf - LDV: "+(b.ldv||"--")+'</div>'+
+    '<div class="biact"><button class="bvr" data-id="'+b.id+'" onclick="vBon(this)">Voir</button><button class="bpdf" data-id="'+b.id+'" onclick="vBonPDF(this)">PNG</button></div>'+
+    '<div class="biact" style="margin-top:6px"><button class="bedt" data-id="'+b.id+'" onclick="editBonD(this)">Modifier</button><button class="bdel" data-id="'+b.id+'" onclick="delBon(this)">&#128465;</button></div>'+
+    '</div>';
 }
 window.vBon=(btn)=>{
-  const b=bons.find(x=>x.id===btn.getAttribute("data-id"));if(!b)return;curBon=b;
-  gid("mbnt").textContent="Bon — "+(b.client||"—");
+  const b=bons.find(x=>x.id===btn.getAttribute("data-id")); if(!b) return; curBon=b;
+  gid("mbnt").textContent="Bon - "+(b.client||"--");
   let h='<div style="font-size:13px;line-height:2.2">';
-  h+="<div><strong>Client :</strong> "+(b.client||"—")+"</div>";
+  h+="<div><strong>Client :</strong> "+(b.client||"--")+"</div>";
   h+="<div><strong>Date :</strong> "+fd(b.date)+"</div>";
-  h+="<div><strong>Adresse :</strong> "+(b.adresse||"—")+"</div>";
-  h+="<div><strong>N° LDV :</strong> "+(b.ldv||"—")+"</div>";
+  h+="<div><strong>Adresse :</strong> "+(b.adresse||"--")+"</div>";
+  h+="<div><strong>N LDV :</strong> "+(b.ldv||"--")+"</div>";
   h+="<div><strong>H. normales :</strong> "+(b.hn||"0:00")+"</div>";
   h+="<div><strong>H. transfert :</strong> "+(b.ht||"0:00")+"</div>";
   h+="<div><strong>H. supp. :</strong> "+(b.hs||"0:00")+"</div>";
   h+="<div><strong>H. nuit :</strong> "+(b.hn2||"0:00")+"</div>";
   h+="<div><strong>H. week-end :</strong> "+(b.hw||"0:00")+"</div>";
-  h+="<div><strong>Chef :</strong> "+(b.chef||"—")+"</div>";
-  if(b.desc)h+="<div><strong>Descriptif :</strong> "+b.desc+"</div>";
+  h+="<div><strong>Chef :</strong> "+(b.chef||"--")+"</div>";
+  if(b.desc) h+="<div><strong>Descriptif :</strong> "+b.desc+"</div>";
   h+="</div>";
-  if(b.sig)h+='<div style="margin-top:10px;border:1px solid #e0e0e0;border-radius:8px;overflow:hidden;background:#f9f9f9"><div style="font-size:11px;color:#999;padding:6px 10px">Signature</div><img src="'+b.sig+'" style="width:100%;display:block;max-height:80px;object-fit:contain"></div>';
-  gid("mbnc").innerHTML=h;
-  gid("mbon").classList.add("open");
+  if(b.sig) h+='<div style="margin-top:10px;border:1px solid #e0e0e0;border-radius:8px;overflow:hidden;background:#f9f9f9"><div style="font-size:11px;color:#999;padding:6px 10px">Signature</div><img src="'+b.sig+'" style="width:100%;display:block;max-height:80px;object-fit:contain"></div>';
+  gid("mbnc").innerHTML=h; gid("mbon").classList.add("open");
 };
-window.vBonPDF=(btn)=>{const b=bons.find(x=>x.id===btn.getAttribute("data-id"));if(!b)return;curBon=b;genPDF();};
-window.editBonD=(btn)=>{const b=bons.find(x=>x.id===btn.getAttribute("data-id"));if(!b)return;curBon=b;editBon();};
+window.vBonPDF=(btn)=>{ const b=bons.find(x=>x.id===btn.getAttribute("data-id")); if(!b) return; curBon=b; genPDF(); };
+window.editBonD=(btn)=>{ const b=bons.find(x=>x.id===btn.getAttribute("data-id")); if(!b) return; curBon=b; editBon(); };
 window.editBon=()=>{
-  const b=curBon;if(!b)return;cm("mbon");
-  gid("bc").value=b.client||"";gid("ba").value=b.adresse||"";gid("bl").value=b.ldv||"";
-  gid("bdate").value=b.date||"";gid("bhn").value=b.hn||"";gid("bht").value=b.ht||"";
-  gid("bhs").value=b.hs||"";gid("bhn2").value=b.hn2||"";gid("bhw").value=b.hw||"";
-  gid("bch").value=b.chef||"";gid("bdesc").value=b.desc||"";gid("bon-eid").value=b.id;
-  gid("bmsg").textContent="Mode modification — signature conservée";gid("bmsg").style.color="#e65100";
-  if(b.sig&&sigCtx){sigCtx.fillStyle="#ffffff";sigCtx.fillRect(0,0,gid("sigc").width,gid("sigc").height);const img=new Image();img.onload=()=>sigCtx.drawImage(img,0,0,gid("sigc").width,gid("sigc").height);img.src=b.sig;}
+  const b=curBon; if(!b) return; cm("mbon");
+  gid("bc").value=b.client||""; gid("ba").value=b.adresse||""; gid("bl").value=b.ldv||"";
+  gid("bdate").value=b.date||""; gid("bhn").value=b.hn||""; gid("bht").value=b.ht||"";
+  gid("bhs").value=b.hs||""; gid("bhn2").value=b.hn2||""; gid("bhw").value=b.hw||"";
+  gid("bch").value=b.chef||""; gid("bdesc").value=b.desc||""; gid("bon-eid").value=b.id;
+  gid("bmsg").textContent="Mode modification - signature conservee"; gid("bmsg").style.color="#e65100";
+  if(b.sig&&sigCtx){ sigCtx.fillStyle="#fff"; sigCtx.fillRect(0,0,gid("sigc").width,gid("sigc").height); const img=new Image(); img.onload=()=>sigCtx.drawImage(img,0,0,gid("sigc").width,gid("sigc").height); img.src=b.sig; }
   t1(document.querySelectorAll(".i1nb")[0],"bon");
 };
 window.delBon=async(btn)=>{
   const id=btn.getAttribute("data-id");
-  if(prompt("Code PIN pour supprimer :")!==PIN1){tst("⚠ Code incorrect");return;}
-  if(!confirm("Supprimer ce bon ?"))return;
-  try{await deleteDoc(doc(db,"bons",id));tst("✓ Bon supprimé");}catch(e){tst("Erreur");}
+  if(prompt("Code PIN pour supprimer :")!==PIN1){ tst("Code incorrect"); return; }
+  if(!confirm("Supprimer ce bon ?")) return;
+  try{ await deleteDoc(doc(db,"bons",id)); tst("Bon supprime"); }catch(e){ tst("Erreur"); }
 };
 window.genPDF=()=>{
-  const b=curBon;if(!b)return;
+  const b=curBon; if(!b) return;
   const W=794,H=1123,mg=50;
-  const cv=document.createElement("canvas");cv.width=W;cv.height=H;
-  const cx=cv.getContext("2d");cx.fillStyle="#ffffff";cx.fillRect(0,0,W,H);
-  cx.fillStyle="#3B6D11";cx.fillRect(mg,mg,W-mg*2,4);
-  cx.font="bold 28px Arial";cx.fillStyle="#3B6D11";cx.fillText("DT-TP76",mg,mg+40);
-  cx.font="14px Arial";cx.fillStyle="#555";cx.fillText("Divers Transport — Travaux Publics 76",mg,mg+60);
-  cx.font="bold 20px Arial";cx.fillStyle="#0e0e0e";cx.textAlign="right";cx.fillText("Bon de chantier",W-mg,mg+40);
-  cx.font="13px Arial";cx.fillStyle="#888";cx.fillText(fd(b.date),W-mg,mg+58);cx.textAlign="left";
-  cx.strokeStyle="#3B6D11";cx.lineWidth=2;cx.beginPath();cx.moveTo(mg,mg+72);cx.lineTo(W-mg,mg+72);cx.stroke();
+  const cv=document.createElement("canvas"); cv.width=W; cv.height=H;
+  const cx=cv.getContext("2d"); cx.fillStyle="#fff"; cx.fillRect(0,0,W,H);
+  cx.fillStyle="#3B6D11"; cx.fillRect(mg,mg,W-mg*2,4);
+  cx.font="bold 28px Arial"; cx.fillStyle="#3B6D11"; cx.fillText("DT-TP76",mg,mg+40);
+  cx.font="14px Arial"; cx.fillStyle="#555"; cx.fillText("Divers Transport - Travaux Publics 76",mg,mg+60);
+  cx.font="bold 20px Arial"; cx.fillStyle="#0e0e0e"; cx.textAlign="right"; cx.fillText("Bon de chantier",W-mg,mg+40);
+  cx.font="13px Arial"; cx.fillStyle="#888"; cx.fillText(fd(b.date),W-mg,mg+58); cx.textAlign="left";
+  cx.strokeStyle="#3B6D11"; cx.lineWidth=2; cx.beginPath(); cx.moveTo(mg,mg+72); cx.lineTo(W-mg,mg+72); cx.stroke();
   let y=mg+95;
-  const sect=(t)=>{y+=3;cx.fillStyle="#3B6D11";cx.fillRect(mg,y,4,20);cx.font="bold 11px Arial";cx.fillStyle="#3B6D11";cx.fillText(t.toUpperCase(),mg+12,y+14);y+=30;};
-  const row=(k,v)=>{cx.fillStyle="#f8f9f8";cx.fillRect(mg,y-2,W-mg*2,26);cx.font="14px Arial";cx.fillStyle="#666";cx.fillText(k,mg+8,y+16);cx.font="bold 14px Arial";cx.fillStyle="#0e0e0e";cx.textAlign="right";cx.fillText(String(v||"—"),W-mg-8,y+16);cx.textAlign="left";cx.strokeStyle="#eee";cx.lineWidth=0.5;cx.beginPath();cx.moveTo(mg,y+24);cx.lineTo(W-mg,y+24);cx.stroke();y+=28;};
-  sect("Informations chantier");row("Client",b.client);row("Adresse",b.adresse);row("N° Lettre de voiture",b.ldv);
-  if(b.desc)row("Descriptif",b.desc);
-  sect("Heures effectuées");row("Normales",b.hn||"0:00");row("Transfert",b.ht||"0:00");row("Supplémentaires",b.hs||"0:00");row("Nuit",b.hn2||"0:00");row("Week-end",b.hw||"0:00");
-  sect("Bon pour accord");row("Chef de chantier",b.chef);
-  y+=4;cx.strokeStyle="#000";cx.lineWidth=1.5;
-  if(cx.roundRect)cx.roundRect(mg,y,W-mg*2,35,2,2);else{cx.rect(mg,y,W-mg*2,35);}cx.stroke();
-  cx.font="bold 11px Arial";cx.fillStyle="#444";cx.fillText("Signature — "+(b.chef||"—"),mg+4,y+6);
+  const sect=t=>{ y+=3; cx.fillStyle="#3B6D11"; cx.fillRect(mg,y,4,20); cx.font="bold 11px Arial"; cx.fillText(t.toUpperCase(),mg+12,y+14); y+=30; };
+  const row=(k,v)=>{ cx.fillStyle="#f8f9f8"; cx.fillRect(mg,y-2,W-mg*2,26); cx.font="14px Arial"; cx.fillStyle="#666"; cx.fillText(k,mg+8,y+16); cx.font="bold 14px Arial"; cx.fillStyle="#0e0e0e"; cx.textAlign="right"; cx.fillText(String(v||"--"),W-mg-8,y+16); cx.textAlign="left"; cx.strokeStyle="#eee"; cx.lineWidth=0.5; cx.beginPath(); cx.moveTo(mg,y+24); cx.lineTo(W-mg,y+24); cx.stroke(); y+=28; };
+  sect("Informations chantier"); row("Client",b.client); row("Adresse",b.adresse); row("N Lettre de voiture",b.ldv);
+  if(b.desc) row("Descriptif",b.desc);
+  sect("Heures effectuees"); row("Normales",b.hn||"0:00"); row("Transfert",b.ht||"0:00"); row("Supplementaires",b.hs||"0:00"); row("Nuit",b.hn2||"0:00"); row("Week-end",b.hw||"0:00");
+  sect("Bon pour accord"); row("Chef de chantier",b.chef);
+  y+=4; cx.strokeStyle="#000"; cx.lineWidth=1.5; cx.rect(mg,y,W-mg*2,35); cx.stroke();
+  cx.font="bold 11px Arial"; cx.fillStyle="#444"; cx.fillText("Signature - "+(b.chef||"--"),mg+4,y+6);
   const dl=()=>{
-    cx.strokeStyle="#ddd";cx.lineWidth=1;cx.beginPath();cx.moveTo(mg,H-40);cx.lineTo(W-mg,H-40);cx.stroke();
-    cx.font="11px Arial";cx.fillStyle="#aaa";cx.textAlign="center";cx.fillText("DT-TP76 · Buchy, Seine-Maritime · "+fd(b.date),W/2,H-20);cx.textAlign="left";
-    const lk=document.createElement("a");lk.download="bon-"+(b.client||"client").replace(/\s+/g,"-")+"-"+fd(b.date).replace(/\//g,"-")+".png";
-    lk.href=cv.toDataURL("image/png",1.0);document.body.appendChild(lk);lk.click();document.body.removeChild(lk);tst("✓ PNG téléchargé !");
+    cx.strokeStyle="#ddd"; cx.lineWidth=1; cx.beginPath(); cx.moveTo(mg,H-40); cx.lineTo(W-mg,H-40); cx.stroke();
+    cx.font="11px Arial"; cx.fillStyle="#aaa"; cx.textAlign="center"; cx.fillText("DT-TP76 - Buchy, Seine-Maritime - "+fd(b.date),W/2,H-20); cx.textAlign="left";
+    const lk=document.createElement("a"); lk.download="bon-"+(b.client||"client").replace(/\s+/g,"-")+"-"+fd(b.date).replace(/\//g,"-")+".png";
+    lk.href=cv.toDataURL("image/png",1.0); document.body.appendChild(lk); lk.click(); document.body.removeChild(lk); tst("PNG telecharge !");
   };
-  if(b.sig){const img=new Image();img.onload=()=>{cx.fillStyle="#ffffff";cx.fillRect(mg+2,y+8,W-mg*2-4,25);cx.drawImage(img,mg+8,y+8,W-mg*2-16,25);dl();};img.onerror=dl;img.src=b.sig;}else dl();
+  if(b.sig){ const img=new Image(); img.onload=()=>{ cx.fillStyle="#fff"; cx.fillRect(mg+2,y+8,W-mg*2-4,25); cx.drawImage(img,mg+8,y+8,W-mg*2-16,25); dl(); }; img.onerror=dl; img.src=b.sig; } else dl();
 };
 
-// ─── APP 2 ────────────────────────────────────────────────
+// APP 2
 const PGS=["menu","dash","couts","histo","postes","enc","treso","clients","gazole"];
-const PTIT={menu:"Menu",dash:"Tableau de bord",couts:"Coûts chantier",histo:"Historique",postes:"Postes de coût",enc:"Encaissements",treso:"Trésorerie",clients:"Clients",gazole:"Gazole"};
-
+const PTIT={menu:"Menu",dash:"Tableau de bord",couts:"Couts chantier",histo:"Historique",postes:"Postes de cout",enc:"Encaissements",treso:"Tresorerie",clients:"Clients",gazole:"Gazole"};
 function ia2(){
   const today=new Date().toISOString().split("T")[0];
   gid("mdate").textContent=new Date().toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
-  ["cd","edt","gzd","fdat","mpdt"].forEach(id=>{const el=gid(id);if(el)el.value=today;});
-  gid("cd").addEventListener("change",updPP);gid("cdel").addEventListener("change",updPP);updPP();
-  onSnapshot(query(collection(db,"chantiers"),orderBy("date","desc")),s=>{chantiers=s.docs.map(d=>({id:d.id,...d.data()}));rDash();rHisto();rPostes();});
-  onSnapshot(query(collection(db,"encaissements"),orderBy("date","asc")),s=>{encs=s.docs.map(d=>({id:d.id,...d.data()}));rEnc();rDash();});
-  onSnapshot(query(collection(db,"clients"),orderBy("nom","asc")),s=>{clients=s.docs.map(d=>({id:d.id,...d.data()}));rCl();});
-  onSnapshot(query(collection(db,"gazoles"),orderBy("date","desc")),s=>{gazoles=s.docs.map(d=>({id:d.id,...d.data()}));rGz();});
-  onSnapshot(collection(db,"postes"),s=>{postes={};s.docs.forEach(d=>{postes[d.id]={id:d.id,...d.data()};});rPostes();});
-  onSnapshot(query(collection(db,"depenses"),orderBy("date","desc")),s=>{deps=s.docs.map(d=>({id:d.id,...d.data()}));rDash();rFacs();rPostes();});
-  onSnapshot(doc(db,"config","solde"),s=>{solde=s.exists()?s.data().val||0:0;rDash();});
+  ["cd","edt","gzd","fdat","mpdt"].forEach(id=>{ const el=gid(id); if(el) el.value=today; });
+  gid("cd").addEventListener("change",updPP); gid("cdel").addEventListener("change",updPP); updPP();
+  onSnapshot(query(collection(db,"chantiers"),orderBy("date","desc")),s=>{ chantiers=s.docs.map(d=>({id:d.id,...d.data()})); rDash(); rHisto(); rPostes(); });
+  onSnapshot(query(collection(db,"encaissements"),orderBy("date","asc")),s=>{ encs=s.docs.map(d=>({id:d.id,...d.data()})); rEnc(); rDash(); });
+  onSnapshot(query(collection(db,"clients"),orderBy("nom","asc")),s=>{ clients=s.docs.map(d=>({id:d.id,...d.data()})); rCl(); });
+  onSnapshot(query(collection(db,"gazoles"),orderBy("date","desc")),s=>{ gazoles=s.docs.map(d=>({id:d.id,...d.data()})); rGz(); });
+  onSnapshot(collection(db,"postes"),s=>{ postes={}; s.docs.forEach(d=>{ postes[d.id]={id:d.id,...d.data()}; }); rPostes(); });
+  onSnapshot(query(collection(db,"depenses"),orderBy("date","desc")),s=>{ deps=s.docs.map(d=>({id:d.id,...d.data()})); rDash(); rFacs(); rPostes(); });
+  onSnapshot(doc(db,"config","solde"),s=>{ solde=s.exists()?s.data().val||0:0; rDash(); });
 }
-
-window.gp=(p)=>{PGS.forEach(t=>gid("i2-"+t).classList.toggle("on",t===p));gid("bkbtn").classList.toggle("show",p!=="menu");gid("lg2").style.display=p==="menu"?"block":"none";gid("i2pt").textContent=PTIT[p]||"";};
+window.gp=(p)=>{ PGS.forEach(t=>gid("i2-"+t).classList.toggle("on",t===p)); gid("bkbtn").classList.toggle("show",p!=="menu"); gid("lg2").style.display=p==="menu"?"block":"none"; gid("i2pt").textContent=PTIT[p]||""; };
 window.goMenu=()=>gp("menu");
 window.updPP=()=>{
-  const dp=dP(gid("cd").value,gid("cdel").value);const el=gid("ppv");if(!dp){el.textContent="";return;}
-  const diff=dj(dp);el.textContent="→ Paiement prévu le "+fd(dp)+" ("+(diff>0?"dans "+diff+"j":diff===0?"aujourd'hui":"dépassé de "+(-diff)+"j")+")";
+  const dp=dP(gid("cd").value,gid("cdel").value); const el=gid("ppv"); if(!dp){ el.textContent=""; return; }
+  const diff=dj(dp);
+  el.textContent="Paiement prevu le "+fd(dp)+" ("+(diff>0?"dans "+diff+"j":diff===0?"aujourd'hui":"depasse de "+(-diff)+"j")+")";
 };
 
-// ─── DASHBOARD — données globales, pas de filtre mois ─────
+// DASHBOARD - KPIs globaux tous chantiers
 function rDash(){
-  // Chiffres globaux (tous les chantiers)
   const tCA=chantiers.reduce((s,c)=>s+calc(c).caHT,0);
   const tM=chantiers.reduce((s,c)=>s+calc(c).marge,0);
-  // Trésorerie
   const tD=deps.filter(d=>!d.type||d.type==="depense").reduce((s,d)=>s+(d.montant||0),0);
   const tE=deps.filter(d=>d.type==="entree").reduce((s,d)=>s+(d.montant||0),0);
   const tEnc=encs.filter(e=>e.paid).reduce((s,e)=>s+(e.montant||0),0);
   const soldeReel=solde-tD+tEnc+tE;
-
-  // Retards
-  const now=new Date();now.setHours(0,0,0,0);
+  const now=new Date(); now.setHours(0,0,0,0);
   const ret=encs.filter(e=>!e.paid&&e.date&&new Date(e.date+"T00:00:00")<now);
-
-  // Mise à jour trésorerie
-  const sv=gid("sval");if(sv)sv.textContent=eu(soldeReel);
-  const sdMap={"sd-base":eu(solde),"sd-dep":"−"+eu(tD),"sd-ent":"+"+eu(tE),"sd-enc":"+"+eu(tEnc),"sd-tot":eu(soldeReel)};
-  Object.entries(sdMap).forEach(([k,v])=>{const el=gid(k);if(el){el.textContent=v;if(k==="sd-tot")el.style.color=soldeReel>=0?"var(--gd)":"#c0392b";}});
-
-  // KPIs — globaux
+  // Sync tresorerie
+  const sv=gid("sval"); if(sv) sv.textContent=eu(soldeReel);
+  [["sd-base",eu(solde)],["sd-dep","-"+eu(tD)],["sd-ent","+"+eu(tE)],["sd-enc","+"+eu(tEnc)],["sd-tot",eu(soldeReel)]]
+    .forEach(([k,v])=>{ const el=gid(k); if(el){ el.textContent=v; if(k==="sd-tot") el.style.color=soldeReel>=0?"var(--gd)":"#c0392b"; } });
+  // KPIs
   gid("dkpis").innerHTML=
-    '<div class="kp '+(soldeReel>=0?"g":"r")+'"><div class="kl">Solde compte</div><div class="kv">'+eu(soldeReel)+'</div><div class="ks">Auto</div></div>'+
+    '<div class="kp '+(soldeReel>=0?"g":"r")+'"><div class="kl">Solde compte</div><div class="kv">'+eu(soldeReel)+'</div><div class="ks">Calcule auto</div></div>'+
     '<div class="kp"><div class="kl">CA HT total</div><div class="kv" style="color:#1565c0">'+eu(tCA)+'</div><div class="ks">Tous chantiers</div></div>'+
     '<div class="kp '+(tM>=0?"g":"r")+'"><div class="kl">Marge totale</div><div class="kv">'+eu(tM)+'</div><div class="ks">Tous chantiers</div></div>'+
-    '<div class="kp '+(ret.length>0?"r":"g")+'"><div class="kl">Retards paiement</div><div class="kv">'+ret.length+'</div></div>';
-
-  // TVA mois courant
+    '<div class="kp '+(ret.length>0?"r":"g")+'"><div class="kl">Retards</div><div class="kv">'+ret.length+'</div></div>';
+  // TVA
   const now2=new Date();
   const mkC=now2.toISOString().slice(0,7);
   const mkP=new Date(now2.getFullYear(),now2.getMonth()-1,1).toISOString().slice(0,7);
   const mnC=now2.toLocaleDateString("fr-FR",{month:"long",year:"numeric"});
   const mnP=new Date(now2.getFullYear(),now2.getMonth()-1,1).toLocaleDateString("fr-FR",{month:"long",year:"numeric"});
-
-  gid("dtva-cur-label").textContent=mnC+" (en cours)";
+  gid("dtva-cur-lbl").textContent=mnC+" (en cours)";
+  gid("dtva-prev-lbl").textContent=mnP+" (a declarer)";
   gid("dtvabox-cur").innerHTML=tvaBlock(mkC);
-  gid("dtva-prev-label").textContent=mnP+" (déclaration)";
   gid("dtvabox-prev").innerHTML=tvaBlock(mkP);
-
   // Alertes
   const ac=chantiers.filter(c=>c.aCompleter===true);
   let dretH="";
   if(ac.length){
-    dretH='<div style="background:#fff3e0;border:1px solid #ffe0b2;border-radius:8px;padding:10px;margin-bottom:10px">';
-    dretH+='<div style="font-weight:700;color:#e65100;margin-bottom:6px;font-size:13px">⚠ '+ac.length+' chantier(s) à compléter dans Coûts</div>';
-    ac.forEach(function(c){
+    dretH+='<div style="background:#fff3e0;border:1px solid #ffe0b2;border-radius:8px;padding:10px;margin-bottom:10px">';
+    dretH+='<div style="font-weight:700;color:#e65100;margin-bottom:6px;font-size:13px">'+ac.length+' chantier(s) a completer</div>';
+    ac.forEach(c=>{
       dretH+='<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-top:1px solid #ffe0b2">';
-      dretH+='<span style="font-size:13px">'+(c.client||"—")+" · "+fd(c.date)+"</span>";
-      dretH+='<button data-id="'+c.id+'" onclick="completerC(this)" style="background:#e65100;color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;font-weight:700;font-family:Montserrat,sans-serif">Compléter</button>';
-      dretH+="</div>";
+      dretH+='<span style="font-size:13px">'+(c.client||"--")+" - "+fd(c.date)+'</span>';
+      dretH+='<button data-id="'+c.id+'" onclick="completerC(this)" style="background:#e65100;color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;font-weight:700;font-family:Montserrat,sans-serif">Completer</button>';
+      dretH+='</div>';
     });
-    dretH+="</div>";
+    dretH+='</div>';
   }
   if(ret.length){
-    ret.forEach(function(e){const diff=-dj(new Date(e.date+"T00:00:00"));dretH+='<div class="er"><div><div style="font-weight:600">'+(e.client||"—")+'</div><div style="font-size:11px;color:#999">Éch. '+fd(e.date)+" — +"+diff+"j</div></div><div><span class='bdg br'>+"+diff+"j</span><div style=\'font-weight:700;color:#c0392b;margin-top:2px\'>"+eu(e.montant)+"</div></div></div>";});
-  }else{dretH+='<div style="font-size:13px;color:#999;padding:8px 0">Aucun retard 🎉</div>';}
+    ret.forEach(e=>{
+      const diff=-dj(new Date(e.date+"T00:00:00"));
+      dretH+='<div class="er"><div><div style="font-weight:600">'+(e.client||"--")+'</div><div style="font-size:11px;color:#999">Ech. '+fd(e.date)+" - +"+diff+"j</div></div>";
+      dretH+='<div><span class="bdg br">+'+diff+'j</span><div style="font-weight:700;color:#c0392b;margin-top:2px">'+eu(e.montant)+'</div></div></div>';
+    });
+  } else {
+    dretH+='<div style="font-size:13px;color:#999;padding:8px 0">Aucun retard</div>';
+  }
   gid("dret").innerHTML=dretH;
 }
-window.completerC=(btn)=>{gp("couts");prefillCout(btn.getAttribute("data-id"));};
+window.completerC=(btn)=>{ gp("couts"); prefillCout(btn.getAttribute("data-id")); };
 
-// ─── HISTORIQUE (tous les chantiers) ──────────────────────
+// HISTORIQUE
 function rHisto(){
   const el=gid("histo-cards");
-  if(!chantiers.length){el.innerHTML='<div class="ldr">Aucun chantier</div>';gid("htot").innerHTML="";return;}
-  let tCA=0,tM=0,html="";
-  chantiers.forEach(function(ch){
-    const r=calc(ch);const dp=dP(ch.date,ch.delai);const diff=dj(dp);
-    tCA+=r.caHT;tM+=r.marge;
+  if(!chantiers.length){ el.innerHTML='<div class="ldr">Aucun chantier</div>'; gid("htot").innerHTML=""; return; }
+  let tCA=0, tM=0, html="";
+  chantiers.forEach(ch=>{
+    const r=calc(ch); tCA+=r.caHT; tM+=r.marge;
+    const dp=dP(ch.date,ch.delai); const diff=dj(dp);
     const ds=diff!==null?(diff>0?"J-"+diff:diff===0?"Aujourd'hui":"+"+(-diff)+"j retard"):"";
-    const ac=ch.aCompleter?" ac":"";
-    html+='<div class="hcard'+ac+'">';
-    html+='<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">';
-    html+='<div><div style="font-weight:700;font-size:15px">'+(ch.client||"—")+"</div>";
-    html+='<div style="font-size:12px;color:#999;margin-top:2px">'+fd(ch.date)+" · "+r.hp.toFixed(1)+"h + "+r.ht.toFixed(1)+"h transf</div></div>";
-    if(ch.aCompleter)html+='<span class="bdg bo">À compléter</span>';
-    html+="</div>";
-    html+='<div style="display:flex;gap:8px;margin-bottom:10px">';
-    html+='<div style="flex:1;background:#f8f9f8;border-radius:8px;padding:8px;text-align:center"><div style="font-size:10px;color:#999;margin-bottom:2px">CA HT</div><div style="font-weight:700;font-size:14px">'+eu(r.caHT)+"</div></div>";
-    html+='<div style="flex:1;background:#f8f9f8;border-radius:8px;padding:8px;text-align:center"><div style="font-size:10px;color:#999;margin-bottom:2px">Marge</div><div style="font-weight:700;font-size:14px;color:'+(r.marge>=0?"var(--gd)":"#c0392b")+'">'+eu(r.marge)+"</div></div>";
-    html+='<div style="flex:1;background:#f8f9f8;border-radius:8px;padding:8px;text-align:center"><div style="font-size:10px;color:#999;margin-bottom:2px">Paiement</div><div style="font-weight:600;font-size:11px;color:var(--gd)">'+fd(dp)+'</div><div style="font-size:10px;color:#999">'+ds+"</div></div>";
-    html+="</div>";
-    html+='<div style="display:flex;gap:8px">';
-    html+='<button data-id="'+ch.id+'" onclick="editC(this)" style="flex:1;height:38px;background:var(--gd);border:none;border-radius:8px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:Montserrat,sans-serif">✏️ Modifier</button>';
-    html+='<button data-id="'+ch.id+'" onclick="delC(this)" style="width:38px;height:38px;background:#fff;border:1px solid #c0392b;border-radius:8px;color:#c0392b;font-size:16px;cursor:pointer">🗑</button>';
-    html+="</div></div>";
+    html+='<div class="hcard'+(ch.aCompleter?" ac":"")+'"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">';
+    html+='<div><div style="font-weight:700;font-size:15px">'+(ch.client||"--")+'</div>';
+    html+='<div style="font-size:12px;color:#999;margin-top:2px">'+fd(ch.date)+" - "+r.hp.toFixed(1)+"h + "+r.ht.toFixed(1)+"h transf</div></div>';
+    if(ch.aCompleter) html+='<span class="bdg bo">A completer</span>';
+    html+='</div><div style="display:flex;gap:8px;margin-bottom:10px">';
+    html+='<div style="flex:1;background:#f8f9f8;border-radius:8px;padding:8px;text-align:center"><div style="font-size:10px;color:#999;margin-bottom:2px">CA HT</div><div style="font-weight:700;font-size:14px">'+eu(r.caHT)+'</div></div>';
+    html+='<div style="flex:1;background:#f8f9f8;border-radius:8px;padding:8px;text-align:center"><div style="font-size:10px;color:#999;margin-bottom:2px">Marge</div><div style="font-weight:700;font-size:14px;color:'+(r.marge>=0?"var(--gd)":"#c0392b")+'">'+eu(r.marge)+'</div></div>';
+    html+='<div style="flex:1;background:#f8f9f8;border-radius:8px;padding:8px;text-align:center"><div style="font-size:10px;color:#999;margin-bottom:2px">Paiement</div><div style="font-weight:600;font-size:11px;color:var(--gd)">'+fd(dp)+'</div><div style="font-size:10px;color:#999">'+ds+'</div></div>';
+    html+='</div><div style="display:flex;gap:8px">';
+    html+='<button data-id="'+ch.id+'" onclick="editC(this)" style="flex:1;height:38px;background:var(--gd);border:none;border-radius:8px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:Montserrat,sans-serif">Modifier</button>';
+    html+='<button data-id="'+ch.id+'" onclick="delC(this)" style="width:38px;height:38px;background:#fff;border:1px solid #c0392b;border-radius:8px;color:#c0392b;font-size:16px;cursor:pointer">&#128465;</button>';
+    html+='</div></div>';
   });
   el.innerHTML=html;
-  gid("htot").innerHTML='<div class="kp g"><div class="kl">CA HT total</div><div class="kv">'+eu(tCA)+'</div></div><div class="kp '+(tM>=0?"g":"r")+'"><div class="kl">Marge totale</div><div class="kv">'+eu(tM)+"</div></div>";
+  gid("htot").innerHTML='<div class="kp g"><div class="kl">CA HT total</div><div class="kv">'+eu(tCA)+'</div></div><div class="kp '+(tM>=0?"g":"r")+'"><div class="kl">Marge totale</div><div class="kv">'+eu(tM)+'</div></div>';
 }
-
-window.editC=(btn)=>{gp("couts");prefillCout(btn.getAttribute("data-id"));};
+window.editC=(btn)=>{ gp("couts"); prefillCout(btn.getAttribute("data-id")); };
 window.delC=async(btn)=>{
   const id=btn.getAttribute("data-id");
-  if(prompt("Code PIN :")!==PIN2){tst("⚠ Code incorrect");return;}
-  if(!confirm("Supprimer ce chantier ?"))return;
-  try{await deleteDoc(doc(db,"chantiers",id));tst("✓ Supprimé");}catch(e){tst("Erreur");}
+  if(prompt("Code PIN :")!==PIN2){ tst("Code incorrect"); return; }
+  if(!confirm("Supprimer ce chantier ?")) return;
+  try{ await deleteDoc(doc(db,"chantiers",id)); tst("Supprime"); }catch(e){ tst("Erreur"); }
 };
 
-// ─── POSTES ───────────────────────────────────────────────
+// POSTES
 function rPostes(){
   const tH=chantiers.reduce((s,c)=>s+calc(c).hto,0);
-  let html="",totObj=0,totCag=0,totDep=0;
-  Object.entries(COUTS).forEach(function(entry){
-    const k=entry[0],p=entry[1];
+  let html="", totObj=0, totCag=0, totDep=0;
+  Object.entries(COUTS).forEach(([k,p])=>{
     const objAnnuel=p.obj||0;
-    const pd2=postes[k]||{depenses:[]};
-    const depenses=pd2.depenses||[];
+    const depenses=(postes[k]||{}).depenses||[];
     const totalDep=depenses.reduce((s,d)=>s+(d.montant||0),0);
     let cagnotte=0;
     if(depenses.length>0){
       const lastDep=depenses.reduce((a,b)=>new Date(a.date)>new Date(b.date)?a:b);
       const hApres=chantiers.filter(c=>new Date(c.date)>new Date(lastDep.date)).reduce((s,c)=>s+calc(c).hto,0);
       cagnotte=p.v*hApres;
-    }else{cagnotte=p.v*tH;}
+    } else { cagnotte=p.v*tH; }
     const pct=objAnnuel>0?Math.min(100,cagnotte/objAnnuel*100):0;
-    const surplus=Math.max(0,cagnotte-objAnnuel);
-    const manque=Math.max(0,objAnnuel-cagnotte);
+    const surplus=Math.max(0,cagnotte-objAnnuel), manque=Math.max(0,objAnnuel-cagnotte);
     const barColor=pct>=100?"#2d5a0e":pct>=50?"var(--gd)":"#e65100";
-    totObj+=objAnnuel;totCag+=cagnotte;totDep+=totalDep;
+    totObj+=objAnnuel; totCag+=cagnotte; totDep+=totalDep;
     html+='<div class="pc" data-key="'+k+'" onclick="opP(this)">';
     html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">';
     html+='<div style="font-size:14px;font-weight:600">'+p.l+'</div>';
-    html+='<div style="font-size:11px;color:#999">'+p.v.toFixed(2)+' €/h · objectif '+eu(objAnnuel)+'</div></div>';
+    html+='<div style="font-size:11px;color:#999">'+p.v.toFixed(2)+' euro/h - obj '+eu(objAnnuel)+'</div></div>';
     html+='<div class="progbar"><div class="progfill" style="background:'+barColor+';width:'+pct.toFixed(1)+'%"></div></div>';
     html+='<div class="pb">';
-    html+='<div class="pbi"><div class="pbi-l">Mis de côté</div><div class="pbi-v" style="color:#1565c0">'+eu(cagnotte)+'</div></div>';
-    html+='<div class="pbi"><div class="pbi-l">Total dépensé</div><div class="pbi-v" style="color:#c0392b">'+eu(totalDep)+'</div></div>';
-    if(pct>=100){html+='<div class="pbi" style="background:#e8f5e0"><div class="pbi-l" style="color:var(--gd)">✓ Objectif atteint</div><div class="pbi-v" style="color:var(--gd)">+'+eu(surplus)+'</div></div>';}
-    else{html+='<div class="pbi"><div class="pbi-l">Manque</div><div class="pbi-v" style="color:#e65100">'+eu(manque)+'</div></div>';}
+    html+='<div class="pbi"><div class="pbi-l">Mis de cote</div><div class="pbi-v" style="color:#1565c0">'+eu(cagnotte)+'</div></div>';
+    html+='<div class="pbi"><div class="pbi-l">Depense</div><div class="pbi-v" style="color:#c0392b">'+eu(totalDep)+'</div></div>';
+    if(pct>=100){ html+='<div class="pbi" style="background:#e8f5e0"><div class="pbi-l" style="color:var(--gd)">Objectif atteint</div><div class="pbi-v" style="color:var(--gd)">+'+eu(surplus)+'</div></div>'; }
+    else        { html+='<div class="pbi"><div class="pbi-l">Manque</div><div class="pbi-v" style="color:#e65100">'+eu(manque)+'</div></div>'; }
     html+='</div><div style="font-size:11px;color:#999;margin-top:6px;text-align:right">'+pct.toFixed(0)+"% de l'objectif</div></div>";
   });
   gid("plist").innerHTML=html;
-  const tDeps=deps.filter(d=>!d.type||d.type==="depense").reduce((s,d)=>s+(d.montant||0),0);
-  if(tDeps>0){const el=gid("dhp");el.style.display="flex";gid("dhpv").textContent="−"+eu(tDeps);}
-  const rec=gid("postes-recap");if(rec)rec.style.display="block";
-  const rpc=gid("rp-cag");if(rpc)rpc.textContent=eu(totCag);
-  const rpd=gid("rp-dep");if(rpd)rpd.textContent="−"+eu(totDep);
-  const rpo=gid("rp-obj");if(rpo)rpo.textContent=eu(totObj);
+  const rec=gid("postes-recap"); if(rec) rec.style.display="block";
+  const rpc=gid("rp-cag"); if(rpc) rpc.textContent=eu(totCag);
+  const rpd=gid("rp-dep"); if(rpd) rpd.textContent="-"+eu(totDep);
+  const rpo=gid("rp-obj"); if(rpo) rpo.textContent=eu(totObj);
 }
 window.opP=(el)=>{
-  const k=el.getAttribute("data-key");const p=COUTS[k];if(!p)return;curPoste=k;
+  const k=el.getAttribute("data-key"); const p=COUTS[k]; if(!p) return; curPoste=k;
   const tH=chantiers.reduce((s,c)=>s+calc(c).hto,0);
-  const objAnnuel=p.obj||0;
-  const pd2=postes[k]||{depenses:[]};const depenses=pd2.depenses||[];
+  const depenses=(postes[k]||{}).depenses||[];
   const totalDep=depenses.reduce((s,d)=>s+(d.montant||0),0);
   let cagnotte=0;
-  if(depenses.length>0){const lastDep=depenses.reduce((a,b)=>new Date(a.date)>new Date(b.date)?a:b);const hA=chantiers.filter(c=>new Date(c.date)>new Date(lastDep.date)).reduce((s,c)=>s+calc(c).hto,0);cagnotte=p.v*hA;}
-  else{cagnotte=p.v*tH;}
-  const pct=objAnnuel>0?Math.min(100,cagnotte/objAnnuel*100):0;
-  gid("mpnom").textContent=p.l;
-  gid("mpl").value="";gid("mpm").value="";gid("mpmsg").textContent="";
-  gid("mpkpis").innerHTML='<div class="kp"><div class="kl">Objectif annuel</div><div class="kv" style="color:#1565c0;font-size:15px">'+eu(objAnnuel)+'</div></div><div class="kp"><div class="kl">Mis de côté</div><div class="kv" style="color:var(--gd);font-size:15px">'+eu(cagnotte)+'</div></div><div class="kp r"><div class="kl">Total dépensé</div><div class="kv" style="font-size:15px">'+eu(totalDep)+'</div></div><div class="kp '+(pct>=100?"g":"o")+'"><div class="kl">Progression</div><div class="kv" style="font-size:15px">'+pct.toFixed(0)+'%</div></div>';
-  gid("mpdeps").innerHTML=depenses.length?depenses.map(d=>'<div class="cr"><div><div style="font-weight:600">'+(d.label||"—")+'</div><div style="font-size:11px;color:#999">'+fd(d.date)+'</div></div><div style="font-weight:700;color:#c0392b">−'+eu(d.montant)+"</div></div>").join(""):'<div style="font-size:13px;color:#999;padding:8px 0">Aucune dépense saisie</div>';
+  if(depenses.length>0){ const lastDep=depenses.reduce((a,b)=>new Date(a.date)>new Date(b.date)?a:b); const hA=chantiers.filter(c=>new Date(c.date)>new Date(lastDep.date)).reduce((s,c)=>s+calc(c).hto,0); cagnotte=p.v*hA; }
+  else { cagnotte=p.v*tH; }
+  const pct=p.obj>0?Math.min(100,cagnotte/p.obj*100):0;
+  gid("mpnom").textContent=p.l; gid("mpl").value=""; gid("mpm").value=""; gid("mpmsg").textContent="";
+  gid("mpkpis").innerHTML=
+    '<div class="kp"><div class="kl">Objectif annuel</div><div class="kv" style="color:#1565c0;font-size:15px">'+eu(p.obj)+'</div></div>'+
+    '<div class="kp"><div class="kl">Mis de cote</div><div class="kv" style="color:var(--gd);font-size:15px">'+eu(cagnotte)+'</div></div>'+
+    '<div class="kp r"><div class="kl">Total depense</div><div class="kv" style="font-size:15px">'+eu(totalDep)+'</div></div>'+
+    '<div class="kp '+(pct>=100?"g":"o")+'"><div class="kl">Progression</div><div class="kv" style="font-size:15px">'+pct.toFixed(0)+'%</div></div>';
+  gid("mpdeps").innerHTML=depenses.length
+    ?depenses.map(d=>'<div class="cr"><div><div style="font-weight:600">'+(d.label||"--")+'</div><div style="font-size:11px;color:#999">'+fd(d.date)+'</div></div><div style="font-weight:700;color:#c0392b">-'+eu(d.montant)+'</div></div>').join("")
+    :'<div style="font-size:13px;color:#999;padding:8px 0">Aucune depense saisie</div>';
   gid("mposte").classList.add("open");
 };
 window.saveDep=async()=>{
-  const l=gid("mpl").value,m=parseFloat(gid("mpm").value),dt=gid("mpdt").value;
-  if(!l||!m||!dt){gid("mpmsg").textContent="⚠ Remplis tous les champs";return;}
-  gid("mpmsg").textContent="Enregistrement…";
+  const l=gid("mpl").value, m=parseFloat(gid("mpm").value), dt=gid("mpdt").value;
+  if(!l||!m||!dt){ gid("mpmsg").textContent="Remplis tous les champs"; return; }
+  gid("mpmsg").textContent="Enregistrement...";
   try{
     const ref=doc(db,"postes",curPoste);
-    if(postes[curPoste])await updateDoc(ref,{depenses:arrayUnion({label:l,montant:m,date:dt})});
-    else await setDoc(ref,{depenses:[{label:l,montant:m,date:dt}]});
-    gid("mpmsg").textContent="✓ Ajouté !";gid("mpl").value="";gid("mpm").value="";
-    setTimeout(()=>{cm("mposte");rPostes();},800);
-  }catch(e){gid("mpmsg").textContent="Erreur";}
+    if(postes[curPoste]) await updateDoc(ref,{depenses:arrayUnion({label:l,montant:m,date:dt})});
+    else                 await setDoc(ref,{depenses:[{label:l,montant:m,date:dt}]});
+    gid("mpmsg").textContent="Ajoute !"; gid("mpl").value=""; gid("mpm").value="";
+    setTimeout(()=>{ cm("mposte"); rPostes(); },800);
+  }catch(e){ gid("mpmsg").textContent="Erreur"; }
 };
 
-// ─── COUTS CHANTIER ───────────────────────────────────────
+// COUTS
 window.prefillCout=(id)=>{
-  const c=chantiers.find(x=>x.id===id);if(!c)return;
-  gid("cc").value=c.client||"";gid("cd").value=c.date||"";gid("chp").value=c.hprod||"";gid("cht").value=c.htransf||"";
-  gid("cpx").value=c.prix||85;gid("cgz").value=c.carbu||2.25;gid("ctv").value=c.tva||20;
-  gid("crd").value=c.reduc||0;gid("cdel").value=c.delai||"30fm";gid("cout-eid").value=id;
-  gid("cmsg").textContent=c.aCompleter?"⚠ À compléter — remplis prix, gazole, TVA":"✏️ Mode modification";
+  const c=chantiers.find(x=>x.id===id); if(!c) return;
+  gid("cc").value=c.client||""; gid("cd").value=c.date||""; gid("chp").value=c.hprod||""; gid("cht").value=c.htransf||"";
+  gid("cpx").value=c.prix||85; gid("cgz").value=c.carbu||2.25; gid("ctv").value=c.tva||20;
+  gid("crd").value=c.reduc||0; gid("cdel").value=c.delai||"30fm"; gid("cout-eid").value=id;
+  gid("cmsg").textContent=c.aCompleter?"A completer - remplis prix, gazole, TVA":"Mode modification";
   gid("cmsg").style.color=c.aCompleter?"#e65100":"var(--gd)";
-  gid("cprev").style.display="none";updPP();
+  gid("cprev").style.display="none"; updPP();
   gid("cc").scrollIntoView({behavior:"smooth",block:"start"});
 };
 window.prevC=()=>{
   const x={hprod:gid("chp").value,htransf:gid("cht").value,prix:parseFloat(gid("cpx").value)||85,carbu:parseFloat(gid("cgz").value)||2.25,tva:parseFloat(gid("ctv").value)||20,reduc:parseFloat(gid("crd").value)||0};
-  const r=calc(x);gid("cprev").style.display="block";
-  gid("cstat").innerHTML='<div class="pss"><div class="pl">CA HT</div><div class="pv">'+eu(r.caHT)+'</div></div><div class="pss"><div class="pl">CA TTC</div><div class="pv">'+eu(r.caTTC)+'</div></div><div class="pss"><div class="pl">Coût revient</div><div class="pv">'+eu(r.ct)+'</div></div><div class="pss '+(r.marge>=0?"g":"r")+'"><div class="pl">Marge HT</div><div class="pv">'+eu(r.marge)+"</div></div>";
-  let rows=Object.values(COUTS).map(c=>'<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f5f5f5;font-size:13px"><span>'+c.l+'</span><span style="color:#999">'+c.v.toFixed(2)+' €/h</span><span style="font-weight:600">'+eu(c.v*r.hto)+"</span></div>").join("");
-  rows+='<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f5f5f5;font-size:13px"><span>Gazole '+CONSO+'L × '+r.cHT.toFixed(3)+' €</span><span style="color:#999">'+r.cch.toFixed(2)+' €/h</span><span style="font-weight:600">'+eu(r.cch*r.hto)+"</span></div>";
-  rows+='<div style="display:flex;justify-content:space-between;padding:10px 0;font-size:14px;font-weight:700;border-top:2px solid #e0e0e0;margin-top:4px"><span>Total</span><span>'+eu(r.crh)+'/h</span><span style="color:#c0392b">'+eu(r.ct)+"</span></div>";
-  rows+='<div style="background:#f0f7e8;border-radius:8px;padding:8px 10px;margin-top:8px;font-size:12px;color:var(--gd);display:flex;justify-content:space-between"><span>TVA gazole déductible 80%</span><span style="font-weight:600">+'+eu(r.tGD)+"</span></div>";
+  const r=calc(x); gid("cprev").style.display="block";
+  gid("cstat").innerHTML=
+    '<div class="pss"><div class="pl">CA HT</div><div class="pv">'+eu(r.caHT)+'</div></div>'+
+    '<div class="pss"><div class="pl">CA TTC</div><div class="pv">'+eu(r.caTTC)+'</div></div>'+
+    '<div class="pss"><div class="pl">Cout revient</div><div class="pv">'+eu(r.ct)+'</div></div>'+
+    '<div class="pss '+(r.marge>=0?"g":"r")+'"><div class="pl">Marge HT</div><div class="pv">'+eu(r.marge)+'</div></div>';
+  let rows=Object.values(COUTS).map(c=>'<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f5f5f5;font-size:13px"><span>'+c.l+'</span><span style="color:#999">'+c.v.toFixed(2)+' euro/h</span><span style="font-weight:600">'+eu(c.v*r.hto)+'</span></div>').join("");
+  rows+='<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f5f5f5;font-size:13px"><span>Gazole '+CONSO+'L x '+r.cHT.toFixed(3)+' euro</span><span style="color:#999">'+r.cch.toFixed(2)+' euro/h</span><span style="font-weight:600">'+eu(r.cch*r.hto)+'</span></div>';
+  rows+='<div style="display:flex;justify-content:space-between;padding:10px 0;font-size:14px;font-weight:700;border-top:2px solid #e0e0e0;margin-top:4px"><span>Total</span><span>'+eu(r.crh)+'/h</span><span style="color:#c0392b">'+eu(r.ct)+'</span></div>';
+  rows+='<div style="background:#f0f7e8;border-radius:8px;padding:8px 10px;margin-top:8px;font-size:12px;color:var(--gd);display:flex;justify-content:space-between"><span>TVA gazole deductible 80%</span><span style="font-weight:600">+'+eu(r.tGD)+'</span></div>';
   gid("cdet").innerHTML=rows;
 };
 window.saveC=async()=>{
-  const cl=gid("cc").value,dt=gid("cd").value;
-  if(!cl){tst("⚠ Renseigne le client");return;}if(!dt){tst("⚠ Renseigne la date");return;}
+  const cl=gid("cc").value, dt=gid("cd").value;
+  if(!cl){ tst("Renseigne le client"); return; } if(!dt){ tst("Renseigne la date"); return; }
   const eid=gid("cout-eid").value;
   const cData={client:cl,date:dt,delai:gid("cdel").value,hprod:gid("chp").value,htransf:gid("cht").value,prix:parseFloat(gid("cpx").value)||85,carbu:parseFloat(gid("cgz").value)||2.25,tva:parseFloat(gid("ctv").value)||20,reduc:parseFloat(gid("crd").value)||0,aCompleter:false};
-  gid("cmsg").textContent="Enregistrement…";
+  gid("cmsg").textContent="Enregistrement...";
   try{
-    if(eid){await updateDoc(doc(db,"chantiers",eid),cData);gid("cout-eid").value="";}
-    else{await addDoc(collection(db,"chantiers"),{...cData,createdAt:new Date().toISOString()});}
-    gid("cmsg").textContent="✓ Enregistré !";gid("cmsg").style.color="var(--gd)";
-    ["cc","chp","cht"].forEach(id=>gid(id).value="");gid("cprev").style.display="none";
-    setTimeout(()=>{gid("cmsg").textContent="";gp("histo");},1500);
-  }catch(e){gid("cmsg").textContent="Erreur: "+e.message;}
+    if(eid){ await updateDoc(doc(db,"chantiers",eid),cData); gid("cout-eid").value=""; }
+    else   { await addDoc(collection(db,"chantiers"),{...cData,createdAt:new Date().toISOString()}); }
+    gid("cmsg").textContent="Enregistre !"; gid("cmsg").style.color="var(--gd)";
+    ["cc","chp","cht"].forEach(id=>gid(id).value=""); gid("cprev").style.display="none";
+    setTimeout(()=>{ gid("cmsg").textContent=""; gp("histo"); },1500);
+  }catch(e){ gid("cmsg").textContent="Erreur: "+e.message; }
 };
 
-// ─── ENCAISSEMENTS ────────────────────────────────────────
+// ENCAISSEMENTS
 function rEnc(){
-  const now=new Date();now.setHours(0,0,0,0);
-  const att=encs.filter(e=>!e.paid),pay=encs.filter(e=>e.paid);
+  const att=encs.filter(e=>!e.paid), pay=encs.filter(e=>e.paid);
   gid("eat").innerHTML=att.length?att.map(e=>{
-    const dp=new Date(e.date+"T00:00:00"),diff=dj(dp);
+    const dp=new Date(e.date+"T00:00:00"), diff=dj(dp);
     const cl=diff<0?"br":diff<=7?"bo":"bg";
     const lb=diff<0?"+"+(-diff)+"j retard":diff===0?"Auj.":"J-"+diff;
-    return'<div class="er"><div><div style="font-weight:600">'+(e.client||"—")+'</div><div style="font-size:11px;color:#999">Éch. '+fd(e.date)+(e.ref?" · "+e.ref:"")+'</div></div><div style="display:flex;align-items:center;gap:6px"><div style="text-align:right"><div style="font-weight:700">'+eu(e.montant)+'</div><span class="bdg '+cl+'">'+lb+'</span></div><button class="ck" data-id="'+e.id+'" onclick="payE(this)">✓</button></div></div>';
+    return '<div class="er"><div><div style="font-weight:600">'+(e.client||"--")+'</div><div style="font-size:11px;color:#999">Ech. '+fd(e.date)+(e.ref?" - "+e.ref:"")+'</div></div>'+
+      '<div style="display:flex;align-items:center;gap:6px"><div style="text-align:right"><div style="font-weight:700">'+eu(e.montant)+'</div><span class="bdg '+cl+'">'+lb+'</span></div>'+
+      '<button class="ck" data-id="'+e.id+'" onclick="payE(this)">&#10003;</button></div></div>';
   }).join(""):'<div style="font-size:13px;color:#999;padding:8px 0">Aucun en attente</div>';
-  gid("epd").innerHTML=pay.length?pay.slice(0,10).map(e=>'<div class="er"><div><div style="font-weight:600">'+(e.client||"—")+'</div><div style="font-size:11px;color:#999">'+eu(e.montant)+'</div></div><span class="bdg bg">Payé ✓</span></div>').join(""):'<div style="font-size:13px;color:#999;padding:8px 0">Aucun</div>';
+  gid("epd").innerHTML=pay.length?pay.slice(0,10).map(e=>
+    '<div class="er"><div><div style="font-weight:600">'+(e.client||"--")+'</div><div style="font-size:11px;color:#999">'+eu(e.montant)+'</div></div><span class="bdg bg">Paye</span></div>'
+  ).join(""):'<div style="font-size:13px;color:#999;padding:8px 0">Aucun</div>';
 }
 window.saveEnc=async()=>{
-  const cl=gid("ecl").value,mt=parseFloat(gid("emt").value),dt=gid("edt").value;
-  if(!cl||!mt||!dt){tst("⚠ Remplis tous les champs");return;}
-  try{await addDoc(collection(db,"encaissements"),{client:cl,montant:mt,date:dt,ref:gid("erf").value,paid:false,createdAt:new Date().toISOString()});gid("emsg").textContent="✓ Ajouté !";gid("ecl").value="";gid("emt").value="";setTimeout(()=>gid("emsg").textContent="",2000);}catch(e){tst("Erreur");}
+  const cl=gid("ecl").value, mt=parseFloat(gid("emt").value), dt=gid("edt").value;
+  if(!cl||!mt||!dt){ tst("Remplis tous les champs"); return; }
+  try{
+    await addDoc(collection(db,"encaissements"),{client:cl,montant:mt,date:dt,ref:gid("erf").value,paid:false,createdAt:new Date().toISOString()});
+    gid("emsg").textContent="Ajoute !"; gid("ecl").value=""; gid("emt").value="";
+    setTimeout(()=>gid("emsg").textContent="",2000);
+  }catch(e){ tst("Erreur"); }
 };
-window.payE=async(btn)=>{try{await updateDoc(doc(db,"encaissements",btn.getAttribute("data-id")),{paid:true});tst("✓ Paiement validé !");}catch(e){tst("Erreur");}};
+window.payE=async(btn)=>{ try{ await updateDoc(doc(db,"encaissements",btn.getAttribute("data-id")),{paid:true}); tst("Paiement valide !"); }catch(e){ tst("Erreur"); } };
 
-// ─── TRÉSORERIE — saisie manuelle uniquement ──────────────
+// TRESORERIE
 function rFacs(){
-  const el=gid("fac-list");if(!el)return;
-  if(!deps.length){el.innerHTML='<div style="font-size:13px;color:#999">Aucune opération saisie</div>';return;}
+  const el=gid("fac-list"); if(!el) return;
+  if(!deps.length){ el.innerHTML='<div style="font-size:13px;color:#999">Aucune operation saisie</div>'; return; }
   const tD=deps.filter(d=>!d.type||d.type==="depense").reduce((s,d)=>s+(d.montant||0),0);
   const tE=deps.filter(d=>d.type==="entree").reduce((s,d)=>s+(d.montant||0),0);
   let html="";
-  deps.forEach(function(d){
+  deps.forEach(d=>{
     const isE=d.type==="entree";
-    html+='<div class="cr"><div><div style="font-weight:600">'+(d.label||"—")+'</div>';
-    html+='<div style="font-size:11px;color:#999">'+fd(d.date)+" · "+(d.cat||"divers")+" · ";
-    html+='<span style="font-weight:600;color:'+(isE?"var(--gd)":"#e65100")+'">'+(isE?"Entrée":"Dépense")+"</span></div></div>";
-    html+='<div class="btnrow"><span style="font-weight:700;color:'+(isE?"var(--gd)":"#c0392b")+'">'+(isE?"+":"−")+eu(d.montant)+'</span>';
-    html+='<button class="btnv" data-id="'+d.id+'" onclick="editFac(this)">✏️</button>';
-    html+='<button class="btnr" data-id="'+d.id+'" onclick="delFac(this)">🗑</button></div></div>';
+    html+='<div class="cr"><div><div style="font-weight:600">'+(d.label||"--")+'</div>';
+    html+='<div style="font-size:11px;color:#999">'+fd(d.date)+" - "+(d.cat||"divers")+" - ";
+    html+='<span style="font-weight:600;color:'+(isE?"var(--gd)":"#e65100")+'">'+(isE?"Entree":"Depense")+'</span></div></div>';
+    html+='<div class="btnrow"><span style="font-weight:700;color:'+(isE?"var(--gd)":"#c0392b")+'">'+(isE?"+":"-")+eu(d.montant)+'</span>';
+    html+='<button class="btnv" data-id="'+d.id+'" onclick="editFac(this)">Modif.</button>';
+    html+='<button class="btnr" data-id="'+d.id+'" onclick="delFac(this)">Suppr.</button></div></div>';
   });
   html+='<div style="border-top:2px solid #e0e0e0;padding-top:10px;margin-top:4px">';
-  html+='<div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>Total dépenses</span><span style="color:#c0392b;font-weight:600">−'+eu(tD)+"</span></div>";
-  html+='<div style="display:flex;justify-content:space-between;font-size:13px"><span>Total entrées</span><span style="color:var(--gd);font-weight:600">+"+eu(tE)+"</span></div></div>";
+  html+='<div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>Total depenses</span><span style="color:#c0392b;font-weight:600">-'+eu(tD)+'</span></div>';
+  html+='<div style="display:flex;justify-content:space-between;font-size:13px"><span>Total entrees</span><span style="color:var(--gd);font-weight:600">+'+eu(tE)+'</span></div></div>';
   el.innerHTML=html;
 }
 window.editFac=(btn)=>{
-  const id=btn.getAttribute("data-id");const d=deps.find(x=>x.id===id);if(!d)return;
-  gid("fl").value=d.label||"";gid("fm").value=d.montant||"";gid("fdat").value=d.date||"";
-  gid("fcat").value=d.cat||"";gid("ftype").value=d.type||"depense";gid("ftva").value=d.tva||"0";
-  gid("fac-eid").value=id;gid("fmsg").textContent="Mode modification";gid("fmsg").style.color="#e65100";
+  const id=btn.getAttribute("data-id"); const d=deps.find(x=>x.id===id); if(!d) return;
+  gid("fl").value=d.label||""; gid("fm").value=d.montant||""; gid("fdat").value=d.date||"";
+  gid("fcat").value=d.cat||""; gid("ftype").value=d.type||"depense"; gid("ftva").value=d.tva||"0";
+  gid("fac-eid").value=id; gid("fmsg").textContent="Mode modification"; gid("fmsg").style.color="#e65100";
   gid("fl").scrollIntoView({behavior:"smooth",block:"center"});
 };
 window.delFac=async(btn)=>{
   const id=btn.getAttribute("data-id");
-  if(prompt("Code PIN :")!==PIN2){tst("⚠ Code incorrect");return;}
-  if(!confirm("Supprimer ?"))return;
-  try{await deleteDoc(doc(db,"depenses",id));tst("✓ Supprimé");}catch(e){tst("Erreur");}
+  if(prompt("Code PIN :")!==PIN2){ tst("Code incorrect"); return; }
+  if(!confirm("Supprimer ?")) return;
+  try{ await deleteDoc(doc(db,"depenses",id)); tst("Supprime"); }catch(e){ tst("Erreur"); }
 };
 window.saveFac=async()=>{
-  const l=gid("fl").value,m=parseFloat(gid("fm").value),d=gid("fdat").value,c=gid("fcat").value||"divers";
-  const ftype=String(gid("ftype").value||"depense"),ftva=Number(gid("ftva").value||0);
+  const l=gid("fl").value, m=parseFloat(gid("fm").value), d=gid("fdat").value, c=gid("fcat").value||"divers";
+  const ftype=String(gid("ftype").value||"depense"), ftva=Number(gid("ftva").value||0);
   const eid=gid("fac-eid").value;
-  if(!l||!m||!d){tst("⚠ Remplis tous les champs");return;}
+  if(!l||!m||!d){ tst("Remplis tous les champs"); return; }
   try{
-    if(eid){await updateDoc(doc(db,"depenses",eid),{label:String(l),montant:Number(m),date:String(d),cat:String(c),type:ftype,tva:ftva});gid("fac-eid").value="";}
-    else{await addDoc(collection(db,"depenses"),{label:String(l),montant:Number(m),date:String(d),cat:String(c),type:ftype,tva:ftva,createdAt:new Date().toISOString()});}
-    gid("fmsg").textContent="✓ Enregistrée !";gid("fmsg").style.color="var(--gd)";
-    gid("fl").value="";gid("fm").value="";gid("fcat").value="";gid("ftype").value="depense";gid("ftva").value="0";
+    if(eid){ await updateDoc(doc(db,"depenses",eid),{label:String(l),montant:Number(m),date:String(d),cat:String(c),type:ftype,tva:ftva}); gid("fac-eid").value=""; }
+    else   { await addDoc(collection(db,"depenses"),{label:String(l),montant:Number(m),date:String(d),cat:String(c),type:ftype,tva:ftva,createdAt:new Date().toISOString()}); }
+    gid("fmsg").textContent="Enregistree !"; gid("fmsg").style.color="var(--gd)";
+    gid("fl").value=""; gid("fm").value=""; gid("fcat").value=""; gid("ftype").value="depense"; gid("ftva").value="0";
     setTimeout(()=>gid("fmsg").textContent="",2000);
-  }catch(e){tst("Erreur: "+e.message);}
+  }catch(e){ tst("Erreur: "+e.message); }
 };
 
-// ─── SOLDE ────────────────────────────────────────────────
-window.editSolde=()=>{gid("sinp").value=solde||"";gid("msolde").classList.add("open");};
-window.svSolde=async()=>{const v=parseFloat(gid("sinp").value)||0;try{await setDoc(doc(db,"config","solde"),{val:v});tst("✓ Solde mis à jour");cm("msolde");}catch(e){tst("Erreur");}};
+// SOLDE
+window.editSolde=()=>{ gid("sinp").value=solde||""; gid("msolde").classList.add("open"); };
+window.svSolde=async()=>{ const v=parseFloat(gid("sinp").value)||0; try{ await setDoc(doc(db,"config","solde"),{val:v}); tst("Solde mis a jour"); cm("msolde"); }catch(e){ tst("Erreur"); } };
 
-// ─── CLIENTS ──────────────────────────────────────────────
+// CLIENTS
 function rCl(){
   gid("cllist").innerHTML=clients.length?clients.map(c=>{
     const sc=c.statut==="client"?"bg":c.statut==="prospect"?"bo":"";
-    return'<div class="lr"><div><div style="font-weight:600">'+(c.prenom||"")+" "+(c.nom||"")+(c.entreprise?" · "+c.entreprise:"")+'</div><div style="font-size:11px;color:#999">'+(c.tel||"")+(c.email?" · "+c.email:"")+'</div></div><span class="bdg '+sc+'">'+(c.statut||"—")+"</span></div>";
+    return '<div class="lr"><div><div style="font-weight:600">'+(c.prenom||"")+" "+(c.nom||"")+(c.entreprise?" - "+c.entreprise:"")+'</div><div style="font-size:11px;color:#999">'+(c.tel||"")+(c.email?" - "+c.email:"")+'</div></div><span class="bdg '+sc+'">'+(c.statut||"--")+'</span></div>';
   }).join(""):'<div style="font-size:13px;color:#999">Aucun client</div>';
 }
 window.saveCl=async()=>{
-  const n=gid("cln").value;if(!n){tst("⚠ Renseigne le nom");return;}
-  try{await addDoc(collection(db,"clients"),{prenom:gid("clp").value,nom:n,entreprise:gid("cle").value,tel:gid("clt").value,email:gid("clm").value,statut:gid("cls").value,prix:parseFloat(gid("clx").value)||85,createdAt:new Date().toISOString()});gid("clmsg").textContent="✓ Enregistré !";["clp","cln","cle","clt","clm","clx"].forEach(id=>gid(id).value="");setTimeout(()=>gid("clmsg").textContent="",2000);}catch(e){tst("Erreur");}
+  const n=gid("cln").value; if(!n){ tst("Renseigne le nom"); return; }
+  try{
+    await addDoc(collection(db,"clients"),{prenom:gid("clp").value,nom:n,entreprise:gid("cle").value,tel:gid("clt").value,email:gid("clm").value,statut:gid("cls").value,prix:parseFloat(gid("clx").value)||85,createdAt:new Date().toISOString()});
+    gid("clmsg").textContent="Enregistre !"; ["clp","cln","cle","clt","clm","clx"].forEach(id=>gid(id).value="");
+    setTimeout(()=>gid("clmsg").textContent="",2000);
+  }catch(e){ tst("Erreur"); }
 };
 
-// ─── GAZOLE ───────────────────────────────────────────────
+// GAZOLE
 function rGz(){
-  if(!gazoles.length){gid("gzcval").textContent="—";gid("gzcsub").textContent="Aucune donnée";gid("gzlist").innerHTML='<div style="font-size:13px;color:#999">Aucun plein saisi</div>';return;}
+  if(!gazoles.length){ gid("gzcval").textContent="--"; gid("gzcsub").textContent="Aucune donnee"; gid("gzlist").innerHTML='<div style="font-size:13px;color:#999">Aucun plein saisi</div>'; return; }
   const sorted=[...gazoles].sort((a,b)=>new Date(a.date)-new Date(b.date));
-  let tL=0,tH=0;
-  for(let i=1;i<sorted.length;i++){const dH=sorted[i].compteur-sorted[i-1].compteur;if(dH>0){tL+=sorted[i].litres||0;tH+=dH;}}
+  let tL=0, tH=0;
+  for(let i=1;i<sorted.length;i++){ const dH=sorted[i].compteur-sorted[i-1].compteur; if(dH>0){ tL+=sorted[i].litres||0; tH+=dH; } }
   const co=tH>0?tL/tH:0;
-  gid("gzcval").textContent=co>0?co.toFixed(1):"—";
-  gid("gzcsub").textContent="Calculée sur "+tH.toFixed(0)+"h · "+tL.toFixed(0)+"L total";
-  gid("gzlist").innerHTML=gazoles.slice(0,10).map(g=>'<div class="cr"><div><div style="font-weight:600">'+(g.litres||0).toFixed(2)+"L — "+(g.prix||0).toFixed(3)+' €/L</div><div style="font-size:11px;color:#999">'+fd(g.date)+" · "+(g.compteur||"?")+'h</div></div><div style="font-weight:600;color:#c0392b">−'+eu((g.litres||0)*(g.prix||0))+"</div></div>").join("");
+  gid("gzcval").textContent=co>0?co.toFixed(1):"--";
+  gid("gzcsub").textContent="Calculee sur "+tH.toFixed(0)+"h - "+tL.toFixed(0)+"L total";
+  gid("gzlist").innerHTML=gazoles.slice(0,10).map(g=>
+    '<div class="cr"><div><div style="font-weight:600">'+(g.litres||0).toFixed(2)+"L - "+(g.prix||0).toFixed(3)+' euro/L</div><div style="font-size:11px;color:#999">'+fd(g.date)+" - "+(g.compteur||"?")+'h</div></div><div style="font-weight:600;color:#c0392b">-'+eu((g.litres||0)*(g.prix||0))+'</div></div>'
+  ).join("");
 }
 window.saveGz=async()=>{
-  const l=parseFloat(gid("gzl").value),p=parseFloat(gid("gzp").value),c=parseFloat(gid("gzc").value),d=gid("gzd").value;
-  if(!l||!p||!c||!d){tst("⚠ Remplis tous les champs");return;}
-  try{await addDoc(collection(db,"gazoles"),{litres:l,prix:p,compteur:c,date:d,createdAt:new Date().toISOString()});gid("gzmsg").textContent="✓ Plein enregistré !";gid("gzl").value="";gid("gzp").value="";gid("gzc").value="";setTimeout(()=>gid("gzmsg").textContent="",2000);}catch(e){tst("Erreur");}
+  const l=parseFloat(gid("gzl").value), p=parseFloat(gid("gzp").value), c=parseFloat(gid("gzc").value), d=gid("gzd").value;
+  if(!l||!p||!c||!d){ tst("Remplis tous les champs"); return; }
+  try{
+    await addDoc(collection(db,"gazoles"),{litres:l,prix:p,compteur:c,date:d,createdAt:new Date().toISOString()});
+    gid("gzmsg").textContent="Plein enregistre !"; gid("gzl").value=""; gid("gzp").value=""; gid("gzc").value="";
+    setTimeout(()=>gid("gzmsg").textContent="",2000);
+  }catch(e){ tst("Erreur"); }
 };
 </script>
 </body>
